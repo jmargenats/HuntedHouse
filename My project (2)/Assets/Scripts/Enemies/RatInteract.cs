@@ -21,6 +21,6 @@ public class RatCombatTrigger : MonoBehaviour
     {
         Debug.Log("Combate iniciado con la rata");
 
-        SceneManager.LoadScene(fightSceneName);
+        FindObjectOfType<SceneFader>().FadeAndLoadScene("RatFight");
     }
 }
