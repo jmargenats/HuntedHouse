@@ -21,6 +21,8 @@ public class BotonHuir : MonoBehaviour
 
     public void RunAway()
     {
-        sceneFader.FadeAndLoadScene("MainScene");
+        GameManager.Instance.returningFromBattle = true;
+        GameManager.Instance.ratDefeated = true;
+        sceneFader.FadeAndLoadScene(GameManager.Instance.previousScene);
     }
 }
