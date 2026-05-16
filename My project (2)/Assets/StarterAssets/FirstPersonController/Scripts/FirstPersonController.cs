@@ -73,7 +73,7 @@ namespace StarterAssets
 		private GameObject _mainCamera;
 
 		private const float _threshold = 0.01f;
-
+		private Animator _animator;
 		private bool IsCurrentDeviceMouse
 		{
 			get
@@ -111,6 +111,7 @@ namespace StarterAssets
 
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
+            _animator = GetComponentInChildren<Animator>();
         }
 
 		private void Update()
@@ -164,9 +165,14 @@ namespace StarterAssets
 			// note: Vector2's == operator uses approximation so is not floating point error prone, and is cheaper than magnitude
 			// if there is no input, set the target speed to 0
 			if (_input.move == Vector2.zero) targetSpeed = 0.0f;
+            if (_animator != null)
+            {
+                bool isWalking = _input.move != Vector2.zero;
+                _animator.SetBool("isWalking", isWalking);
+            }
 
-			// a reference to the players current horizontal velocity
-			float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
+            // a reference to the players current horizontal velocity
+            float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
 
 			float speedOffset = 0.1f;
 			float inputMagnitude = _input.analogMovement ? _input.move.magnitude : 1f;
