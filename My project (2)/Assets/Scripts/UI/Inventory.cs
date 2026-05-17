@@ -69,6 +69,7 @@ public class Inventario : MonoBehaviour
                 slot.itemIcon.sprite = itemSprite;
                 slot.itemIcon.gameObject.SetActive(true);
                 slot.itemType = itemType;
+                GameManager.Instance.collectedItems.Add(itemType);
 
                 if (slot.background != null && defaultSlotSprite != null)
                 {

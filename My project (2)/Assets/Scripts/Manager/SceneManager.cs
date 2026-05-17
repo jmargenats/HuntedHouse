@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,6 +12,10 @@ public class GameManager : MonoBehaviour
 
     [Header("Scene Data")]
     public string previousScene;
+
+    [Header("Inventario")]
+    public List<string> collectedItems =
+    new List<string>();
 
     private void Awake()
     {
