@@ -112,6 +112,25 @@ namespace StarterAssets
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
             _animator = GetComponentInChildren<Animator>();
+
+			//checks player position
+            if (GameManager.Instance != null && GameManager.Instance.returningFromBattle)
+            {
+                CharacterController controller = GetComponent<CharacterController>();
+
+                if (controller != null)
+                    controller.enabled = false;
+
+                transform.position = GameManager.Instance.playerPosition;
+
+                if (controller != null)
+                    controller.enabled = true;
+
+                GameManager.Instance.returningFromBattle = false;
+
+                Debug.Log("Volví de batalla a: " + transform.position);
+            }
+
         }
 
 		private void Update()

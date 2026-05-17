@@ -8,9 +8,10 @@ public class RatCombatTrigger : MonoBehaviour
     private bool triggered = false;
     void Start()
     {
+        triggered = false;
         if (GameManager.Instance != null)
         {
-            if (GameManager.Instance.ratDefeated)
+            if (GameManager.Instance != null && GameManager.Instance.ratDefeated)
             {
                 gameObject.SetActive(false);
             }
@@ -18,27 +19,25 @@ public class RatCombatTrigger : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        // Evita retrigger instantáneo al volver
-        if (GameManager.Instance.returningFromBattle)
+        if (!other.CompareTag("Player")) return;
+
+        if (GameManager.Instance.ignoreRatTriggerOnce)
         {
-            GameManager.Instance.returningFromBattle = false;
+            GameManager.Instance.ignoreRatTriggerOnce = false;
             return;
         }
 
         if (triggered) return;
 
-        if (other.CompareTag("Player"))
-        {
-            triggered = true;
+        triggered = true;
 
-            GameManager.Instance.playerPosition =
-                other.transform.position - other.transform.forward * 2f;
+        GameManager.Instance.playerPosition =
+            other.transform.position - other.transform.forward * 2f;
 
-            GameManager.Instance.previousScene =
-                SceneManager.GetActiveScene().name;
+        GameManager.Instance.previousScene =
+            SceneManager.GetActiveScene().name;
 
-            StartCombat();
-        }
+        StartCombat();
     }
 
     private void StartCombat()
@@ -47,4 +46,5 @@ public class RatCombatTrigger : MonoBehaviour
 
         FindObjectOfType<SceneFader>().FadeAndLoadScene(fightSceneName);
     }
+
 }

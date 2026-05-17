@@ -8,6 +8,7 @@ public class Inventario : MonoBehaviour
     public Sprite defaultSlotSprite;
 
     private int currentSelectedSlot = 0;
+    public List<InventoryItemData> itemDatabase;
 
     void Start()
     {
@@ -15,7 +16,7 @@ public class Inventario : MonoBehaviour
         {
             slots[currentSelectedSlot].isSelected = true;
         }
-
+        LoadInventoryFromGameManager();
         UpdateInventoryUI();
     }
 
@@ -129,5 +130,33 @@ public class Inventario : MonoBehaviour
         var selectedSlot = slots[currentSelectedSlot];
         Debug.Log(selectedSlot.itemType);
         return selectedSlot.itemType;
+    }
+
+    void LoadInventoryFromGameManager()
+    {
+        if (GameManager.Instance == null) return;
+
+        foreach (string itemType in GameManager.Instance.collectedItems)
+        {
+            Sprite icon = GetIconForItem(itemType);
+
+            if (icon != null)
+            {
+                AddItemToInventory(icon, itemType);
+            }
+        }
+    }
+
+    Sprite GetIconForItem(string itemType)
+    {
+        foreach (var item in itemDatabase)
+        {
+            if (item.itemType == itemType)
+            {
+                return item.icon;
+            }
+        }
+
+        return null;
     }
 }

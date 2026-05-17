@@ -22,7 +22,10 @@ public class BotonHuir : MonoBehaviour
     public void RunAway()
     {
         GameManager.Instance.returningFromBattle = true;
-        GameManager.Instance.ratDefeated = true;
+       // GameManager.Instance.ignoreRatTriggerOnce = true;
+        GameManager.Instance.ratDefeated = false;
+
         sceneFader.FadeAndLoadScene(GameManager.Instance.previousScene);
     }
+
 }

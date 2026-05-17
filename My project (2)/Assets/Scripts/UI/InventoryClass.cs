@@ -10,3 +10,10 @@ public class InventorySlot
     public bool isSelected = false;
     public string itemType = "";
 }
+
+[System.Serializable]
+public class InventoryItemData
+{
+    public string itemType;
+    public Sprite icon;
+}

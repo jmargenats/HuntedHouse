@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class BattleInventoryUI : MonoBehaviour
 {
@@ -26,16 +27,23 @@ public class BattleInventoryUI : MonoBehaviour
     void GenerateInventoryButtons()
     {
         // limpiar botones anteriores
-        foreach (Transform child in inventoryPanel)
+        for (int i = inventoryPanel.childCount - 1; i >= 0; i--)
         {
-            Destroy(child.gameObject);
+            Destroy(inventoryPanel.GetChild(i).gameObject);
         }
+
+        HashSet<string> itemsAgregados = new HashSet<string>();
 
         foreach (string item in GameManager.Instance.collectedItems)
         {
             // ignorar items vacíos
             if (string.IsNullOrEmpty(item))
                 continue;
+
+            if (itemsAgregados.Contains(item))
+                continue;
+            
+            itemsAgregados.Add(item);
 
             GameObject buttonObj =
                 Instantiate(

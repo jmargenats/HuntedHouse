@@ -13,9 +13,20 @@ public class ItemRecolectable : MonoBehaviour
     public DialogueManager dialogueManager;
     [TextArea(2, 4)]
     public string[] pickupDialogues;
+    void Start()
+    {
+        if (GameManager.Instance != null && GameManager.Instance.HasItem(itemType))
+        {
+            gameObject.SetActive(false);
+        }
+    }
     public void Recolectar()
     {
         inventario.AddItemToInventory(iconoInventario, itemType);
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.AddItem(itemType);
+        }
 
         if (dialogueManager != null && pickupDialogues.Length > 0)
         {

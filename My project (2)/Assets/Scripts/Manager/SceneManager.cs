@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
-
+using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     [Header("Inventario")]
     public List<string> collectedItems =
     new List<string>();
-
+    public bool ignoreRatTriggerOnce = false;
     private void Awake()
     {
         if (Instance == null)
@@ -29,4 +29,18 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    public void AddItem(string itemType)
+    {
+        if (!collectedItems.Contains(itemType))
+        {
+            collectedItems.Add(itemType);
+        }
+    }
+
+    public bool HasItem(string itemType)
+    {
+        return collectedItems.Contains(itemType);
+    }
+
+
 }
