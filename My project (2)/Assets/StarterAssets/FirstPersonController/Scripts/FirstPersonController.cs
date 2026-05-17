@@ -135,15 +135,19 @@ namespace StarterAssets
 
 		private void Update()
 		{
-			JumpAndGravity();
+            if (Time.timeScale == 0f) return;
+            JumpAndGravity();
 			GroundedCheck();
 			Move();
-		}
+            
+        }
 
 		private void LateUpdate()
 		{
-			CameraRotation();
-		}
+            if (Time.timeScale == 0f) return;
+            CameraRotation();
+            
+        }
 
 		private void GroundedCheck()
 		{
