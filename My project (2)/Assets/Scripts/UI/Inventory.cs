@@ -211,7 +211,32 @@ public class Inventario : MonoBehaviour
             }
         }
     }
+    public void RemoveItem(string itemType)
+    {
+        foreach (var slot in slots)
+        {
+            if (slot.itemType == itemType)
+            {
+                slot.itemIcon.sprite = null;
 
+                slot.itemIcon.gameObject
+                    .SetActive(false);
+
+                slot.itemType = "";
+
+                break;
+            }
+        }
+
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance
+                .collectedItems
+                .Remove(itemType);
+        }
+
+        UpdateInventoryUI();
+    }
     public string DevolverItem()
     {
         if (slots.Count == 0)

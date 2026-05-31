@@ -28,6 +28,13 @@ public class GameManager : MonoBehaviour
     public List<string> defeatedEnemies =
         new List<string>();
 
+    [Header("Radio Puzzle")]
+    public bool radioDiscovered = false;
+    public bool penCollected = false;
+    public bool cassetteUnlocked = false;
+    public bool cassetteCollected = false;
+    public bool radioPlayed = false;
+    public bool cassetteNeedTool = false;
     private void Awake()
     {
         if (Instance == null)

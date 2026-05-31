@@ -1,40 +1,123 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+
 public class PlayerInteractions : MonoBehaviour
 {
     public float interactionDistance = 3f;
 
-    public GameObject interactionText;
+    public TMP_Text interactionText;
 
     void Update()
     {
+        interactionText.gameObject.SetActive(false);
 
-        interactionText.SetActive(false);
-
-        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        Ray ray =
+            Camera.main.ViewportPointToRay(
+                new Vector3(0.5f, 0.5f, 0)
+            );
 
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, interactionDistance))
+        if (
+            Physics.Raycast(
+                ray,
+                out hit,
+                interactionDistance
+            )
+        )
         {
-            ItemRecolectable item = hit.collider.GetComponentInParent<ItemRecolectable>();
-            Debug.Log("Estoy mirando: " + hit.collider.name);
-            if (item != null)
+            // Sistema viejo
+            ItemRecolectable item =
+                hit.collider
+                .GetComponentInParent<ItemRecolectable>();
+
+            // Sistema nuevo
+            IInteractable interactable =
+                hit.collider
+                .GetComponentInParent<IInteractable>();
+
+            IPickupable pickupable =
+                hit.collider
+                .GetComponentInParent<IPickupable>();
+
+            if (
+                item != null ||
+                interactable != null ||
+                pickupable != null
+            )
             {
-                Debug.Log("Tiene ItemRecolectable");
-                interactionText.SetActive(true);
+                interactionText.gameObject.SetActive(true);
+
+                string prompt = "";
+
+                // F = Examinar
+                if (interactable != null)
+                {
+                    prompt += "[F] Examinar";
+                }
+
+                // E = Recoger (nuevo sistema)
+                if (
+                    pickupable != null &&
+                    pickupable.CanPickup()
+                )
+                {
+                    if (prompt != "")
+                    {
+                        prompt += "\n";
+                    }
+
+                    prompt += "[E] Recoger";
+                }
+
+                // E = Sistema viejo
+                if (
+                    item != null &&
+                    interactable == null &&
+                    pickupable == null
+                )
+                {
+                    prompt = "[E] Recoger";
+                }
+
+                interactionText.text = prompt;
             }
 
-            if (item != null)
-            {
-                interactionText.SetActive(true);
+            // =========================
+            // F = INTERACTUAR
+            // =========================
 
-                if (Input.GetKeyDown(KeyCode.E))
-                {
-                    item.Recolectar();
-                }
+            if (
+                interactable != null &&
+                Input.GetKeyDown(KeyCode.F)
+            )
+            {
+                interactable.Interact();
+            }
+
+            // =========================
+            // E = RECOGER (nuevo)
+            // =========================
+
+            if (
+                pickupable != null &&
+                pickupable.CanPickup() &&
+                Input.GetKeyDown(KeyCode.E)
+            )
+            {
+                pickupable.Pickup();
+            }
+
+            // =========================
+            // E = RECOGER (viejo)
+            // =========================
+
+            else if (
+                item != null &&
+                Input.GetKeyDown(KeyCode.E)
+            )
+            {
+                item.Recolectar();
             }
         }
     }
