@@ -34,5 +34,5 @@ Material:
     - _Cutoff: 0.592
     - _Mode: 1
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.16037738, g: 0.1550819, b: 0.1550819, a: 0}
   m_BuildTextureStacks: []
