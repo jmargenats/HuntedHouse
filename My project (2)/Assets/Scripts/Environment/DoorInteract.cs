@@ -7,6 +7,15 @@ public class Door : MonoBehaviour
     public float openAngle = 90f;
     public float openSpeed = 2f;
 
+    [Header("Llave")]
+    public Inventario inventario;
+    public string requiredItem = "Llave";
+    public bool consumeKey = false;
+
+    [Header("Diálogo")]
+    public DialogueManager dialogueManager;
+    public string lockedMessage = "Está cerrada. Necesito una llave.";
+
     private Quaternion closedRotation;
     private Quaternion openRotation;
 
@@ -27,7 +36,7 @@ public class Door : MonoBehaviour
     {
         if (playerInRange && Input.GetKeyDown(KeyCode.E))
         {
-            isOpen = !isOpen;
+            TryOpenDoor();
         }
 
         Quaternion targetRotation =
@@ -41,6 +50,33 @@ public class Door : MonoBehaviour
                 targetRotation,
                 Time.deltaTime * openSpeed
             );
+    }
+
+    void TryOpenDoor()
+    {
+        string selectedItem = "";
+
+        if (inventario != null)
+        {
+            selectedItem = inventario.DevolverItem();
+        }
+
+        if (selectedItem == requiredItem)
+        {
+            isOpen = !isOpen;
+
+            if (consumeKey)
+            {
+                inventario.UseSelectedItem();
+            }
+        }
+        else
+        {
+            if (dialogueManager != null)
+            {
+                dialogueManager.ShowDialogue(lockedMessage);
+            }
+        }
     }
 
     private void OnTriggerEnter(Collider other)

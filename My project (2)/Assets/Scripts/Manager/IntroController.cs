@@ -11,6 +11,10 @@ public class IntroController : MonoBehaviour
 
     void Start()
     {
+        if (GameManager.Instance != null && GameManager.Instance.returningFromBattle)
+        {
+            return;
+        }
         Color c = sceneFader.fadeImage.color;
         c.a = 1f;
         sceneFader.fadeImage.color = c;

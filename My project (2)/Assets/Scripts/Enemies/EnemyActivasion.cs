@@ -6,6 +6,7 @@ public class EnemyActivationZone : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+
         if (other.CompareTag("Player"))
         {
             enemy.StartChasing();

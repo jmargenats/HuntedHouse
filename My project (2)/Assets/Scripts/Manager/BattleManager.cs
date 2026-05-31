@@ -31,6 +31,11 @@ public class BattleManager : MonoBehaviour
     public Sprite childSprite;
     private bool playerTurn = true;
 
+    [Header("Recompensa")]
+    public Inventario inventario;
+    public Sprite rewardIcon;
+    public string rewardItemType;
+
     void Start()
     {
         LoadEnemyData();
@@ -246,6 +251,8 @@ public class BattleManager : MonoBehaviour
 
     IEnumerator EnemyDefeated()
     {
+        
+
         ToggleButtons(false);
 
         ShowBattleLog(
@@ -270,6 +277,13 @@ public class BattleManager : MonoBehaviour
             )
         );
 
+        GameManager.Instance.DefeatEnemy(enemy.enemyID);
+
+        if (enemy.enemyID == "rat_01")
+        {
+            GameManager.Instance.AddItem("Llave");
+        }
+
         yield return new WaitForSeconds(2.5f);
 
         GameManager.Instance.returningFromBattle = true;
@@ -278,6 +292,7 @@ public class BattleManager : MonoBehaviour
             .FadeAndLoadScene(
                 GameManager.Instance.previousScene
             );
+
     }
 
     // =========================
