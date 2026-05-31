@@ -41,7 +41,7 @@ public class SceneFader : MonoBehaviour
         SceneManager.LoadScene(sceneName);
     }
 
-    IEnumerator Fade(float startAlpha, float endAlpha)
+    public IEnumerator Fade(float startAlpha, float endAlpha)
     {
         float time = 0f;
 
