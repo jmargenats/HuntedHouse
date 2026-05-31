@@ -49,10 +49,10 @@ public class EnemyController : MonoBehaviour
         chasing = true;
         returningHome = false;
     }
-
     public void StopChasingAndReturn()
     {
         chasing = false;
         returningHome = true;
+
     }
 }
