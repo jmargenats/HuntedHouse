@@ -2,12 +2,20 @@ using UnityEngine;
 
 public class EnemyStats : MonoBehaviour
 {
-    public string enemyName = "Rat";
+    [Header("Info")]
+    public string enemyID;
 
+    public string enemyName;
+
+    [TextArea]
+    public string enemyDescription;
+
+    [Header("Stats")]
     public int maxHP = 30;
+
     public int currentHP;
 
-    public int biteDamage = 5;
+    public int attackDamage = 5;
 
     void Start()
     {
@@ -18,10 +26,17 @@ public class EnemyStats : MonoBehaviour
     {
         currentHP -= damage;
 
-        Debug.Log(enemyName + " recibió " + damage);
+        Debug.Log(
+            enemyName +
+            " recibió " +
+            damage +
+            " de daño"
+        );
 
         if (currentHP <= 0)
         {
+            currentHP = 0;
+
             Die();
         }
     }
@@ -29,7 +44,5 @@ public class EnemyStats : MonoBehaviour
     void Die()
     {
         Debug.Log(enemyName + " murió");
-
-        GameManager.Instance.ratDefeated = true;
     }
 }

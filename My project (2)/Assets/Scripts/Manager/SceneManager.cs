@@ -1,11 +1,14 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+
+    [Header("Battle")]
     public bool returningFromBattle = false;
-    public bool ratDefeated = false;
+    public bool ignoreRatTriggerOnce = false;
 
     [Header("Player Data")]
     public Vector3 playerPosition;
@@ -15,13 +18,22 @@ public class GameManager : MonoBehaviour
 
     [Header("Inventario")]
     public List<string> collectedItems =
-    new List<string>();
-    public bool ignoreRatTriggerOnce = false;
+        new List<string>();
+
+    [Header("Enemy Data")]
+    public string currentEnemyID;
+
+    public bool ratDefeated = false;
+
+    public List<string> defeatedEnemies =
+        new List<string>();
+
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
+
             DontDestroyOnLoad(gameObject);
         }
         else
@@ -29,6 +41,11 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    // =========================
+    // INVENTARIO
+    // =========================
+
     public void AddItem(string itemType)
     {
         if (!collectedItems.Contains(itemType))
@@ -42,6 +59,26 @@ public class GameManager : MonoBehaviour
         return collectedItems.Contains(itemType);
     }
 
+    // =========================
+    // ENEMIGOS
+    // =========================
+
+    public bool IsEnemyDefeated(string enemyID)
+    {
+        return defeatedEnemies.Contains(enemyID);
+    }
+    public void DefeatEnemy(string enemyID)
+    {
+        if (!defeatedEnemies.Contains(enemyID))
+        {
+            defeatedEnemies.Add(enemyID);
+        }
+    }
+
+    // =========================
+    // SAVE
+    // =========================
+
     public void SaveGame()
     {
         PlayerPrefs.SetString(
@@ -49,9 +86,20 @@ public class GameManager : MonoBehaviour
             SceneManager.GetActiveScene().name
         );
 
-        PlayerPrefs.SetFloat("PlayerX", playerPosition.x);
-        PlayerPrefs.SetFloat("PlayerY", playerPosition.y);
-        PlayerPrefs.SetFloat("PlayerZ", playerPosition.z);
+        PlayerPrefs.SetFloat(
+            "PlayerX",
+            playerPosition.x
+        );
+
+        PlayerPrefs.SetFloat(
+            "PlayerY",
+            playerPosition.y
+        );
+
+        PlayerPrefs.SetFloat(
+            "PlayerZ",
+            playerPosition.z
+        );
 
         PlayerPrefs.SetInt(
             "RatDefeated",
@@ -63,10 +111,19 @@ public class GameManager : MonoBehaviour
             string.Join(",", collectedItems)
         );
 
+        PlayerPrefs.SetString(
+            "DefeatedEnemies",
+            string.Join(",", defeatedEnemies)
+        );
+
         PlayerPrefs.Save();
 
         Debug.Log("Juego guardado");
     }
+
+    // =========================
+    // LOAD
+    // =========================
 
     public void LoadGame()
     {
@@ -88,6 +145,8 @@ public class GameManager : MonoBehaviour
         ratDefeated =
             PlayerPrefs.GetInt("RatDefeated") == 1;
 
+        // ITEMS
+
         collectedItems.Clear();
 
         string items =
@@ -95,7 +154,26 @@ public class GameManager : MonoBehaviour
 
         if (!string.IsNullOrEmpty(items))
         {
-            collectedItems.AddRange(items.Split(','));
+            collectedItems.AddRange(
+                items.Split(',')
+            );
+        }
+
+        // ENEMIGOS DERROTADOS
+
+        defeatedEnemies.Clear();
+
+        string defeated =
+            PlayerPrefs.GetString(
+                "DefeatedEnemies",
+                ""
+            );
+
+        if (!string.IsNullOrEmpty(defeated))
+        {
+            defeatedEnemies.AddRange(
+                defeated.Split(',')
+            );
         }
 
         returningFromBattle = true;
@@ -103,16 +181,26 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(sceneName);
     }
 
+    // =========================
+    // RESET
+    // =========================
+
     public void ResetGame()
     {
         returningFromBattle = false;
+
         ratDefeated = false;
 
-        playerPosition = Vector3.zero;
+        playerPosition =
+            Vector3.zero;
 
         previousScene = "";
 
+        currentEnemyID = "";
+
         collectedItems.Clear();
+
+        defeatedEnemies.Clear();
 
         ignoreRatTriggerOnce = false;
 

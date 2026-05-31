@@ -23,8 +23,18 @@ public class BattleManager : MonoBehaviour
     public string[] dodgeTexts;
     public string[] enemyAttackTexts;
 
+    [Header("Imagenes de combate")]
+    public Image enemyPortrait;
+    public Sprite ratSprite;
+    public Sprite subjectSprite;
+    public Sprite nurseSprite;
+    public Sprite childSprite;
     private bool playerTurn = true;
 
+    void Start()
+    {
+        LoadEnemyData();
+    }
     // =========================
     // ATAQUE PUÑO
     // =========================
@@ -35,7 +45,63 @@ public class BattleManager : MonoBehaviour
 
         StartCoroutine(PlayerFistTurn());
     }
+    void LoadEnemyData()
+    {
+        string enemyID =
+            GameManager.Instance.currentEnemyID;
+        enemyPortrait.preserveAspect = true;
+        switch (enemyID)
+        {
+            case "rat_01":
 
+                enemy.enemyID = "rat_01";
+                enemy.enemyName = "Rata Mutada";
+
+                enemy.maxHP = 30;
+                enemy.attackDamage = 5;
+
+                enemy.currentHP =
+                    enemy.maxHP;
+
+                enemyAI.dodgeChance = 40;
+                enemyPortrait.sprite = ratSprite;
+
+                break;
+
+            case "subject_01":
+
+                enemy.enemyID = "subject_01";
+                enemy.enemyName =
+                    "Sujeto Experimental 01";
+
+                enemy.maxHP = 100;
+                enemy.attackDamage = 12;
+
+                enemy.currentHP =
+                    enemy.maxHP;
+
+                enemyAI.dodgeChance = 50;
+                enemyPortrait.sprite = subjectSprite;
+
+                break;
+
+            default:
+
+                enemy.enemyID = "unknown";
+                enemy.enemyName = "Enemigo";
+
+                enemy.maxHP = 30;
+                enemy.attackDamage = 5;
+
+                enemy.currentHP =
+                    enemy.maxHP;
+
+                enemyAI.dodgeChance = 20;
+
+                break;
+        }
+
+    }
     IEnumerator PlayerFistTurn()
     {
         playerTurn = false;
@@ -183,14 +249,30 @@ public class BattleManager : MonoBehaviour
         ToggleButtons(false);
 
         ShowBattleLog(
-            "La rata cae al suelo sin moverse"
+            enemy.enemyName +
+            " cae al suelo sin moverse."
+        );
+
+        Debug.Log(
+            "Enemy ID al morir: "
+            + enemy.enemyID
+        );
+
+        GameManager.Instance.DefeatEnemy(
+            enemy.enemyID
+        );
+
+        Debug.Log(
+            "Lista derrotados: "
+            + string.Join(
+                ",",
+                GameManager.Instance.defeatedEnemies
+            )
         );
 
         yield return new WaitForSeconds(2.5f);
 
         GameManager.Instance.returningFromBattle = true;
-
-        GameManager.Instance.ratDefeated = true;
 
         FindObjectOfType<SceneFader>()
             .FadeAndLoadScene(
@@ -203,9 +285,7 @@ public class BattleManager : MonoBehaviour
     // =========================
     IEnumerator EnemyTurn()
     {
-        ShowBattleLog(
-            "La rata observa tus movimientos..."
-        );
+        ShowBattleLog(enemy.enemyName +" observa tus movimientos...");
 
         yield return new WaitForSeconds(1.5f);
 
@@ -229,7 +309,7 @@ public class BattleManager : MonoBehaviour
     {
         int damage =
             enemyAI.ChooseDamage(
-                enemy.biteDamage,
+                enemy.attackDamage,
                 enemy.currentHP
             );
 
@@ -260,6 +340,9 @@ public class BattleManager : MonoBehaviour
     // =========================
     string GetRandomText(string[] texts)
     {
+        if (texts == null || texts.Length == 0)
+            return "";
+
         int randomIndex =
             Random.Range(0, texts.Length);
 
