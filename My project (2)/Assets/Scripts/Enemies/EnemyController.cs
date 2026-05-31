@@ -24,7 +24,9 @@ public class EnemyController : MonoBehaviour
 
         Debug.Log("Remaining: " + agent.remainingDistance);
 
-// animator.SetBool("isMoving", moving);
-//Preguntarle a luz
+        if (animator != null)
+        {
+            animator.SetBool("isMoving", moving);
+        }
     }
 }
