@@ -845,27 +845,27 @@ MonoBehaviour:
   attackButton: {fileID: 1774823925}
   attackObjectButton: {fileID: 186748795}
   fleeButton: {fileID: 196985403}
-  healButton: {fileID: 0}
-  battleInventory: {fileID: 0}
+  healButton: {fileID: 1061851130}
+  battleInventory: {fileID: 1850786223}
   battleLogText: {fileID: 1641982452}
   fistAttackTexts:
-  - "Golpe\xE1s a la rata con fuerza."
-  - "Tu pu\xF1o impacta contra el cuerpo de la rata. "
-  - Le das un golpe seco a la rata.
+  - "Golpe\xE1s con fuerza."
+  - "Tu pu\xF1o impacta contra el cuerpo"
+  - Le das un golpe seco
   shovelAttackTexts:
   - "Mov\xE9s la pala violentamente. "
   - 'La pala golpea de lleno a la rata. '
   - "Atac\xE1s brutalmente con la pala."
   knifeAttackTexts:
-  - 
+  - Atacas con rapidez
   - 
   dodgeTexts:
-  - 'La rata esquiva tu ataque. '
-  - "La rata se mueve r\xE1pidamente. "
+  - 'esquiva tu ataque. '
+  - "se mueve r\xE1pidamente. "
   - Tu golpe impacta contra el suelo.
   enemyAttackTexts:
-  - 'La rata se lanza sobre vos. '
-  - 'La rata muerde tu pierna. '
+  - 'Se lanza sobre vos. '
+  - 'muerde tu pierna. '
   - "La rata ara\xF1a desesperadamente."
   enemyPortrait: {fileID: 2112178525}
   ratSprite: {fileID: 21300000, guid: be2f438861ee2994f8592d83e2e4cfa4, type: 3}
@@ -1985,13 +1985,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 382799947}
+        m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
+        m_MethodName: Heal
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -3094,9 +3094,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   equippedWeaponText: {fileID: 2112048093}
   shovelSprite: {fileID: 21300000, guid: 3ee50140ad28b4a429687b01976fe075, type: 3}
-  knifeSprite: {fileID: 0}
-  pillsSprite: {fileID: 0}
-  medkitSprite: {fileID: 0}
+  knifeSprite: {fileID: 21300000, guid: 27a759a949a16ad41b193689d9183a6b, type: 3}
+  pillsSprite: {fileID: 21300000, guid: 653d94427364f5741ae8fba4b3676e6b, type: 3}
+  medkitSprite: {fileID: 21300000, guid: 24033b3860fd2224ca96bd2ba36ac776, type: 3}
   inventoryPanel: {fileID: 200793415}
   inventoryButtonPrefab: {fileID: 3727667513453478904, guid: 582e5d1dbf6f53f43b2267deed87e7a6, type: 3}
 --- !u!1 &1860909832
