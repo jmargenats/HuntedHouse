@@ -76,6 +76,36 @@ public class BattleManager : MonoBehaviour
             attackObjectButton.interactable = true;
         }
     }
+    IEnumerator FlashEnemy()
+    {
+        if (enemyPortrait == null)
+            yield break;
+
+        enemyPortrait.color = Color.red;
+
+        yield return new WaitForSeconds(0.1f);
+
+        enemyPortrait.color = Color.white;
+    }
+    IEnumerator ShakeEnemy()
+    {
+        Vector3 originalPos =
+            enemyPortrait.rectTransform.localPosition;
+
+        for (int i = 0; i < 6; i++)
+        {
+            enemyPortrait.rectTransform.localPosition =
+                originalPos +
+                (Vector3)Random.insideUnitCircle * 8f;
+
+            yield return new WaitForSeconds(
+                0.02f
+            );
+        }
+
+        enemyPortrait.rectTransform.localPosition =
+            originalPos;
+    }
     // =========================
     // ATAQUE PUÑO
     // =========================
@@ -200,11 +230,13 @@ public class BattleManager : MonoBehaviour
             yield break;
         }
 
-        int damage =
-            PlayerStats.Instance.fistDamage;
+        int damage = PlayerStats.Instance.GetFistDamage();
 
         enemy.TakeDamage(damage);
 
+        PlayerStats.Instance.RegisterFistHit();
+        StartCoroutine(FlashEnemy());
+        StartCoroutine(ShakeEnemy());
         ShowBattleLog(
             GetRandomText(fistAttackTexts)
             + "\n-"
@@ -280,7 +312,8 @@ public class BattleManager : MonoBehaviour
         }
 
         enemy.TakeDamage(damage);
-
+        StartCoroutine(FlashEnemy());
+        StartCoroutine(ShakeEnemy());
         string equippedWeapon =
             PlayerStats.Instance.equippedWeapon;
 
