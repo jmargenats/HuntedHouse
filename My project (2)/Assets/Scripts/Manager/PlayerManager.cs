@@ -11,9 +11,12 @@ public class PlayerSpawn : MonoBehaviour
                 transform.position = GameManager.Instance.playerPosition;
             }
         }
-        Debug.Log(
-    "HP al volver a la casa: " +
-    PlayerStats.Instance.currentHP
-);
+        if (PlayerStats.Instance != null)
+        {
+            Debug.Log(
+                "HP al volver a la casa: " +
+                PlayerStats.Instance.currentHP
+            );
+        }
     }
 }

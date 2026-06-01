@@ -32,6 +32,7 @@ public class BattleManager : MonoBehaviour
     public Sprite subjectSprite;
     public Sprite nurseSprite;
     public Sprite childSprite;
+    public Sprite ratPackSprite;
     private bool playerTurn = true;
 
     [Header("Recompensa")]
@@ -141,6 +142,22 @@ public class BattleManager : MonoBehaviour
 
                 enemyAI.dodgeChance = 50;
                 enemyPortrait.sprite = subjectSprite;
+
+                break;
+
+            case "rat_pack":
+
+                enemy.enemyID = "rat_pack";
+                enemy.enemyName = "Jauría de Ratas";
+
+                enemy.maxHP = 80;
+                enemy.attackDamage = 10;
+
+                enemy.currentHP = enemy.maxHP;
+
+                enemyAI.dodgeChance = 25;
+
+                enemyPortrait.sprite = ratPackSprite;
 
                 break;
 

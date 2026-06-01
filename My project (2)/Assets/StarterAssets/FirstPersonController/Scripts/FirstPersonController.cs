@@ -199,7 +199,7 @@ namespace StarterAssets
             if (_animator != null)
             {
                 bool isWalking =new Vector3(_controller.velocity.x,0f,_controller.velocity.z).magnitude > 0.1f;
-                Debug.Log("isWalking: " + isWalking);
+                
                 HandleFootsteps(isWalking);
                 _animator.SetBool("isWalking", isWalking);
             }

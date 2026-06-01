@@ -840,6 +840,8 @@ MonoBehaviour:
   attackButton: {fileID: 1774823925}
   attackObjectButton: {fileID: 186748795}
   fleeButton: {fileID: 196985403}
+  healButton: {fileID: 0}
+  battleInventory: {fileID: 0}
   battleLogText: {fileID: 1641982452}
   fistAttackTexts:
   - "Golpe\xE1s a la rata con fuerza."
@@ -865,6 +867,7 @@ MonoBehaviour:
   subjectSprite: {fileID: 21300000, guid: b89873dca0098ea4d9d0f99e05d9793f, type: 3}
   nurseSprite: {fileID: 0}
   childSprite: {fileID: 0}
+  ratPackSprite: {fileID: 21300000, guid: 833c16c0396a06443a6ecb3761ee092b, type: 3}
   inventario: {fileID: 0}
   rewardIcon: {fileID: 0}
   rewardItemType: 
@@ -2953,6 +2956,8 @@ MonoBehaviour:
   equippedWeaponText: {fileID: 2112048093}
   shovelSprite: {fileID: 21300000, guid: 3ee50140ad28b4a429687b01976fe075, type: 3}
   knifeSprite: {fileID: 0}
+  pillsSprite: {fileID: 0}
+  medkitSprite: {fileID: 0}
   inventoryPanel: {fileID: 200793415}
   inventoryButtonPrefab: {fileID: 3727667513453478904, guid: 582e5d1dbf6f53f43b2267deed87e7a6, type: 3}
 --- !u!1 &1860909832

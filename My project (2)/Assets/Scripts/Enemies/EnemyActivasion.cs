@@ -2,14 +2,24 @@ using UnityEngine;
 
 public class EnemyActivationZone : MonoBehaviour
 {
-    public EnemyController enemy;
+    public EnemyController[] enemies;
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Entró al trigger: " + other.name);
 
         if (other.CompareTag("Player"))
         {
-            enemy.StartChasing();
+            Debug.Log("Es el player, activo ratas");
+
+            foreach (EnemyController enemy in enemies)
+            {
+                if (enemy != null)
+                {
+                    Debug.Log("Activo: " + enemy.name);
+                    enemy.StartChasing();
+                }
+            }
         }
     }
 
@@ -17,7 +27,13 @@ public class EnemyActivationZone : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            enemy.StopChasingAndReturn();
+            foreach (EnemyController enemy in enemies)
+            {
+                if (enemy != null)
+                {
+                    enemy.StopChasingAndReturn();
+                }
+            }
         }
     }
 }
