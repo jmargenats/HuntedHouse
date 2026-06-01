@@ -36,8 +36,7 @@ public class EnemyCombatTrigger : MonoBehaviour
             enemyID;
 
         GameManager.Instance.playerPosition =
-            other.transform.position -
-            other.transform.forward * 2f;
+            other.transform.position;
 
         GameManager.Instance.previousScene =
             SceneManager.GetActiveScene().name;

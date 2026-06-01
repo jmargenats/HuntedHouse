@@ -15086,6 +15086,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 071ad095c48d6544cbd7f92460dc36af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2042790488 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8616685848737228376, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
+  m_PrefabInstance: {fileID: 2042790481}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2042790482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2042790491 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8616685848737228371, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
+  m_PrefabInstance: {fileID: 2042790481}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2042790482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55919ac34a26952479f3fc91f777b2fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2044612283
 GameObject:
   m_ObjectHideFlags: 0
@@ -15595,8 +15617,8 @@ MonoBehaviour:
   doctorTape: {fileID: 8300000, guid: b70b5a4db8a755d47972e0a14260a786, type: 3}
   voiceSource: {fileID: 1064719138}
   playerWhatNoise: {fileID: 8300000, guid: 0c8223599dbd7524f9ce1f2bb46bc5e8, type: 3}
-  playerController: {fileID: 0}
-  playerInput: {fileID: 0}
+  playerController: {fileID: 2042790491}
+  playerInput: {fileID: 2042790488}
 --- !u!1 &2119322119
 GameObject:
   m_ObjectHideFlags: 0
