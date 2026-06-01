@@ -14,31 +14,73 @@ public class NewspaperInteractable : MonoBehaviour, IInteractable
     private bool isReading = false;
     private bool alreadyRead = false;
 
+    private PlayerInteractions playerInteractions;
+
+    void Start()
+    {
+        playerInteractions =
+            FindObjectOfType<PlayerInteractions>();
+    }
+
     public void Interact()
     {
-        isReading = !isReading;
+        if (isReading)
+            return;
 
-        newspaperImageUI.SetActive(isReading);
+        isReading = true;
 
-        if (!isReading && !alreadyRead)
+        newspaperImageUI.SetActive(true);
+
+        if (playerInteractions != null)
+        {
+            playerInteractions.enabled = false;
+        }
+    }
+
+    void Update()
+    {
+        if (
+            isReading &&
+            Input.GetKeyDown(KeyCode.F)
+        )
+        {
+            CloseNewspaper();
+        }
+    }
+
+    void CloseNewspaper()
+    {
+        isReading = false;
+
+        newspaperImageUI.SetActive(false);
+
+        if (playerInteractions != null)
+        {
+            playerInteractions.enabled = true;
+        }
+
+        if (!alreadyRead)
         {
             alreadyRead = true;
 
             if (dialogueManager != null)
             {
-                dialogueManager.ShowDialogue(afterReadDialogue);
+                dialogueManager.ShowDialogue(
+                    afterReadDialogue
+                );
             }
 
             if (recordPrompt != null)
             {
-                StartCoroutine(ShowRecordPrompt());
+                StartCoroutine(
+                    ShowRecordPrompt()
+                );
             }
         }
     }
 
     IEnumerator ShowRecordPrompt()
     {
-        // Espera a que termine el diálogo
         yield return new WaitForSeconds(
             dialogueManager != null
                 ? dialogueManager.displayTime

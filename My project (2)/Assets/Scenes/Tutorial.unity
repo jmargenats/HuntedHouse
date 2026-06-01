@@ -9554,12 +9554,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.37693286, y: 0.39839682, z: 0.5372339}
-  m_Center: {x: 0.0056763096, y: 0.18139648, z: -0.23138307}
+  m_Size: {x: 0.37693286, y: 0.39839682, z: 0.5417525}
+  m_Center: {x: 0.0056763096, y: 0.18139648, z: -0.22912374}
 --- !u!1 &900020072 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8601614153650410788, guid: e711389017b7936479ed42454596049c, type: 3}
