@@ -9,6 +9,8 @@ public class ItemRecolectable : MonoBehaviour
     public Sprite iconoInventario;
 
     public string itemType;
+    [Header("Audio")]
+    public AudioClip pickupSound;
 
     public DialogueManager dialogueManager;
     [TextArea(2, 4)]
@@ -22,16 +24,41 @@ public class ItemRecolectable : MonoBehaviour
     }
     public void Recolectar()
     {
-        inventario.AddItemToInventory(iconoInventario, itemType);
+        inventario.AddItemToInventory(
+            iconoInventario,
+            itemType
+        );
+
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.AddItem(itemType);
+            if (pickupSound != null)
+            {
+                AudioSource.PlayClipAtPoint(
+                    pickupSound,
+                    Camera.main.transform.position
+                );
+            }
+            GameManager.Instance.AddItem(
+                itemType
+            );
         }
 
-        if (dialogueManager != null && pickupDialogues.Length > 0)
+        if (
+            dialogueManager != null &&
+            pickupDialogues.Length > 0
+        )
         {
-            string randomDialogue = pickupDialogues[Random.Range(0, pickupDialogues.Length)];
-            dialogueManager.ShowDialogue(randomDialogue);
+            string randomDialogue =
+                pickupDialogues[
+                    Random.Range(
+                        0,
+                        pickupDialogues.Length
+                    )
+                ];
+
+            dialogueManager.ShowDialogue(
+                randomDialogue
+            );
         }
 
         gameObject.SetActive(false);

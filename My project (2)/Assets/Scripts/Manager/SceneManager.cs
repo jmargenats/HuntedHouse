@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
     public bool cassetteCollected = false;
     public bool radioPlayed = false;
     public bool cassetteNeedTool = false;
+    public bool cassetteDiscovered = false;
 
     [Header("Tutorials")]
     public bool battleTutorialCompleted = false;

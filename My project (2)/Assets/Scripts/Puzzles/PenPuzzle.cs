@@ -13,6 +13,8 @@ public class PenPuzzle :
 
     public string itemType = "Lapicera";
 
+    [Header("Audio")]
+    public AudioClip pickupSound;
     public void Interact()
     {
         if (!GameManager.Instance.cassetteNeedTool)
@@ -40,9 +42,22 @@ public class PenPuzzle :
             icon,
             itemType
         );
+        if (pickupSound != null)
+        {
+            AudioSource.PlayClipAtPoint(
+                pickupSound,
+                Camera.main.transform.position
+            );
+        }
 
         GameManager.Instance.penCollected =
             true;
+
+        dialogueManager.ShowDialogue(
+            "Lapicera obtenida."
+        );
+
+        
 
         gameObject.SetActive(false);
     }
