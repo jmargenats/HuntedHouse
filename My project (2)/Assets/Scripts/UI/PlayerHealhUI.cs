@@ -7,7 +7,7 @@ public class PlayerHPUI : MonoBehaviour
 
     [Header("Barra de vida")]
     public int totalBars = 10;
-
+    public TMP_Text strengthText;
     [Header("Icono de vida")]
     public Image portraitImage;
 
@@ -18,6 +18,12 @@ public class PlayerHPUI : MonoBehaviour
     void Update()
     {
         UpdateHPUI();
+        strengthText.text =
+    "FUE "
+    + PlayerStats.Instance.strength
+    + " ("
+    + PlayerStats.Instance.fistHits
+    + "/5)";
     }
 
     void UpdateHPUI()
