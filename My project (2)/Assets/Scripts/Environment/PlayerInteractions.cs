@@ -3,7 +3,7 @@ using TMPro;
 
 public class PlayerInteractions : MonoBehaviour
 {
-    public float interactionDistance = 3f;
+    public float interactionDistance = 1f;
 
     public TMP_Text interactionText;
 
@@ -26,32 +26,47 @@ public class PlayerInteractions : MonoBehaviour
             )
         )
         {
-            // Sistema viejo
+            // =========================
+            // COMPONENTES
+            // =========================
+
             ItemRecolectable item =
                 hit.collider
                 .GetComponentInParent<ItemRecolectable>();
 
-            // Sistema nuevo
             IInteractable interactable =
                 hit.collider
                 .GetComponentInParent<IInteractable>();
+
+            IExaminable examinable =
+                hit.collider
+                .GetComponentInParent<IExaminable>();
 
             IPickupable pickupable =
                 hit.collider
                 .GetComponentInParent<IPickupable>();
 
+            // =========================
+            // TEXTO DE INTERACCIÓN
+            // =========================
+
             if (
                 item != null ||
                 interactable != null ||
+                examinable != null ||
                 pickupable != null
             )
             {
-                interactionText.gameObject.SetActive(true);
+                interactionText.gameObject
+                    .SetActive(true);
 
                 string prompt = "";
 
-                // F = Examinar
-                if (interactable != null)
+                // F = Examinar / Interactuar
+                if (
+                    interactable != null ||
+                    examinable != null
+                )
                 {
                     prompt += "[F] Examinar";
                 }
@@ -74,17 +89,19 @@ public class PlayerInteractions : MonoBehaviour
                 if (
                     item != null &&
                     interactable == null &&
+                    examinable == null &&
                     pickupable == null
                 )
                 {
                     prompt = "[E] Recoger";
                 }
 
-                interactionText.text = prompt;
+                interactionText.text =
+                    prompt;
             }
 
             // =========================
-            // F = INTERACTUAR
+            // F = PUZZLES
             // =========================
 
             if (
@@ -93,6 +110,18 @@ public class PlayerInteractions : MonoBehaviour
             )
             {
                 interactable.Interact();
+            }
+
+            // =========================
+            // F = EXAMINAR
+            // =========================
+
+            if (
+                examinable != null &&
+                Input.GetKeyDown(KeyCode.F)
+            )
+            {
+                examinable.Examine();
             }
 
             // =========================

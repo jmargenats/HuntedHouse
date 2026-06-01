@@ -53,6 +53,5 @@ public class EnemyController : MonoBehaviour
     {
         chasing = false;
         returningHome = true;
-
     }
 }

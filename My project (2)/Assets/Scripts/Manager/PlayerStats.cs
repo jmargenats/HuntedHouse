@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerStats : MonoBehaviour
 {
@@ -6,21 +8,38 @@ public class PlayerStats : MonoBehaviour
 
     [Header("Vida")]
     public int maxHP = 100;
+
     public int currentHP = 100;
 
     [Header("Daño")]
     public int fistDamage = 5;
 
     public int shovelDamage = 20;
+
     public int knifeDamage = 12;
 
     [Header("Arma equipada")]
     public string equippedWeapon;
 
+    private bool isDead = false;
+
     private void Awake()
     {
-        Instance = this;
+        if (Instance == null)
+        {
+            Instance = this;
+
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
+
+    // =========================
+    // ARMAS
+    // =========================
 
     public void EquipWeapon(string weaponName)
     {
@@ -42,10 +61,97 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
+    // =========================
+    // DAÑO
+    // =========================
+
     public void TakeDamage(int damage)
     {
+        if (isDead)
+            return;
+
         currentHP -= damage;
 
-        Debug.Log("Player recibió daño");
+        Debug.Log(
+            "Player recibió "
+            + damage
+            + " de daño"
+        );
+
+        if (currentHP <= 0)
+        {
+            currentHP = 0;
+
+            Die();
+        }
+    }
+
+    // =========================
+    // CURACIÓN
+    // =========================
+
+    public void Heal(int amount)
+    {
+        currentHP += amount;
+
+        if (currentHP > maxHP)
+        {
+            currentHP = maxHP;
+        }
+
+        Debug.Log(
+            "Player recuperó "
+            + amount
+            + " HP"
+        );
+    }
+
+    // =========================
+    // MUERTE
+    // =========================
+
+    void Die()
+    {
+        if (isDead)
+            return;
+
+        isDead = true;
+
+        StartCoroutine(
+            DeathSequence()
+        );
+    }
+
+    IEnumerator DeathSequence()
+    {
+        Debug.Log(
+            "La oscuridad te consume..."
+        );
+
+        yield return new WaitForSeconds(2f);
+
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.ResetGame();
+        }
+
+        ResetStats();
+
+        SceneManager.LoadScene(
+            "MainMenu"
+        );
+    }
+
+    // =========================
+    // RESET
+    // =========================
+
+    public void ResetStats()
+    {
+        currentHP = maxHP;
+
+        equippedWeapon = "";
+
+        isDead = false;
     }
 }

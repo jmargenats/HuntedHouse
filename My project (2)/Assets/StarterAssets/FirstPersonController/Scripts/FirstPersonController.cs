@@ -74,7 +74,15 @@ namespace StarterAssets
 
 		private const float _threshold = 0.01f;
 		private Animator _animator;
-		private bool IsCurrentDeviceMouse
+        [Header("Audio")]
+        public AudioSource footstepSource;
+
+        public AudioClip[] footstepClips;
+
+        private float footstepTimer;
+
+        public float footstepInterval = 0.45f;
+        private bool IsCurrentDeviceMouse
 		{
 			get
 			{
@@ -190,7 +198,9 @@ namespace StarterAssets
 			if (_input.move == Vector2.zero) targetSpeed = 0.0f;
             if (_animator != null)
             {
-                bool isWalking = _input.move != Vector2.zero;
+                bool isWalking =new Vector3(_controller.velocity.x,0f,_controller.velocity.z).magnitude > 0.1f;
+                Debug.Log("isWalking: " + isWalking);
+                HandleFootsteps(isWalking);
                 _animator.SetBool("isWalking", isWalking);
             }
 
@@ -296,5 +306,43 @@ namespace StarterAssets
 			// when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
 			Gizmos.DrawSphere(new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z), GroundedRadius);
 		}
-	}
+        void HandleFootsteps(bool isWalking)
+        {
+            if (footstepSource == null)
+                return;
+
+            if (!Grounded)
+            {
+                if (footstepSource.isPlaying)
+                {
+                    footstepSource.Stop();
+                }
+
+                return;
+            }
+
+            if (!isWalking)
+            {
+                if (footstepSource.isPlaying)
+                {
+                    footstepSource.Stop();
+                }
+
+                return;
+            }
+
+            if (!footstepSource.isPlaying)
+            {
+                footstepSource.clip =
+                    footstepClips[
+                        Random.Range(
+                            0,
+                            footstepClips.Length
+                        )
+                    ];
+
+                footstepSource.Play();
+            }
+        }
+    }
 }
