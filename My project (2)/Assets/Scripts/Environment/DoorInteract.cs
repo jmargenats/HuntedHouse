@@ -1,11 +1,14 @@
 using UnityEngine;
+using System.Collections;
 
-public class Door : MonoBehaviour
+public class Door : MonoBehaviour, IInteractable
 {
     public bool isOpen = false;
 
     public float openAngle = 90f;
     public float openSpeed = 2f;
+    public SceneFader sceneFader;
+    public string sceneToLoad;
 
     [Header("Llave")]
     public Inventario inventario;
@@ -18,8 +21,6 @@ public class Door : MonoBehaviour
 
     private Quaternion closedRotation;
     private Quaternion openRotation;
-
-    private bool playerInRange = false;
 
     void Start()
     {
@@ -34,11 +35,6 @@ public class Door : MonoBehaviour
 
     void Update()
     {
-        if (playerInRange && Input.GetKeyDown(KeyCode.E))
-        {
-            TryOpenDoor();
-        }
-
         Quaternion targetRotation =
             isOpen
             ? openRotation
@@ -52,8 +48,19 @@ public class Door : MonoBehaviour
             );
     }
 
+    public void Interact()
+    {
+        TryOpenDoor();
+    }
+
     void TryOpenDoor()
     {
+        if (isOpen)
+        {
+            isOpen = false;
+            return;
+        }
+
         string selectedItem = "";
 
         if (inventario != null)
@@ -63,8 +70,8 @@ public class Door : MonoBehaviour
 
         if (selectedItem == requiredItem)
         {
-            isOpen = !isOpen;
-
+            isOpen = true;
+            StartCoroutine(EnterHouse());
             if (consumeKey)
             {
                 inventario.UseSelectedItem();
@@ -78,20 +85,10 @@ public class Door : MonoBehaviour
             }
         }
     }
-
-    private void OnTriggerEnter(Collider other)
+    IEnumerator EnterHouse()
     {
-        if (other.CompareTag("Player"))
-        {
-            playerInRange = true;
-        }
-    }
+        yield return new WaitForSeconds(1.5f);
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            playerInRange = false;
-        }
+        sceneFader.FadeAndLoadScene(sceneToLoad);
     }
 }
