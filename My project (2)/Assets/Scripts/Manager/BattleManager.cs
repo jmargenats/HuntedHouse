@@ -507,7 +507,6 @@ public class BattleManager : MonoBehaviour
 
         fleeButton.interactable = 
             enabledState;
-    }
 
         if (healButton != null)
         {
@@ -515,6 +514,9 @@ public class BattleManager : MonoBehaviour
                 enabledState;
         }
     }
+
+
+
 
     // =========================
     // BOTON HUIR

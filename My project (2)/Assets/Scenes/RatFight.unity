@@ -849,7 +849,9 @@ MonoBehaviour:
   - "Mov\xE9s la pala violentamente. "
   - 'La pala golpea de lleno a la rata. '
   - "Atac\xE1s brutalmente con la pala."
-  knifeAttackTexts: []
+  knifeAttackTexts:
+  - 
+  - 
   dodgeTexts:
   - 'La rata esquiva tu ataque. '
   - "La rata se mueve r\xE1pidamente. "
