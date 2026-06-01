@@ -12,6 +12,8 @@ public class CassettePuzzle :
     public Sprite icon;
 
     public string itemType = "Cassette";
+    [Header("Audio")]
+    public AudioClip pickupSound;
 
     public void Interact()
     {
@@ -21,7 +23,7 @@ public class CassettePuzzle :
             dialogueManager.ShowDialogue(
                 "Una cinta vieja. Parece dañada."
             );
-
+            GameManager.Instance.cassetteDiscovered = true;
             return;
         }
 
@@ -81,6 +83,13 @@ public class CassettePuzzle :
             icon,
             itemType
         );
+        if (pickupSound != null)
+        {
+            AudioSource.PlayClipAtPoint(
+                pickupSound,
+                Camera.main.transform.position
+            );
+        }
 
         GameManager.Instance.cassetteCollected =
             true;
@@ -88,6 +97,8 @@ public class CassettePuzzle :
         dialogueManager.ShowDialogue(
             "Cassette obtenido."
         );
+
+        
 
         gameObject.SetActive(false);
     }
