@@ -256,6 +256,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hpText: {fileID: 671872373}
   totalBars: 10
+  portraitImage: {fileID: 602060585}
+  greenPortrait: {fileID: 21300000, guid: f524297769e9bac4cae5d8c1344e32ef, type: 3}
+  orangePortrait: {fileID: 21300000, guid: f5fe64b2ad87e754181d75fe14bceeec, type: 3}
+  redPortrait: {fileID: 21300000, guid: ab4eec12c3b61a8498b0f8765b1ce722, type: 3}
 --- !u!1 &186748793
 GameObject:
   m_ObjectHideFlags: 0
@@ -1244,8 +1248,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -89.76111, y: -5.6751404}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: -90.4, y: -11.2}
+  m_SizeDelta: {x: 55.4979, y: 96.9444}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &602060585
 MonoBehaviour:
@@ -1267,7 +1271,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e7c913856e8b9c24382c21d396537a67, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

@@ -12,11 +12,16 @@ public class PlayerStats : MonoBehaviour
     public int currentHP = 100;
 
     [Header("Daño")]
-    public int fistDamage = 5;
+    public int baseFistDamage = 5;
 
     public int shovelDamage = 20;
 
-    public int knifeDamage = 12;
+    public int knifeDamage = 30;
+
+    [Header("Atributos")]
+    public int strength = 0;
+
+    public int fistHits = 0;
 
     [Header("Arma equipada")]
     public string equippedWeapon;
@@ -36,7 +41,26 @@ public class PlayerStats : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    public void RegisterFistHit()
+    {
+        fistHits++;
 
+        if (fistHits >= 5)
+        {
+            fistHits = 0;
+
+            strength++;
+
+            Debug.Log(
+                "Fuerza aumentó a "
+                + strength
+            );
+        }
+    }
+    public int GetFistDamage()
+    {
+        return baseFistDamage + strength;
+    }
     // =========================
     // ARMAS
     // =========================
