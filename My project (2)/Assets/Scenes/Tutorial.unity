@@ -2765,6 +2765,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 200326754}
+  monsterAudio: {fileID: 0}
+  monsterGrowl: {fileID: 0}
 --- !u!65 &215266666
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3203,6 +3205,7 @@ MonoBehaviour:
   inventario: {fileID: 1127295801}
   iconoInventario: {fileID: 21300000, guid: 27a759a949a16ad41b193689d9183a6b, type: 3}
   itemType: Cuchillo
+  pickupSound: {fileID: 0}
   dialogueManager: {fileID: 1971795962}
   pickupDialogues: []
 --- !u!4 &257042441 stripped
@@ -6778,6 +6781,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 200326754}
+  monsterAudio: {fileID: 0}
+  monsterGrowl: {fileID: 0}
 --- !u!65 &677179517
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -12469,6 +12474,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 200326754}
+  monsterAudio: {fileID: 0}
+  monsterGrowl: {fileID: 0}
 --- !u!195 &1177648913
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -14224,6 +14231,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 200326754}
+  monsterAudio: {fileID: 0}
+  monsterGrowl: {fileID: 0}
 --- !u!65 &1317336400
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -16817,6 +16826,7 @@ MonoBehaviour:
   inventario: {fileID: 1127295801}
   iconoInventario: {fileID: 21300000, guid: c2cb9001c3d290e43acf0adb98675283, type: 3}
   itemType: Lapicera
+  pickupSound: {fileID: 0}
   dialogueManager: {fileID: 1971795962}
   pickupDialogues: []
 --- !u!4 &1488302402 stripped
@@ -17827,6 +17837,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 200326754}
+  monsterAudio: {fileID: 0}
+  monsterGrowl: {fileID: 0}
 --- !u!65 &1583286482
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -23049,7 +23061,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8997996947095583982, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 667.9
+      value: 633.47
       objectReference: {fileID: 0}
     - target: {fileID: 8997996947095583982, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: m_LocalPosition.y
@@ -23057,7 +23069,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8997996947095583982, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 319.5
+      value: 390.17
       objectReference: {fileID: 0}
     - target: {fileID: 8997996947095583982, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: m_LocalRotation.w
@@ -23990,6 +24002,7 @@ MonoBehaviour:
   inventario: {fileID: 1127295801}
   iconoInventario: {fileID: 21300000, guid: 3ee50140ad28b4a429687b01976fe075, type: 3}
   itemType: Pala
+  pickupSound: {fileID: 0}
   dialogueManager: {fileID: 1971795962}
   pickupDialogues:
   - 'Esto puede ser util '
@@ -24059,6 +24072,7 @@ MonoBehaviour:
   cassetteCollected: 0
   radioPlayed: 0
   cassetteNeedTool: 0
+  cassetteDiscovered: 0
   battleTutorialCompleted: 0
 --- !u!4 &1985670262
 Transform:
@@ -24341,6 +24355,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 200326754}
+  monsterAudio: {fileID: 0}
+  monsterGrowl: {fileID: 0}
 --- !u!65 &1996426108
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -25599,6 +25615,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 200326754}
+  monsterAudio: {fileID: 0}
+  monsterGrowl: {fileID: 0}
 --- !u!114 &2119322123
 MonoBehaviour:
   m_ObjectHideFlags: 0
