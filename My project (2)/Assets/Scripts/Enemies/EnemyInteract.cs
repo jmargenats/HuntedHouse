@@ -37,6 +37,10 @@ public class EnemyCombatTrigger : MonoBehaviour
 
         GameManager.Instance.playerPosition =
             other.transform.position;
+        Debug.Log(
+            "Guardé posición antes de pelea: " +
+            GameManager.Instance.playerPosition
+        );
 
         GameManager.Instance.previousScene =
             SceneManager.GetActiveScene().name;

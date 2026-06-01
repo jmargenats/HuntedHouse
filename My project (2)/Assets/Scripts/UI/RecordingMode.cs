@@ -45,9 +45,12 @@ public class RecordingMode : MonoBehaviour
             int minutes = Mathf.FloorToInt(recordingTime / 60f);
             int seconds = Mathf.FloorToInt(recordingTime % 60f);
 
-            timerText.text =
-                minutes.ToString("00") + ":" +
-                seconds.ToString("00");
+            if (timerText != null)
+            {
+                timerText.text =
+                    minutes.ToString("00") + ":" +
+                    seconds.ToString("00");
+            }
         }
     }
 
