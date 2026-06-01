@@ -75,6 +75,10 @@ public class Door : MonoBehaviour, IInteractable
             if (consumeKey)
             {
                 inventario.UseSelectedItem();
+                if (GameManager.Instance != null)
+                {
+                    GameManager.Instance.collectedItems.Remove(requiredItem);
+                }
             }
         }
         else
