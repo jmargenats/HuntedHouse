@@ -260,6 +260,11 @@ MonoBehaviour:
   isOpen: 0
   openAngle: 90
   openSpeed: 2
+  inventario: {fileID: 0}
+  requiredItem: Llave
+  consumeKey: 0
+  dialogueManager: {fileID: 0}
+  lockedMessage: "Est\xE1 cerrada. Necesito una llave."
 --- !u!1001 &24293667
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11804,7 +11809,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8997996947095583982, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 684.97
+      value: 660.04
       objectReference: {fileID: 0}
     - target: {fileID: 8997996947095583982, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: m_LocalPosition.y
@@ -11812,7 +11817,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8997996947095583982, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 356.89
+      value: 360.99
       objectReference: {fileID: 0}
     - target: {fileID: 8997996947095583982, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: m_LocalRotation.w

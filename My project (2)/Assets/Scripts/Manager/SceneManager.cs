@@ -35,6 +35,9 @@ public class GameManager : MonoBehaviour
     public bool cassetteCollected = false;
     public bool radioPlayed = false;
     public bool cassetteNeedTool = false;
+
+    [Header("Tutorials")]
+    public bool battleTutorialCompleted = false;
     private void Awake()
     {
         if (Instance == null)

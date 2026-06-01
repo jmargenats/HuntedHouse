@@ -12,6 +12,7 @@ public class BattleManager : MonoBehaviour
     [Header("Botones")]
     public Button attackButton;
     public Button attackObjectButton;
+    public Button fleeButton;
 
     [Header("Texto de combate")]
     public TMP_Text battleLogText;
@@ -36,9 +37,41 @@ public class BattleManager : MonoBehaviour
     public Sprite rewardIcon;
     public string rewardItemType;
 
+    [Header("Tutorial")]
+    public bool showTutorial = true;
+    private int tutorialStep = 0;
+    private bool tutorialActive = false;
+
     void Start()
     {
         LoadEnemyData();
+
+        if (!GameManager.Instance.battleTutorialCompleted)
+        {
+            StartTutorial();
+        }
+        else
+        {
+            ShowBattleLog("Es tu turno");
+            ToggleButtons(true);
+        }
+    }
+
+    void Update()
+    {
+        if (!tutorialActive) return;
+
+        if (tutorialStep == 0 &&
+            PlayerStats.Instance.equippedWeapon == "Pala")
+        {
+            tutorialStep = 1;
+
+            ShowBattleLog(
+                "Bien. Ahora usá Atacar con objeto para golpear con la pala."
+            );
+
+            attackObjectButton.interactable = true;
+        }
     }
     // =========================
     // ATAQUE PUÑO
@@ -47,6 +80,25 @@ public class BattleManager : MonoBehaviour
     {
         if (!playerTurn)
             return;
+        if (tutorialActive && tutorialStep != 2)
+            return;
+
+        if (tutorialActive && tutorialStep == 2)
+        {
+            tutorialStep = 3;
+
+            ShowBattleLog(
+                "Atacar con puño hace menos daño, pero no necesita objeto equipado. También podés huir si necesitás salir del combate."
+            );
+
+            attackButton.interactable = false;
+            attackObjectButton.interactable = false;
+            fleeButton.interactable = true;
+
+            
+
+            return;
+        }
 
         StartCoroutine(PlayerFistTurn());
     }
@@ -154,6 +206,23 @@ public class BattleManager : MonoBehaviour
         if (!playerTurn)
             return;
 
+        if (tutorialActive && tutorialStep != 1)
+            return;
+
+        if (tutorialActive && tutorialStep == 1)
+        {
+            tutorialStep = 2;
+
+            ShowBattleLog(
+                "Buen golpe. También podés atacar con los puños usando el botón Atacar."
+            );
+
+            attackObjectButton.interactable = false;
+            attackButton.interactable = true;
+
+            return;
+        }
+
         StartCoroutine(PlayerObjectTurn());
     }
 
@@ -251,7 +320,7 @@ public class BattleManager : MonoBehaviour
 
     IEnumerator EnemyDefeated()
     {
-        
+
 
         ToggleButtons(false);
 
@@ -300,7 +369,7 @@ public class BattleManager : MonoBehaviour
     // =========================
     IEnumerator EnemyTurn()
     {
-        ShowBattleLog(enemy.enemyName +" observa tus movimientos...");
+        ShowBattleLog(enemy.enemyName + " observa tus movimientos...");
 
         yield return new WaitForSeconds(1.5f);
 
@@ -348,6 +417,47 @@ public class BattleManager : MonoBehaviour
 
         attackObjectButton.interactable =
             enabledState;
+
+        fleeButton.interactable = 
+            enabledState;
+    }
+
+    // =========================
+    // BOTON HUIR
+    // =========================
+    public void OnFleeButtonPressed()
+    {
+        if (tutorialActive && tutorialStep == -1)
+        {
+            RunAway();
+            return;
+        }
+
+        if (tutorialActive && tutorialStep == 3)
+        {
+            tutorialActive = false;
+            tutorialStep = 4;
+
+            GameManager.Instance.battleTutorialCompleted = true;
+
+            ToggleButtons(true);
+
+            StartCoroutine(FinishTutorialAfterDelay());
+
+            return;
+        }
+
+        RunAway();
+    }
+    void RunAway()
+    {
+        GameManager.Instance.returningFromBattle = true;
+        GameManager.Instance.ratDefeated = false;
+
+        FindObjectOfType<SceneFader>()
+            .FadeAndLoadScene(
+                GameManager.Instance.previousScene
+            );
     }
 
     // =========================
@@ -372,5 +482,53 @@ public class BattleManager : MonoBehaviour
         Debug.Log(message);
 
         battleLogText.text = message;
+    }
+
+    // =========================
+    // TUTORIAL
+    // =========================
+
+    void StartTutorial()
+    {
+        tutorialActive = true;
+        tutorialStep = 0;
+        playerTurn = true;
+
+        bool hasShovel =
+            GameManager.Instance.HasItem("Pala");
+
+        if (!hasShovel)
+        {
+            ShowBattleLog(
+                "Todavía no tenés un arma, busca una antes de enfrentarte a esta criatura.\n Usá Huir para regresar."
+            );
+
+            attackButton.interactable = false;
+            attackObjectButton.interactable = false;
+            fleeButton.interactable = true;
+
+            tutorialStep = -1;
+
+            return;
+        }
+
+        attackButton.interactable = false;
+        attackObjectButton.interactable = false;
+        fleeButton.interactable = false;
+
+        ShowBattleLog(
+            "Tutorial: seleccioná la pala desde la sección Objetos para equiparla."
+        );
+    }
+
+    IEnumerator FinishTutorialAfterDelay()
+    {
+        ShowBattleLog(
+            "Perfecto. Ya conocés las acciones básicas del combate."
+        );
+
+        yield return new WaitForSeconds(2f);
+
+        ShowBattleLog("Es tu turno.");
     }
 }
