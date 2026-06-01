@@ -9,3 +9,8 @@ public interface IInteractable
 {
     void Interact();
 }
+public interface IExaminable
+{
+    void Examine();
+}
+

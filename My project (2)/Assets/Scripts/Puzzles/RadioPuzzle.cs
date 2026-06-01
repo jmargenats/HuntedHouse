@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using System.Collections;
 public class RadioPuzzle :
     MonoBehaviour,
     IInteractable
@@ -10,6 +10,11 @@ public class RadioPuzzle :
 
     public GameObject subject01;
 
+    public AudioSource radioSource;
+
+    public AudioClip doctorTape;
+
+    public bool waitForAudio = true;
     public void Interact()
     {
         // Primera vez
@@ -59,21 +64,18 @@ public class RadioPuzzle :
 
     void PlayCassette()
     {
-        GameManager.Instance.radioPlayed =
-            true;
+        GameManager.Instance.radioPlayed = true;
 
-        inventario.RemoveItem(
-            "Cassette"
-        );
-
-        GameManager.Instance.cassetteCollected =
-            false;
+        GameManager.Instance.collectedItems
+            .Remove("Cassette");
 
         dialogueManager.ShowDialogue(
-            "Insertás el cassette en la radio.\nLa grabación comienza a reproducirse..."
+            "Insertás el cassette en la radio..."
         );
 
-        SpawnEnemy();
+        StartCoroutine(
+            PlayTapeSequence()
+        );
     }
 
     void SpawnEnemy()
@@ -86,5 +88,24 @@ public class RadioPuzzle :
         dialogueManager.ShowDialogue(
             "¿Qué fue ese ruido...?"
         );
+    }
+    IEnumerator PlayTapeSequence()
+    {
+        yield return new WaitForSeconds(1f);
+
+        if (
+            radioSource != null &&
+            doctorTape != null
+        )
+        {
+            radioSource.clip = doctorTape;
+            radioSource.Play();
+
+            yield return new WaitForSeconds(
+                doctorTape.length
+            );
+        }
+
+        SpawnEnemy();
     }
 }

@@ -11,6 +11,8 @@ public class BattleInventoryUI : MonoBehaviour
     [Header("Item Icons")]
     public Sprite shovelSprite;
     public Sprite knifeSprite;
+    public Sprite pillsSprite;
+    public Sprite medkitSprite;
 
     [Header("Inventory")]
     public Transform inventoryPanel;
@@ -18,6 +20,16 @@ public class BattleInventoryUI : MonoBehaviour
     public GameObject inventoryButtonPrefab;
 
     private void Start()
+    {
+        GenerateInventoryButtons();
+
+        UpdateUI();
+    }
+    public string GetSelectedItem()
+    {
+        return PlayerStats.Instance.equippedWeapon;
+    }
+    public void RefreshInventory()
     {
         GenerateInventoryButtons();
 
@@ -64,6 +76,13 @@ public class BattleInventoryUI : MonoBehaviour
 
                 case "Cuchillo":
                     icon.sprite = knifeSprite;
+                    break;
+                case "Pastillas":
+                    icon.sprite = pillsSprite;
+                    break;
+
+                case "Botiquin":
+                    icon.sprite = medkitSprite;
                     break;
             }
 

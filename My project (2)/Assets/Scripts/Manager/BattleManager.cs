@@ -12,6 +12,8 @@ public class BattleManager : MonoBehaviour
     [Header("Botones")]
     public Button attackButton;
     public Button attackObjectButton;
+    public Button healButton;
+    public BattleInventoryUI battleInventory;
 
     [Header("Texto de combate")]
     public TMP_Text battleLogText;
@@ -34,6 +36,7 @@ public class BattleManager : MonoBehaviour
     void Start()
     {
         LoadEnemyData();
+        UpdateHealButton();
     }
     // =========================
     // ATAQUE PUÑO
@@ -228,7 +231,88 @@ public class BattleManager : MonoBehaviour
 
         EndPlayerTurn();
     }
+    void UpdateHealButton()
+    {
+        if (
+            healButton == null ||
+            battleInventory == null
+        )
+            return;
 
+        string item =
+            battleInventory.GetSelectedItem();
+
+        healButton.interactable =
+            playerTurn &&
+            (
+                item == "Pastillas"
+                ||
+                item == "Botiquin"
+            );
+    }
+    public void Heal()
+    {
+        Debug.Log("Botón curar apretado");
+        if (!playerTurn)
+            return;
+
+        StartCoroutine(
+            PlayerHealTurn()
+        );
+    }
+    IEnumerator PlayerHealTurn()
+    {
+        Debug.Log("Entré a PlayerHealTurn");
+        string selectedItem =
+    battleInventory.GetSelectedItem();
+
+        int healAmount = 0;
+
+        switch (selectedItem)
+        {
+            case "Pastillas":
+
+                healAmount = 20;
+
+                break;
+
+            case "Botiquin":
+
+                healAmount = 40;
+
+                break;
+
+            default:
+
+                ShowBattleLog(
+                    "No tenés un objeto curativo seleccionado."
+                );
+
+                yield break;
+        }
+
+        playerTurn = false;
+
+        ToggleButtons(false);
+
+        PlayerStats.Instance.Heal(
+            healAmount
+        );
+
+        GameManager.Instance
+    .collectedItems
+    .Remove(selectedItem);
+
+        ShowBattleLog(
+            "Recuperás "
+            + healAmount
+            + " HP."
+        );
+        battleInventory.RefreshInventory();
+        yield return new WaitForSeconds(2f);
+
+        EndPlayerTurn();
+    }
     // =========================
     // FIN TURNO PLAYER
     // =========================
@@ -321,6 +405,10 @@ public class BattleManager : MonoBehaviour
             + damage
             + " HP"
         );
+        Debug.Log(
+    "HP luego del ataque: " +
+    PlayerStats.Instance.currentHP
+);
     }
 
     // =========================
@@ -333,6 +421,12 @@ public class BattleManager : MonoBehaviour
 
         attackObjectButton.interactable =
             enabledState;
+
+        if (healButton != null)
+        {
+            healButton.interactable =
+                enabledState;
+        }
     }
 
     // =========================
