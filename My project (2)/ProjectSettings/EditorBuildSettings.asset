@@ -6,12 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 5a6ae20256fa1c84eb9e51557f026484
+  - enabled: 1
     path: Assets/Scenes/MainScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
+    path: Assets/Scenes/Tutorial.unity
+    guid: 12cf06868508e6846ab92b7062d9dc16
+  - enabled: 1
     path: Assets/Scenes/RatFight.unity
     guid: d1386bee18444ea4d952572c58e0dd53
-  - enabled: 1
-    path: Assets/Scenes/MainMenu.unity
-    guid: 5a6ae20256fa1c84eb9e51557f026484
   m_configObjects: {}

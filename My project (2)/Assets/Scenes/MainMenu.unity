@@ -250,8 +250,8 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 1
-  m_MatchWidthOrHeight: 0
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -473,11 +473,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   returningFromBattle: 0
-  ratDefeated: 0
+  ignoreRatTriggerOnce: 0
   playerPosition: {x: 0, y: 0, z: 0}
   previousScene: 
   collectedItems: []
-  ignoreRatTriggerOnce: 0
+  currentEnemyID: 
+  ratDefeated: 0
+  defeatedEnemies: []
+  radioDiscovered: 0
+  penCollected: 0
+  cassetteUnlocked: 0
+  cassetteCollected: 0
+  radioPlayed: 0
+  cassetteNeedTool: 0
+  cassetteDiscovered: 0
+  battleTutorialCompleted: 0
 --- !u!4 &916294170
 Transform:
   m_ObjectHideFlags: 0
