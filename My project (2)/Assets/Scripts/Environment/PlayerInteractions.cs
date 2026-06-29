@@ -6,6 +6,8 @@ public class PlayerInteractions : MonoBehaviour
     public float interactionDistance = 1f;
 
     public TMP_Text interactionText;
+    public GameObject mapUI;
+    private bool mapOpen = false;
 
     void Update()
     {
@@ -17,6 +19,28 @@ public class PlayerInteractions : MonoBehaviour
             );
 
         RaycastHit hit;
+
+        // =========================
+        // OPEN MAP
+        // =========================
+
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            mapOpen = !mapOpen; 
+            mapUI.SetActive(mapOpen);
+            if (mapOpen) 
+            { 
+                Time.timeScale = 0f; 
+                Cursor.lockState = CursorLockMode.None; 
+                Cursor.visible = true; 
+            }
+            else 
+            { 
+                Time.timeScale = 1f; 
+                Cursor.lockState = CursorLockMode.Locked; 
+                Cursor.visible = false; 
+            }
+        }
 
         if (
             Physics.Raycast(
