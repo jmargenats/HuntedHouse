@@ -15276,12 +15276,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d1f20e12b9da4a4ab434ebcc96ab03b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  recordingUI: {fileID: 0}
-  timerText: {fileID: 0}
+  recordingUI: {fileID: 1919512392}
+  timerText: {fileID: 2044612285}
   flashlight: {fileID: 202365701}
-  recText: {fileID: 0}
-  staticOverlay: {fileID: 0}
-  staticVideo: {fileID: 0}
+  recText: {fileID: 1810013312}
+  staticOverlay: {fileID: 133418038}
+  staticVideo: {fileID: 133418040}
 --- !u!114 &2042790486
 MonoBehaviour:
   m_ObjectHideFlags: 0
