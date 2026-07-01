@@ -260,11 +260,14 @@ MonoBehaviour:
   isOpen: 0
   openAngle: 90
   openSpeed: 2
-  sceneFader: {fileID: 372484035}
-  sceneToLoad: MainScene
+  requirement: 1
   inventario: {fileID: 1127295801}
   requiredItem: Llave
   consumeKey: 1
+  requiredEnemyID: 
+  changeScene: 1
+  sceneFader: {fileID: 372484035}
+  sceneToLoad: MainScene
   dialogueManager: {fileID: 1971795962}
   lockedMessage: "Est\xE1 cerrada. Necesito una llave."
 --- !u!4 &14189242 stripped
@@ -15712,6 +15715,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionDistance: 10
   interactionText: {fileID: 30008005}
+  mapUI: {fileID: 0}
 --- !u!114 &1391064943
 MonoBehaviour:
   m_ObjectHideFlags: 0
