@@ -1,6 +1,6 @@
 using UnityEngine;
 using TMPro;
-
+using UnityEngine.UI;
 public class PlayerInteractions : MonoBehaviour
 {
     public float interactionDistance = 1f;
@@ -23,22 +23,24 @@ public class PlayerInteractions : MonoBehaviour
         // =========================
         // OPEN MAP
         // =========================
-
         if (Input.GetKeyDown(KeyCode.M))
         {
-            mapOpen = !mapOpen; 
+            mapOpen = !mapOpen;
             mapUI.SetActive(mapOpen);
-            if (mapOpen) 
-            { 
-                Time.timeScale = 0f; 
-                Cursor.lockState = CursorLockMode.None; 
-                Cursor.visible = true; 
+
+            if (mapOpen)
+            {
+                Canvas.ForceUpdateCanvases();
+
+                Time.timeScale = 0f;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
             }
-            else 
-            { 
-                Time.timeScale = 1f; 
-                Cursor.lockState = CursorLockMode.Locked; 
-                Cursor.visible = false; 
+            else
+            {
+                Time.timeScale = 1f;
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
             }
         }
 

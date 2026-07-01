@@ -1,26 +1,32 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class doorcon : MonoBehaviour
+public class doorcon : MonoBehaviour, IExaminable
 {
-    // Start is called before the first frame update
-
     public string doorstatus;
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public DialogueManager dialogueManager;
 
-    private void OnMouseDown()
+    [TextArea(2, 5)]
+    public string lockedText = "La puerta está cerrada.";
+    public string unlockedText = "La puerta está abierta.";
+
+    public void Examine()
     {
-        mapcon.selectedStatus = doorstatus;
-        mapcon.selectedDoor = gameObject.name;
+        mapcon.doorStates[gameObject.name] = doorstatus;
+
+        if (dialogueManager == null)
+        {
+            Debug.LogWarning("Falta DialogueManager en " + gameObject.name);
+            return;
+        }
+
+        if (doorstatus == "locked")
+        {
+            dialogueManager.ShowDialogue(lockedText);
+        }
+        else if (doorstatus == "unlock")
+        {
+            dialogueManager.ShowDialogue(unlockedText);
+        }
     }
 }

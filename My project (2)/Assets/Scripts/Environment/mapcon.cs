@@ -1,35 +1,40 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class mapcon : MonoBehaviour
 {
     public Sprite statOpened;
     public Sprite statClosed;
 
-    public static string selectedStatus;
-    public static string selectedDoor;
-    // Start is called before the first frame update
+    public static Dictionary<string, string> doorStates =
+        new Dictionary<string, string>();
+
+    private Image img;
+
     void Start()
     {
-        
+        img = GetComponent<Image>();
+
+        Color c = img.color;
+        c.a = 0f;
+        img.color = c;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if ( (gameObject.name == selectedDoor))
-        {
-            if (selectedStatus == "unlock")
-            {
-                GetComponent<Image>().sprite = statOpened;
-            }
-            if (selectedStatus == "locked")
-            {
-                GetComponent<Image>().sprite = statClosed;
-            }
-        }
+        if (!doorStates.ContainsKey(gameObject.name))
+            return;
 
+        string status = doorStates[gameObject.name];
 
+        Color c = img.color;
+        c.a = 1f;
+        img.color = c;
+
+        if (status == "unlock")
+            img.sprite = statOpened;
+        else if (status == "locked")
+            img.sprite = statClosed;
     }
 }
