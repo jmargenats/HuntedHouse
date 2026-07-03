@@ -18,6 +18,7 @@ public class RadioPuzzle :
     public AudioClip doctorTape;
     public AudioSource voiceSource;
     public AudioClip playerWhatNoise;
+    public AudioClip fallNoise;
 
     [Header("Player")]
     public FirstPersonController playerController;
@@ -104,7 +105,7 @@ public class RadioPuzzle :
         dialogueManager.ShowDialogue(
             "Insertás el cassette en la radio..."
         );
-
+        /*
         if (playerInput != null)
         {
             playerInput.enabled = false;
@@ -114,7 +115,7 @@ public class RadioPuzzle :
         {
             playerController.enabled = false;
         }
-
+        */
         StartCoroutine(
             PlayTapeSequence()
         );
@@ -157,10 +158,11 @@ public class RadioPuzzle :
                 playerWhatNoise.length
             );
         }
-
+        yield return new WaitForSeconds(1f);
+        voiceSource.PlayOneShot(fallNoise);
         // Aparece el monstruo
         SpawnEnemy();
-
+        /*
         // Devolver control al jugador
         if (playerInput != null)
         {
@@ -170,7 +172,7 @@ public class RadioPuzzle :
         if (playerController != null)
         {
             playerController.enabled = true;
-        }
+        }*/
     }
 
     void SpawnEnemy()
