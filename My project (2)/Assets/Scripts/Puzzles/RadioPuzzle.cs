@@ -15,6 +15,7 @@ public class RadioPuzzle :
 
     [Header("Audio")]
     public AudioSource radioSource;
+    public AudioClip radioStatic;
     public AudioClip doctorTape;
     public AudioSource voiceSource;
     public AudioClip playerWhatNoise;
@@ -27,6 +28,9 @@ public class RadioPuzzle :
 
     public void Interact()
     {
+        radioSource.clip = radioStatic;
+
+        radioSource.Play();
         // Primera vez que examina la radio
         if (!GameManager.Instance.radioDiscovered)
         {
@@ -35,7 +39,7 @@ public class RadioPuzzle :
             if (GameManager.Instance.cassetteDiscovered)
             {
                 dialogueManager.ShowDialogue(
-                    "Una radio antigua.\nMe pregunto si la cinta que vi podría funcionar acá."
+                    "Me pregunto si la cinta que vi podría funcionar acá."
                 );
             }
             else
@@ -44,7 +48,7 @@ public class RadioPuzzle :
                     "Una radio antigua."
                 );
             }
-
+ 
             return;
         }
 
@@ -57,7 +61,7 @@ public class RadioPuzzle :
             GameManager.Instance.cassetteNeedTool = true;
 
             dialogueManager.ShowDialogue(
-                "Esa cinta que vi antes podría funcionar aquí."
+                "Esa cinta que vi antes podría funcionar si la arreglo."
             );
 
             return;
@@ -86,7 +90,7 @@ public class RadioPuzzle :
         if (selectedItem != "Cassette")
         {
             dialogueManager.ShowDialogue(
-                "Quizás debería probar con esa cinta."
+                "Quizás debería probar con la cinta."
             );
 
             return;
@@ -145,6 +149,7 @@ public class RadioPuzzle :
         yield return new WaitForSeconds(1f);
 
         // player habla
+        /*
         if (
             voiceSource != null &&
             playerWhatNoise != null
@@ -158,7 +163,7 @@ public class RadioPuzzle :
                 playerWhatNoise.length
             );
         }
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1f);*/
         voiceSource.PlayOneShot(fallNoise);
         // Aparece el monstruo
         SpawnEnemy();

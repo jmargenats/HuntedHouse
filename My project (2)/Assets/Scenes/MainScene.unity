@@ -5736,6 +5736,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afd77ec0fabc4434ebaadccc144f4ac9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  doorSound: {fileID: 0}
+  doorOpen: {fileID: 0}
   doorstatus: locked
   dialogueManager: {fileID: 1971795962}
   lockedText: "La puerta est\xE1 cerrada."
@@ -7455,6 +7457,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afd77ec0fabc4434ebaadccc144f4ac9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  doorSound: {fileID: 1544671539}
+  doorOpen: {fileID: 8300000, guid: 72fe64b1592d3ef46b5515f4afa22b19, type: 3}
   doorstatus: unlock
   dialogueManager: {fileID: 1971795962}
   lockedText: "La puerta est\xE1 cerrada."
@@ -13179,7 +13183,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.2
+  m_Volume: 0.388
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -15323,8 +15327,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 3.510177, y: 4.765734, z: 1}
+  m_Center: {x: 0.25763017, y: -0.8283161, z: 9.689222e-12}
 --- !u!4 &1789617166 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 497311594945856702, guid: e27fc4d76900c774d9b7d94f351d754f, type: 3}
@@ -18773,6 +18777,7 @@ MonoBehaviour:
   inventario: {fileID: 1127295801}
   subject01: {fileID: 2119322119}
   radioSource: {fileID: 1544671539}
+  radioStatic: {fileID: 8300000, guid: 037faf71199844c4e8a8d8de7ab717c2, type: 3}
   doctorTape: {fileID: 8300000, guid: b70b5a4db8a755d47972e0a14260a786, type: 3}
   voiceSource: {fileID: 1064719138}
   playerWhatNoise: {fileID: 8300000, guid: 0c8223599dbd7524f9ce1f2bb46bc5e8, type: 3}

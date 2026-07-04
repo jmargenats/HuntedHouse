@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class doorcon : MonoBehaviour, IExaminable
 {
+    public AudioSource doorSound;
+    public AudioClip doorOpen;
     public string doorstatus;
 
     public DialogueManager dialogueManager;
@@ -26,6 +28,9 @@ public class doorcon : MonoBehaviour, IExaminable
         }
         else if (doorstatus == "unlock")
         {
+            doorSound.clip = doorOpen;
+
+            doorSound.Play();
             dialogueManager.ShowDialogue(unlockedText);
         }
     }
