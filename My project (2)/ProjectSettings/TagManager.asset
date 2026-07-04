@@ -6,11 +6,12 @@ TagManager:
   tags:
   - CinemachineTarget
   - LetterCube
+  - LetterSlot
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - PlayerBody
   - Water
   - UI
   - 
