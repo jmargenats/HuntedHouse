@@ -15,6 +15,16 @@ public class CassettePuzzle :
     [Header("Audio")]
     public AudioClip pickupSound;
 
+    void Start()
+    {
+        if (
+            GameManager.Instance.cassetteCollected ||
+            GameManager.Instance.radioPlayed
+        )
+        {
+            gameObject.SetActive(false);
+        }
+    }
     public void Interact()
     {
         // Primera vez
@@ -72,8 +82,7 @@ public class CassettePuzzle :
     public bool CanPickup()
     {
         return
-            GameManager.Instance.cassetteUnlocked
-            &&
+            GameManager.Instance.cassetteUnlocked &&
             !GameManager.Instance.cassetteCollected;
     }
 

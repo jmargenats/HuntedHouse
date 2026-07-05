@@ -16,7 +16,7 @@ public class PlayerStats : MonoBehaviour
 
     public int shovelDamage = 20;
 
-    public int knifeDamage = 30;
+    public int knifeDamage = 50;
 
     [Header("Atributos")]
     public int strength = 0;

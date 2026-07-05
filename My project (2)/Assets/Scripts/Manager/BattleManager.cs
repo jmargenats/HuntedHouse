@@ -44,12 +44,15 @@ public class BattleManager : MonoBehaviour
     public bool showTutorial = true;
     private int tutorialStep = 0;
     private bool tutorialActive = false;
+    bool cameFromTutorial = GameManager.Instance.previousScene == "Tutorial";
 
     void Start()
     {
+
+        bool shouldShowTutorial = showTutorial &&  !GameManager.Instance.battleTutorialCompleted && GameManager.Instance.previousScene == "Tutorial";
         LoadEnemyData();
 
-        if (!GameManager.Instance.battleTutorialCompleted)
+        if (shouldShowTutorial)
         {
             StartTutorial();
         }

@@ -10,6 +10,10 @@ public class Door : MonoBehaviour, IInteractable
         EnemyDefeated
     }
 
+    [Header("Lock")]
+    public GameObject lockObject;
+    [Header("Examine")]
+    public doorcon examineDoor;
     [Header("Door")]
     public bool isOpen = false;
 
@@ -100,6 +104,16 @@ public class Door : MonoBehaviour, IInteractable
     void OpenDoor()
     {
         isOpen = true;
+
+        if (lockObject != null)
+        {
+            Destroy(lockObject);
+        }
+
+        if (examineDoor != null)
+        {
+            examineDoor.doorstatus = "unlock";
+        }
 
         if (changeScene)
         {

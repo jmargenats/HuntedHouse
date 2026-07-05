@@ -8,9 +8,22 @@ public class PlayerInteractions : MonoBehaviour
     public TMP_Text interactionText;
     public GameObject mapUI;
     private bool mapOpen = false;
+    private float temporaryMessageTimer = 0f;
+    private string temporaryMessage = "";
 
     void Update()
     {
+
+        if (temporaryMessageTimer > 0)
+        {
+            temporaryMessageTimer -= Time.deltaTime;
+
+            interactionText.gameObject.SetActive(true);
+            interactionText.text = temporaryMessage;
+
+            return;
+        }
+
         interactionText.gameObject.SetActive(false);
 
         Ray ray =
@@ -23,7 +36,10 @@ public class PlayerInteractions : MonoBehaviour
         // =========================
         // OPEN MAP
         // =========================
-        if (Input.GetKeyDown(KeyCode.M))
+        if (
+    GameManager.Instance.hasMap &&
+    Input.GetKeyDown(KeyCode.M)
+)
         {
             mapOpen = !mapOpen;
             mapUI.SetActive(mapOpen);
@@ -33,8 +49,8 @@ public class PlayerInteractions : MonoBehaviour
                 Canvas.ForceUpdateCanvases();
 
                 Time.timeScale = 0f;
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
             }
             else
             {
@@ -175,5 +191,10 @@ public class PlayerInteractions : MonoBehaviour
                 item.Recolectar();
             }
         }
+    }
+    public void ShowTemporaryMessage(string message, float duration)
+    {
+        temporaryMessage = message;
+        temporaryMessageTimer = duration;
     }
 }

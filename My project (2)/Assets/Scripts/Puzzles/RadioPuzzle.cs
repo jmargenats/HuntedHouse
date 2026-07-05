@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.AI;
 using StarterAssets;
 
 public class RadioPuzzle :
@@ -8,9 +9,9 @@ public class RadioPuzzle :
     IInteractable
 {
     public DialogueManager dialogueManager;
-
+    public GameObject screwdriverCross;
     public Inventario inventario;
-
+    public doorcon atticDoorExamine;
     public GameObject subject01;
 
     [Header("Audio")]
@@ -21,11 +22,56 @@ public class RadioPuzzle :
     public AudioClip playerWhatNoise;
     public AudioClip fallNoise;
 
+    [Header("Attic Fall")]
+    public Door atticDoor;
+    public Transform atticDoorObject;
+    public Vector3 atticDoorOpenEulerOffset = new Vector3(-90f, 0f, 0f);
+    public float atticDoorOpenDuration = 0.5f;
+    public Transform enemyFallStart;
+    public Transform enemyFallEnd;
+    public float doorOpenDelay = 0.35f;
+    public float fallDuration = 0.9f;
+    public float fallbackFallDistance = 6f;
+    public float chaseDelayAfterFall = 0.4f;
+    public bool startChasingAfterFall = true;
+
     [Header("Player")]
     public FirstPersonController playerController;
 
     public PlayerInput playerInput;
 
+    void Start()
+    {
+        if (screwdriverCross != null)
+        {
+            screwdriverCross.SetActive(GameManager.Instance.radioPlayed);
+        }
+        if (!GameManager.Instance.radioPlayed)
+            return;
+
+        if (atticDoor != null)
+        {
+            atticDoor.isOpen = true;
+        }
+
+        if (atticDoorObject != null)
+        {
+            atticDoorObject.rotation =
+                atticDoorObject.rotation *
+                Quaternion.Euler(atticDoorOpenEulerOffset);
+        }
+
+        if (atticDoorExamine != null)
+        {
+            atticDoorExamine.doorstatus = "unlock";
+        }
+
+        if (subject01 != null)
+        {
+            subject01.SetActive(true);
+        }
+
+    }
     public void Interact()
     {
         radioSource.clip = radioStatic;
@@ -103,8 +149,10 @@ public class RadioPuzzle :
     {
         GameManager.Instance.radioPlayed = true;
 
-        GameManager.Instance.collectedItems
-            .Remove("Cassette");
+        //GameManager.Instance.collectedItems
+        //    .Remove("Cassette");
+
+        inventario.RemoveItem("Cassette");
 
         dialogueManager.ShowDialogue(
             "Insertás el cassette en la radio..."
@@ -120,6 +168,7 @@ public class RadioPuzzle :
             playerController.enabled = false;
         }
         */
+
         StartCoroutine(
             PlayTapeSequence()
         );
@@ -164,9 +213,17 @@ public class RadioPuzzle :
             );
         }
         yield return new WaitForSeconds(1f);*/
-        voiceSource.PlayOneShot(fallNoise);
-        // Aparece el monstruo
-        SpawnEnemy();
+        if (
+            voiceSource != null &&
+            fallNoise != null
+        )
+        {
+            voiceSource.PlayOneShot(fallNoise);
+        }
+
+        yield return StartCoroutine(
+            DropEnemyFromAttic()
+        );
         /*
         // Devolver control al jugador
         if (playerInput != null)
@@ -180,15 +237,205 @@ public class RadioPuzzle :
         }*/
     }
 
-    void SpawnEnemy()
+    IEnumerator OpenAtticDoor()
     {
-        if (subject01 != null)
+        if (atticDoor != null)
         {
-            subject01.SetActive(true);
+            atticDoor.isOpen = true;
+        }
+
+        if (atticDoorObject == null)
+        {
+            yield break;
+        }
+
+        Quaternion closedRotation =
+            atticDoorObject.rotation;
+
+        Quaternion openRotation =
+            closedRotation * Quaternion.Euler(
+                atticDoorOpenEulerOffset
+            );
+
+        float elapsed = 0f;
+
+        while (elapsed < atticDoorOpenDuration)
+        {
+            elapsed += Time.deltaTime;
+
+            float t =
+                Mathf.Clamp01(
+                    elapsed / Mathf.Max(atticDoorOpenDuration, 0.01f)
+                );
+
+            atticDoorObject.rotation =
+                Quaternion.Slerp(
+                    closedRotation,
+                    openRotation,
+                    t
+                );
+
+            yield return null;
+        }
+
+        atticDoorObject.rotation =
+            openRotation;
+        if (atticDoorExamine != null)
+        {
+            atticDoorExamine.doorstatus = "unlock";
+        }
+    }
+    IEnumerator DropEnemyFromAttic()
+    {
+        yield return StartCoroutine(
+            OpenAtticDoor()
+        );
+
+        yield return new WaitForSeconds(
+            doorOpenDelay
+        );
+
+        if (subject01 == null)
+        {
+            yield break;
+        }
+
+        EnemyController enemyController =
+            subject01.GetComponent<EnemyController>();
+
+        EnemyCombatTrigger combatTrigger =
+            subject01.GetComponent<EnemyCombatTrigger>();
+
+        NavMeshAgent agent =
+            subject01.GetComponent<NavMeshAgent>();
+
+        if (enemyController != null)
+        {
+            enemyController.enabled = false;
+        }
+
+        if (combatTrigger != null)
+        {
+            combatTrigger.enabled = false;
+        }
+
+        if (agent != null)
+        {
+            agent.enabled = false;
+        }
+
+        Vector3 startPosition =
+            enemyFallStart != null
+            ? enemyFallStart.position
+            : subject01.transform.position;
+
+        Vector3 endPosition =
+            GetEnemyFallEndPosition(
+                startPosition
+            );
+
+        //if (
+        //    NavMesh.SamplePosition(
+        //        endPosition,
+        //        out NavMeshHit navHit,
+        //        2f,
+        //        NavMesh.AllAreas
+        //    )
+        //)
+        //{
+        //    endPosition = navHit.position;
+        //}
+
+        subject01.transform.position =
+            startPosition;
+
+        subject01.SetActive(true);
+
+        float elapsed = 0f;
+
+        while (elapsed < fallDuration)
+        {
+            elapsed += Time.deltaTime;
+
+            float t =
+                Mathf.Clamp01(
+                    elapsed / Mathf.Max(fallDuration, 0.01f)
+                );
+
+            t = t * t * (3f - 2f * t);
+
+            subject01.transform.position =
+                Vector3.Lerp(
+                    startPosition,
+                    endPosition,
+                    t
+                );
+
+            yield return null;
+        }
+
+        subject01.transform.position =
+            endPosition;
+
+        if (agent != null)
+        {
+            agent.enabled = true;
+            agent.Warp(endPosition);
+        }
+
+        if (combatTrigger != null)
+        {
+            combatTrigger.enabled = true;
+        }
+
+        yield return new WaitForSeconds(
+            chaseDelayAfterFall
+        );
+
+        if (enemyController != null)
+        {
+            enemyController.enabled = true;
+
+            if (startChasingAfterFall)
+            {
+                enemyController.StartChasing();
+            }
         }
 
         dialogueManager.ShowDialogue(
             "¿Qué fue ese ruido...?"
         );
+        subject01.transform.position = endPosition;
+
+        if (screwdriverCross != null)
+        {
+            screwdriverCross.SetActive(true);
+        }
+    }
+
+    Vector3 GetEnemyFallEndPosition(
+        Vector3 startPosition
+    )
+    {
+        if (enemyFallEnd != null)
+        {
+            return enemyFallEnd.position;
+        }
+
+        if (
+            Physics.Raycast(
+                startPosition,
+                Vector3.down,
+                out RaycastHit hit,
+                fallbackFallDistance + 2f
+            )
+        )
+        {
+            return hit.point;
+        }
+
+        return
+            startPosition +
+            Vector3.down * fallbackFallDistance;
     }
 }

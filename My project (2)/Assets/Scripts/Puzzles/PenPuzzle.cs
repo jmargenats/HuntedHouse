@@ -15,6 +15,17 @@ public class PenPuzzle :
 
     [Header("Audio")]
     public AudioClip pickupSound;
+
+    void Start()
+    {
+        if (
+            GameManager.Instance.penCollected ||
+            GameManager.Instance.cassetteUnlocked
+        )
+        {
+            gameObject.SetActive(false);
+        }
+    }
     public void Interact()
     {
         if (!GameManager.Instance.cassetteNeedTool)
@@ -33,7 +44,10 @@ public class PenPuzzle :
 
     public bool CanPickup()
     {
-        return GameManager.Instance.cassetteNeedTool;
+        return
+            GameManager.Instance.cassetteNeedTool &&
+            !GameManager.Instance.penCollected &&
+            !GameManager.Instance.cassetteUnlocked;
     }
 
     public void Pickup()
