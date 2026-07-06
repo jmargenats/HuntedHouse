@@ -11,6 +11,12 @@ public class PlayerInteractions : MonoBehaviour
 
     void Update()
     {
+        if (ClockUI.IsOpen)
+        {
+            interactionText.gameObject.SetActive(false);
+            return;
+        }
+
         interactionText.gameObject.SetActive(false);
 
         Ray ray =

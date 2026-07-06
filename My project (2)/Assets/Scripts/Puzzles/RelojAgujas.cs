@@ -4,6 +4,8 @@ using StarterAssets;
 
 public class ClockUI : MonoBehaviour
 {
+    public static bool IsOpen = false;
+
     [Header("UI")]
     public GameObject panel;
 
@@ -28,8 +30,21 @@ public class ClockUI : MonoBehaviour
 
     private ClockPuzzle currentPuzzle;
 
+    private Quaternion hourStartRotation;
+    private Quaternion minuteStartRotation;
+
+    void Start()
+    {
+        hourStartRotation = hourHand.localRotation;
+        minuteStartRotation = minuteHand.localRotation;
+
+        Debug.Log("CLOCKUI START");
+    }
+
     public void OpenPuzzle(ClockPuzzle puzzle)
     {
+        IsOpen = true;
+
         currentPuzzle = puzzle;
 
         currentHour = startHour;
@@ -56,7 +71,6 @@ public class ClockUI : MonoBehaviour
         if (!opened)
             return;
 
-        // Hora izquierda
         if (Keyboard.current.aKey.wasPressedThisFrame)
         {
             currentHour--;
@@ -67,7 +81,6 @@ public class ClockUI : MonoBehaviour
             UpdateHands();
         }
 
-        // Hora derecha
         if (Keyboard.current.dKey.wasPressedThisFrame)
         {
             currentHour++;
@@ -78,63 +91,42 @@ public class ClockUI : MonoBehaviour
             UpdateHands();
         }
 
-        // Minutos izquierda
         if (Keyboard.current.qKey.wasPressedThisFrame)
         {
             switch (currentMinute)
             {
-                case 0:
-                    currentMinute = 45;
-                    break;
-
-                case 15:
-                    currentMinute = 0;
-                    break;
-
-                case 30:
-                    currentMinute = 15;
-                    break;
-
-                case 45:
-                    currentMinute = 30;
-                    break;
+                case 0: currentMinute = 45; break;
+                case 15: currentMinute = 0; break;
+                case 30: currentMinute = 15; break;
+                case 45: currentMinute = 30; break;
             }
 
             UpdateHands();
         }
 
-        // Minutos derecha
         if (Keyboard.current.eKey.wasPressedThisFrame)
         {
             switch (currentMinute)
             {
-                case 0:
-                    currentMinute = 15;
-                    break;
-
-                case 15:
-                    currentMinute = 30;
-                    break;
-
-                case 30:
-                    currentMinute = 45;
-                    break;
-
-                case 45:
-                    currentMinute = 0;
-                    break;
+                case 0: currentMinute = 15; break;
+                case 15: currentMinute = 30; break;
+                case 30: currentMinute = 45; break;
+                case 45: currentMinute = 0; break;
             }
 
             UpdateHands();
         }
 
-        // Confirmar
         if (Keyboard.current.fKey.wasPressedThisFrame)
         {
+            Debug.Log($"ENVIANDO -> {currentHour}:{currentMinute:00}");
+
             currentPuzzle.CheckTime(
                 currentHour,
                 currentMinute
             );
+
+            Debug.Log("VOLVI DE CHECKTIME");
 
             ClosePuzzle();
         }
@@ -142,29 +134,37 @@ public class ClockUI : MonoBehaviour
 
     void UpdateHands()
     {
-        // Hora
-        hourHand.localEulerAngles =
-            new Vector3(
+        float hourOffset =
+            (currentHour - startHour) * -30f;
+
+        float minuteOffset =
+            (currentMinute - startMinute) * -6f;
+
+        hourHand.localRotation =
+            hourStartRotation *
+            Quaternion.Euler(
                 0,
                 0,
-                -(currentHour % 12) * 30f
+                hourOffset
             );
 
-        // Minutos (solo 0,15,30,45)
-        minuteHand.localEulerAngles =
-            new Vector3(
+        minuteHand.localRotation =
+            minuteStartRotation *
+            Quaternion.Euler(
                 0,
                 0,
-                -(currentMinute * 6f)
+                minuteOffset
             );
 
         Debug.Log(
-            $"Reloj: {currentHour}:{currentMinute:00}"
+            $"RELOJ -> {currentHour}:{currentMinute:00}"
         );
     }
 
     void ClosePuzzle()
     {
+        IsOpen = false;
+
         opened = false;
 
         panel.SetActive(false);
