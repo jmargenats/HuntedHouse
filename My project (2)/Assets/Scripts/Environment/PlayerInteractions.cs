@@ -13,6 +13,7 @@ public class PlayerInteractions : MonoBehaviour
 
     void Update()
     {
+<<<<<<< HEAD
 
         if (temporaryMessageTimer > 0)
         {
@@ -21,6 +22,11 @@ public class PlayerInteractions : MonoBehaviour
             interactionText.gameObject.SetActive(true);
             interactionText.text = temporaryMessage;
 
+=======
+        if (ClockUI.IsOpen)
+        {
+            interactionText.gameObject.SetActive(false);
+>>>>>>> origin/feature/clockpuzzle
             return;
         }
 
