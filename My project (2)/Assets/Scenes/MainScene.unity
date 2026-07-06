@@ -387,6 +387,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lockObject: {fileID: 0}
+  examineDoor: {fileID: 0}
   isOpen: 0
   openAngle: 90
   openSpeed: 2
@@ -9532,6 +9533,8 @@ MonoBehaviour:
     icon: {fileID: 21300000, guid: 24033b3860fd2224ca96bd2ba36ac776, type: 3}
   - itemType: Pastillas
     icon: {fileID: 21300000, guid: 653d94427364f5741ae8fba4b3676e6b, type: 3}
+  - itemType: screwdriver
+    icon: {fileID: 21300000, guid: 44d65a4581eda024ea01141cfc03a3a4, type: 3}
 --- !u!1 &1136016352
 GameObject:
   m_ObjectHideFlags: 0
@@ -10267,15 +10270,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6207194393823060044, guid: 537ab85af9f24fe42aeca34f12e70e40, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6207194393829347052, guid: 537ab85af9f24fe42aeca34f12e70e40, type: 3}
+      propertyPath: m_Convex
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6207194393829347052, guid: 537ab85af9f24fe42aeca34f12e70e40, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6207194393823060044, guid: 537ab85af9f24fe42aeca34f12e70e40, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1713702148}
+    - targetCorrespondingSourceObject: {fileID: 6207194393823060044, guid: 537ab85af9f24fe42aeca34f12e70e40, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1713702149}
   m_SourcePrefab: {fileID: 100100000, guid: 537ab85af9f24fe42aeca34f12e70e40, type: 3}
 --- !u!1 &1217183065 stripped
 GameObject:
@@ -10961,6 +10972,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lockObject: {fileID: 0}
+  examineDoor: {fileID: 0}
   isOpen: 0
   openAngle: 90
   openSpeed: 2
@@ -13731,6 +13743,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lockObject: {fileID: 826883388}
+  examineDoor: {fileID: 0}
   isOpen: 0
   openAngle: 90
   openSpeed: 2
@@ -15291,6 +15304,27 @@ MonoBehaviour:
   pickupDialogues:
   - Creo que se cayo desde el atico
   - que es esto?
+--- !u!65 &1713702149
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713702143}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.23925781, y: 0.104016185, z: 0.5426427}
+  m_Center: {x: -0.020996094, y: 0.009816527, z: 0.12602133}
 --- !u!1001 &1715155657
 PrefabInstance:
   m_ObjectHideFlags: 0

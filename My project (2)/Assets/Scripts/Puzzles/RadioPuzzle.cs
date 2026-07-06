@@ -44,7 +44,7 @@ public class RadioPuzzle :
     {
         if (screwdriverCross != null)
         {
-            screwdriverCross.SetActive(GameManager.Instance.radioPlayed);
+            screwdriverCross.SetActive(GameManager.Instance.radioPlayed && !GameManager.Instance.HasItem("screwdriver"));
         }
         if (!GameManager.Instance.radioPlayed)
             return;
@@ -85,7 +85,7 @@ public class RadioPuzzle :
             if (GameManager.Instance.cassetteDiscovered)
             {
                 dialogueManager.ShowDialogue(
-                    "Me pregunto si la cinta que vi podría funcionar acá."
+                    "Me pregunto si la cinta que vi podrÃ­a funcionar acÃ¡."
                 );
             }
             else
@@ -94,7 +94,7 @@ public class RadioPuzzle :
                     "Una radio antigua."
                 );
             }
- 
+
             return;
         }
 
@@ -107,13 +107,13 @@ public class RadioPuzzle :
             GameManager.Instance.cassetteNeedTool = true;
 
             dialogueManager.ShowDialogue(
-                "Esa cinta que vi antes podría funcionar si la arreglo."
+                "Esa cinta que vi antes podrÃ­a funcionar si la arreglo."
             );
 
             return;
         }
 
-        // Todavía no consiguió el cassette
+        // TodavÃ­a no consiguiÃ³ el cassette
         if (!GameManager.Instance.cassetteCollected)
         {
             dialogueManager.ShowDialogue(
@@ -123,7 +123,7 @@ public class RadioPuzzle :
             return;
         }
 
-        // Ya reprodujo la grabación
+        // Ya reprodujo la grabaciÃ³n
         if (GameManager.Instance.radioPlayed)
         {
             return;
@@ -136,7 +136,7 @@ public class RadioPuzzle :
         if (selectedItem != "Cassette")
         {
             dialogueManager.ShowDialogue(
-                "Quizás debería probar con la cinta."
+                "QuizÃ¡s deberÃ­a probar con la cinta."
             );
 
             return;
@@ -155,7 +155,7 @@ public class RadioPuzzle :
         inventario.RemoveItem("Cassette");
 
         dialogueManager.ShowDialogue(
-            "Insertás el cassette en la radio..."
+            "InsertÃ¡s el cassette en la radio..."
         );
         /*
         if (playerInput != null)
@@ -176,10 +176,10 @@ public class RadioPuzzle :
 
     IEnumerator PlayTapeSequence()
     {
-        // Pequeña pausa después de insertar el cassette
+        // PequeÃ±a pausa despuÃ©s de insertar el cassette
         yield return new WaitForSeconds(2f);
 
-        // Grabación del médico
+        // GrabaciÃ³n del mÃ©dico
         if (
             radioSource != null &&
             doctorTape != null
@@ -194,11 +194,11 @@ public class RadioPuzzle :
             );
         }
 
-        // Silencio incómodo
+        // Silencio incÃ³modo
         yield return new WaitForSeconds(1f);
 
         // player habla
-        /*
+
         if (
             voiceSource != null &&
             playerWhatNoise != null
@@ -212,7 +212,8 @@ public class RadioPuzzle :
                 playerWhatNoise.length
             );
         }
-        yield return new WaitForSeconds(1f);*/
+
+        yield return new WaitForSeconds(1f);
         if (
             voiceSource != null &&
             fallNoise != null
@@ -403,14 +404,18 @@ public class RadioPuzzle :
         }
 
         dialogueManager.ShowDialogue(
-            "¿Qué fue ese ruido...?"
+            "Â¿QuÃ© fue ese ruido...?"
         );
         subject01.transform.position = endPosition;
 
-        if (screwdriverCross != null)
+        if (
+            screwdriverCross != null &&
+            !GameManager.Instance.HasItem("screwdriver")
+        )
         {
             screwdriverCross.SetActive(true);
         }
+
     }
 
     Vector3 GetEnemyFallEndPosition(
