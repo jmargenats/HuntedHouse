@@ -3,6 +3,7 @@ using UnityEngine;
 public class TomasDialogue : MonoBehaviour, IInteractable
 {
     public DialogueManager dialogueManager;
+    public SofiaPuzzle sofiaPuzzle;
 
     [TextArea]
     public string[] dialogues =
@@ -38,13 +39,24 @@ public class TomasDialogue : MonoBehaviour, IInteractable
         "...ella me necesita."
     };
 
+    [TextArea]
+    public string[] solvedDialogues;
+
     public void Interact()
     {
         if (dialogueManager == null)
             return;
 
-        int random = Random.Range(0, dialogues.Length);
+        string[] currentDialogues = dialogues;
 
-        dialogueManager.ShowDialogue(dialogues[random]);
+        if (sofiaPuzzle != null && sofiaPuzzle.IsSolved && solvedDialogues.Length > 0)
+            currentDialogues = solvedDialogues;
+
+        if (currentDialogues.Length == 0)
+            return;
+
+        int random = Random.Range(0, currentDialogues.Length);
+
+        dialogueManager.ShowDialogue(currentDialogues[random]);
     }
 }

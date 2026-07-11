@@ -8,6 +8,7 @@ public class SofiaPuzzle : MonoBehaviour
     public GameObject objectToActivate;
 
     private bool solved = false;
+    public bool IsSolved => solved;
 
     void Update()
     {
@@ -17,10 +18,16 @@ public class SofiaPuzzle : MonoBehaviour
 
         for (int i = 0; i < slots.Length; i++)
         {
+            if (slots[i] == null)
+            {
+                Debug.LogWarning("SofiaPuzzle tiene un slot sin asignar.");
+                return;
+            }
+
             if (slots[i].currentCube == null)
                 return;
 
-            if (slots[i].currentCube.letter.ToString() != correctWord[i].ToString())
+            if (char.ToUpperInvariant(slots[i].currentCube.letter) != char.ToUpperInvariant(correctWord[i]))
                 return;
         }
 
