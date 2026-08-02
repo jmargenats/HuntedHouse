@@ -29,7 +29,7 @@ public class IntroController : MonoBehaviour
         playerMovement.enabled = false;
 
         // Pantalla negra inicial
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(6f);
 
         // Ahora aparece la imagen
         yield return StartCoroutine(sceneFader.Fade(1f, 0f));
