@@ -18,6 +18,22 @@ public class AudioIntro : MonoBehaviour
         vientoSource.volume = 0f;
 
         introSource.loop = false;
+        introSource.playOnAwake = false;
+
+        if (
+            GameManager.Instance != null &&
+            GameManager.Instance.returningFromBattle
+        )
+        {
+            
+            introSource.Stop();
+
+            // Retoma solamente el sonido ambiente.
+            vientoSource.volume = vientoTargetVolume;
+            vientoSource.Play();
+
+            yield break;
+        }
         introSource.Play();
 
         float waitTime = introSource.clip.length - overlapSeconds;
