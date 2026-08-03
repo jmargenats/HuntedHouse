@@ -132,6 +132,22 @@ public class BattleManager : MonoBehaviour
 
             attackObjectButton.interactable = true;
         }
+        if (
+            tutorialStep == 5 &&
+            (
+                PlayerStats.Instance.equippedWeapon == "Pastillas" ||
+                PlayerStats.Instance.equippedWeapon == "Botiquin"
+            )
+        )
+        {
+            tutorialStep = 6;
+
+            ShowBattleLog(
+                "Ahora presioná Curarse para recuperar vida."
+            );
+
+            healButton.interactable = true;
+        }
     }
     IEnumerator GlitchScreen(
     float duration = 0.2f,
@@ -210,14 +226,14 @@ public class BattleManager : MonoBehaviour
             tutorialStep = 3;
 
             ShowBattleLog(
-                "Atacar con puño hace menos daño, pero no necesita objeto equipado. También podés huir si necesitás salir del combate."
+                "También podés defenderte. Reducirás el daño recibido y contraatacarás automáticamente."
             );
 
             attackButton.interactable = false;
             attackObjectButton.interactable = false;
-            fleeButton.interactable = true;
-
-            
+            fleeButton.interactable = false;
+            healButton.interactable = false;
+            defendButton.interactable = true;
 
             return;
         }
@@ -429,6 +445,14 @@ public class BattleManager : MonoBehaviour
         if (!playerTurn)
             return;
 
+        if (tutorialActive)
+        {
+            if (tutorialStep != 3)
+                return;
+
+            tutorialStep = 4;
+        }
+
         StartCoroutine(PlayerDefendTurn());
     }
     IEnumerator PlayerDefendTurn()
@@ -581,7 +605,11 @@ public class BattleManager : MonoBehaviour
     public void Heal()
     {
         Debug.Log("Botón curar apretado");
+
         if (!playerTurn)
+            return;
+
+        if (tutorialActive && tutorialStep != 6)
             return;
 
         StartCoroutine(
@@ -638,6 +666,21 @@ public class BattleManager : MonoBehaviour
         );
         battleInventory.RefreshInventory();
         yield return new WaitForSeconds(2f);
+
+        if (tutorialActive && tutorialStep == 6)
+        {
+            tutorialStep = 7;
+            playerTurn = true;
+
+            ToggleButtons(false);
+            fleeButton.interactable = true;
+
+            ShowBattleLog(
+                "Los objetos curativos se consumen al usarlos. Finalmente, podés usar Huir para abandonar un combate."
+            );
+
+            yield break;
+        }
 
         EndPlayerTurn();
     }
@@ -755,6 +798,20 @@ public class BattleManager : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
 
         EnemyAttack();
+
+        if (tutorialActive && tutorialStep == 4)
+        {
+            tutorialStep = 5;
+            playerTurn = true;
+
+            ToggleButtons(false);
+
+            ShowBattleLog(
+                "Defenderte redujo el daño. Ahora seleccioná las Pastillas desde Objetos."
+            );
+
+            yield break;
+        }
 
         if (octavioDeathSequenceStarted)
             yield break;
@@ -1060,10 +1117,10 @@ public class BattleManager : MonoBehaviour
             return;
         }
 
-        if (tutorialActive && tutorialStep == 3)
+        if (tutorialActive && tutorialStep == 7)
         {
             tutorialActive = false;
-            tutorialStep = 4;
+            tutorialStep = 8;
 
             GameManager.Instance.battleTutorialCompleted = true;
 
@@ -1156,6 +1213,7 @@ public class BattleManager : MonoBehaviour
         tutorialActive = true;
         tutorialStep = 0;
         playerTurn = true;
+        ToggleButtons(false);
 
         bool hasShovel =
             GameManager.Instance.HasItem("Pala");
@@ -1173,6 +1231,14 @@ public class BattleManager : MonoBehaviour
             tutorialStep = -1;
 
             return;
+        }
+        if (
+            !GameManager.Instance.HasItem("Pastillas") &&
+            !GameManager.Instance.HasItem("Botiquin")
+        )
+        {
+            GameManager.Instance.AddItem("Pastillas");
+            battleInventory.RefreshInventory();
         }
 
         attackButton.interactable = false;
