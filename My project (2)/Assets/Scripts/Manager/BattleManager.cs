@@ -738,6 +738,17 @@ public class BattleManager : MonoBehaviour
 
         yield return new WaitForSeconds(2.5f);
 
+        if (enemy.enemyID == "octavio")
+        {
+            GameManager.Instance.playerDied = false;
+            GameManager.Instance.returningFromBattle = false;
+
+            FindObjectOfType<SceneFader>()
+                .FadeAndLoadScene("Ending");
+
+            yield break;
+        }
+
         GameManager.Instance.returningFromBattle = true;
 
         FindObjectOfType<SceneFader>()
