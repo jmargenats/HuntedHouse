@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Ending")]
     public bool helpedTomasEscape = false;
+    public bool playerDied = false;
 
     [Header("Tomas")]
     public int tomasConversationStage = 0;

@@ -926,13 +926,11 @@ public class BattleManager : MonoBehaviour
         yield return new WaitForSeconds(
             deathNewspaperDisplayDuration
         );
-
         if (GameManager.Instance != null)
-            GameManager.Instance.ResetGame();
-
-        PlayerStats.Instance.ResetStats();
-
-        SceneManager.LoadScene("MainMenu");
+        {
+            GameManager.Instance.playerDied = true;
+        }
+        SceneManager.LoadScene("Ending");
     }
 
     IEnumerator FadeImage(
