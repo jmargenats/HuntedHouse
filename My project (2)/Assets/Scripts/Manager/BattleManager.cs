@@ -1,7 +1,9 @@
-using System.Collections;
+Ôªøusing System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Video;
+using System.Collections.Generic;
 
 public class BattleManager : MonoBehaviour
 {
@@ -14,6 +16,7 @@ public class BattleManager : MonoBehaviour
     public Button attackObjectButton;
     public Button fleeButton;
     public Button healButton;
+    public Button defendButton;
     public BattleInventoryUI battleInventory;
 
     [Header("Texto de combate")]
@@ -40,10 +43,20 @@ public class BattleManager : MonoBehaviour
     public Sprite rewardIcon;
     public string rewardItemType;
 
+    [Header("Glitches")]
+    public VideoPlayer glitchVideo;
+    public RawImage glitchImage;
+
     [Header("Tutorial")]
     public bool showTutorial = true;
     private int tutorialStep = 0;
     private bool tutorialActive = false;
+
+    Queue<string> battleMessages =
+    new Queue<string>();
+
+    public int maxMessages = 3;
+    private bool useOrangeLine = false;
     bool cameFromTutorial = GameManager.Instance.previousScene == "Tutorial";
 
     void Start()
@@ -73,22 +86,54 @@ public class BattleManager : MonoBehaviour
             tutorialStep = 1;
 
             ShowBattleLog(
-                "Bien. Ahora us· Atacar con objeto para golpear con la pala."
+                "Bien. Ahora us√° Atacar con objeto para golpear con la pala."
             );
 
             attackObjectButton.interactable = true;
         }
     }
-    IEnumerator FlashEnemy()
+    IEnumerator GlitchScreen(
+    float duration = 0.2f,
+    float alpha = 0.5f)
+    {
+        if (glitchVideo == null)
+            yield break;
+
+        Color c = glitchImage.color;
+
+        c.a = alpha;
+        glitchImage.color = c;
+
+        glitchVideo.Stop();
+        glitchVideo.Play();
+
+        yield return new WaitForSeconds(duration);
+
+        c.a = 0f;
+        glitchImage.color = c;
+
+        glitchVideo.Stop();
+    }
+    IEnumerator FlashEnemy(
+    Color flashColor,
+    int flashes = 1,
+    float flashDuration = 0.08f)
     {
         if (enemyPortrait == null)
             yield break;
 
-        enemyPortrait.color = Color.red;
+        Color originalColor = enemyPortrait.color;
 
-        yield return new WaitForSeconds(0.1f);
+        for (int i = 0; i < flashes; i++)
+        {
+            enemyPortrait.color = flashColor;
 
-        enemyPortrait.color = Color.white;
+            yield return new WaitForSeconds(flashDuration);
+
+            enemyPortrait.color = originalColor;
+
+            yield return new WaitForSeconds(flashDuration);
+        }
     }
     IEnumerator ShakeEnemy()
     {
@@ -110,7 +155,7 @@ public class BattleManager : MonoBehaviour
             originalPos;
     }
     // =========================
-    // ATAQUE PU—O
+    // ATAQUE PU√ëO
     // =========================
     public void AttackFist()
     {
@@ -124,7 +169,7 @@ public class BattleManager : MonoBehaviour
             tutorialStep = 3;
 
             ShowBattleLog(
-                "Atacar con puÒo hace menos daÒo, pero no necesita objeto equipado. TambiÈn podÈs huir si necesit·s salir del combate."
+                "Atacar con pu√±o hace menos da√±o, pero no necesita objeto equipado. Tambi√©n pod√©s huir si necesit√°s salir del combate."
             );
 
             attackButton.interactable = false;
@@ -148,7 +193,7 @@ public class BattleManager : MonoBehaviour
             case "rat_01":
 
                 enemy.enemyID = "rat_01";
-                enemy.enemyName = "Rata Mutada";
+                enemy.enemyName = "Rata mutante";
 
                 enemy.maxHP = 30;
                 enemy.attackDamage = 5;
@@ -168,12 +213,12 @@ public class BattleManager : MonoBehaviour
                     "Sujeto Experimental 01";
 
                 enemy.maxHP = 100;
-                enemy.attackDamage = 12;
+                enemy.attackDamage = 16;
 
                 enemy.currentHP =
                     enemy.maxHP;
 
-                enemyAI.dodgeChance = 50;
+                enemyAI.dodgeChance = 30;
                 enemyPortrait.sprite = subjectSprite;
 
                 break;
@@ -181,14 +226,14 @@ public class BattleManager : MonoBehaviour
             case "rat_pack":
 
                 enemy.enemyID = "rat_pack";
-                enemy.enemyName = "JaurÌa de Ratas";
+                enemy.enemyName = "Jaur√≠a de Ratas";
 
                 enemy.maxHP = 80;
                 enemy.attackDamage = 10;
 
                 enemy.currentHP = enemy.maxHP;
 
-                enemyAI.dodgeChance = 25;
+                enemyAI.dodgeChance = 40;
 
                 enemyPortrait.sprite = ratPackSprite;
 
@@ -220,7 +265,7 @@ public class BattleManager : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
 
         // Esquive enemigo
-        if (enemyAI.TryDodge())
+        if (enemyAI.TryDodge("Pu√±o"))
         {
             ShowBattleLog(
                 GetRandomText(dodgeTexts)
@@ -232,13 +277,14 @@ public class BattleManager : MonoBehaviour
 
             yield break;
         }
+        int damage =
+    PlayerStats.Instance.fistDamage;
 
-        int damage = PlayerStats.Instance.GetFistDamage();
-
+        damage = Mathf.RoundToInt(
+            damage *
+            enemy.fistMultiplier);
         enemy.TakeDamage(damage);
-
-        PlayerStats.Instance.RegisterFistHit();
-        StartCoroutine(FlashEnemy());
+        StartCoroutine(FlashEnemy(Color.red));
         StartCoroutine(ShakeEnemy());
         ShowBattleLog(
             GetRandomText(fistAttackTexts)
@@ -268,7 +314,7 @@ public class BattleManager : MonoBehaviour
             tutorialStep = 2;
 
             ShowBattleLog(
-                "Buen golpe. TambiÈn podÈs atacar con los puÒos usando el botÛn Atacar."
+                "Buen golpe. Tambi√©n pod√©s atacar con los pu√±os usando el bot√≥n Atacar."
             );
 
             attackObjectButton.interactable = false;
@@ -277,9 +323,71 @@ public class BattleManager : MonoBehaviour
             return;
         }
 
+        string equipped =PlayerStats.Instance.equippedWeapon;
+
+        if (equipped == "Sedante")
+        {
+            StartCoroutine(PlayerSedativeTurn());
+
+            return;
+        }
+
         StartCoroutine(PlayerObjectTurn());
     }
+    IEnumerator PlayerSedativeTurn()
+    {
+        playerTurn = false;
 
+        ToggleButtons(false);
+
+        PlayerStats.Instance.ActivateSedative();
+
+        // Consumir el objeto
+        GameManager.Instance.collectedItems.Remove("Sedante");
+
+        // Desequiparlo
+        PlayerStats.Instance.equippedWeapon = "";
+
+        // Actualizar la UI
+        battleInventory.RefreshInventory();
+
+        ShowBattleLog(
+            "Inyect√°s el sedante.\nLa criatura parece debilitarse."
+        );
+
+        yield return new WaitForSeconds(2f);
+        Inventario inventario =
+    FindFirstObjectByType<Inventario>();
+
+        if (inventario != null)
+        {
+            inventario.RemoveItem("Sedante");
+        }
+        StartCoroutine(EnemyTurn());
+    }
+    public void Defend()
+    {
+        if (!playerTurn)
+            return;
+
+        StartCoroutine(PlayerDefendTurn());
+    }
+    IEnumerator PlayerDefendTurn()
+    {
+        playerTurn = false;
+
+        ToggleButtons(false);
+
+        PlayerStats.Instance.ActivateDefense();
+
+        ShowBattleLog(
+            "Adopt√°s una postura defensiva."
+        );
+
+        yield return new WaitForSeconds(2f);
+
+        StartCoroutine(EnemyTurn());
+    }
     IEnumerator PlayerObjectTurn()
     {
         int damage =
@@ -288,7 +396,7 @@ public class BattleManager : MonoBehaviour
         if (damage <= 0)
         {
             ShowBattleLog(
-                "No tenÈs un objeto equipado"
+                "No ten√©s un objeto equipado"
             );
 
             yield break;
@@ -301,7 +409,7 @@ public class BattleManager : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
 
         // Esquive enemigo
-        if (enemyAI.TryDodge())
+        if (enemyAI.TryDodge(PlayerStats.Instance.equippedWeapon))
         {
             ShowBattleLog(
                 GetRandomText(dodgeTexts)
@@ -313,9 +421,40 @@ public class BattleManager : MonoBehaviour
 
             yield break;
         }
+        switch (PlayerStats.Instance.equippedWeapon)
+        {
+            case "Pala":
+                damage = Mathf.RoundToInt(
+    damage * enemy.shovelMultiplier
+);
+                if (Random.Range(0, 100) < 15)
+                {
+                    enemy.stunned = true;
 
+                    ShowBattleLog(
+                        "El enemigo queda aturdido, es tu turno");
+                }
+
+                break;
+
+            case "Cuchillo":
+                damage = Mathf.RoundToInt(
+    damage * enemy.knifeMultiplier
+);
+                if (Random.Range(0, 100) < 30)
+                {
+                    enemy.bleeding = true;
+
+                    enemy.bleedingTurns = 3;
+
+                    ShowBattleLog(
+                        "La herida comienza a sangrar");
+                }
+
+                break;
+        }
         enemy.TakeDamage(damage);
-        StartCoroutine(FlashEnemy());
+        StartCoroutine(FlashEnemy(Color.red));
         StartCoroutine(ShakeEnemy());
         string equippedWeapon =
             PlayerStats.Instance.equippedWeapon;
@@ -341,7 +480,7 @@ public class BattleManager : MonoBehaviour
             default:
 
                 attackText =
-                    "Atac·s con el objeto";
+                    "Atac√°s con el objeto";
 
                 break;
         }
@@ -378,7 +517,7 @@ public class BattleManager : MonoBehaviour
     }
     public void Heal()
     {
-        Debug.Log("BotÛn curar apretado");
+        Debug.Log("Bot√≥n curar apretado");
         if (!playerTurn)
             return;
 
@@ -388,7 +527,7 @@ public class BattleManager : MonoBehaviour
     }
     IEnumerator PlayerHealTurn()
     {
-        Debug.Log("EntrÈ a PlayerHealTurn");
+        Debug.Log("Entr√© a PlayerHealTurn");
         string selectedItem =
     battleInventory.GetSelectedItem();
 
@@ -411,7 +550,7 @@ public class BattleManager : MonoBehaviour
             default:
 
                 ShowBattleLog(
-                    "No tenÈs un objeto curativo seleccionado."
+                    "No ten√©s un objeto curativo seleccionado."
                 );
 
                 yield break;
@@ -430,7 +569,7 @@ public class BattleManager : MonoBehaviour
     .Remove(selectedItem);
 
         ShowBattleLog(
-            "Recuper·s "
+            "Recuper√°s "
             + healAmount
             + " HP."
         );
@@ -505,12 +644,47 @@ public class BattleManager : MonoBehaviour
     // =========================
     IEnumerator EnemyTurn()
     {
+        if (enemy.stunned)
+        {
+            enemy.stunned = false;
+
+            ShowBattleLog(
+                enemy.enemyName +
+                " est√° aturdido, es tu turno");
+            StartCoroutine(FlashEnemy(Color.yellow, 4));
+            yield return new WaitForSeconds(2);
+
+            playerTurn = true;
+
+            ToggleButtons(true);
+
+            yield break;
+        }
+        if (enemy.bleeding)
+        {
+            StartCoroutine(FlashEnemy(Color.red, 4));
+            enemy.TakeDamage(4);
+
+            enemy.bleedingTurns--;
+
+            ShowBattleLog(
+                enemy.enemyName +
+                " pierde sangre.");
+
+            if (enemy.bleedingTurns <= 0)
+                enemy.bleeding = false;
+        }
         ShowBattleLog(enemy.enemyName + " observa tus movimientos...");
 
         yield return new WaitForSeconds(1.5f);
 
         EnemyAttack();
+        if (enemy.currentHP <= 0)
+        {
+            StartCoroutine(EnemyDefeated());
 
+            yield break;
+        }
         yield return new WaitForSeconds(2f);
 
         playerTurn = true;
@@ -528,30 +702,90 @@ public class BattleManager : MonoBehaviour
     void EnemyAttack()
     {
         int damage =
-            enemyAI.ChooseDamage(
-                enemy.attackDamage,
-                enemy.currentHP
-            );
+    enemyAI.ChooseDamage(
+        enemy.attackDamage,
+        enemy.currentHP
+    );
+        bool defended = PlayerStats.Instance.defending;
+        int displayedDamage =
+            PlayerStats.Instance.CalculateDamageTaken(damage);
 
         PlayerStats.Instance.TakeDamage(damage);
 
         ShowBattleLog(
             GetRandomText(enemyAttackTexts)
             + "\n-"
+            + displayedDamage
+            + " HP"
+        );
+        StartCoroutine(GlitchScreen());
+
+        if (defended)
+        {
+            StartCoroutine(CounterAttackRoutine());
+        }
+        Debug.Log("HP luego del ataque: " +PlayerStats.Instance.currentHP);
+    }
+    IEnumerator CounterAttackRoutine()
+    {
+        yield return new WaitForSeconds(1f);
+        CounterAttack();
+        yield return new WaitForSeconds(1f);
+    }
+    void CounterAttack()
+    {
+        int damage;
+
+        switch (PlayerStats.Instance.equippedWeapon)
+        {
+            case "Pala":
+
+                damage =
+                    PlayerStats.Instance.shovelDamage / 2;
+
+                damage = Mathf.RoundToInt(
+                    damage *
+                    enemy.shovelMultiplier);
+
+                break;
+
+            case "Cuchillo":
+
+                damage =
+                    PlayerStats.Instance.knifeDamage / 2;
+
+                damage = Mathf.RoundToInt(
+                    damage *
+                    enemy.knifeMultiplier);
+
+                break;
+
+            default:
+
+                damage =
+                    PlayerStats.Instance.fistDamage / 2;
+
+                damage = Mathf.RoundToInt(
+                    damage *
+                    enemy.fistMultiplier);
+
+                break;
+        }
+
+        enemy.TakeDamage(damage);
+        
+        ShowBattleLog(
+            "Bloque√°s el golpe y contraatac√°s.\n-"
             + damage
             + " HP"
         );
-        Debug.Log(
-    "HP luego del ataque: " +
-    PlayerStats.Instance.currentHP
-);
     }
-
     // =========================
     // ACTIVAR/DESACTIVAR BOTONES
     // =========================
     void ToggleButtons(bool enabledState)
     {
+        defendButton.interactable = enabledState;
         attackButton.interactable =
             enabledState;
 
@@ -628,9 +862,45 @@ public class BattleManager : MonoBehaviour
     // =========================
     void ShowBattleLog(string message)
     {
-        Debug.Log(message);
+        Debug.Log("========== BATTLE LOG ==========");
+        Debug.Log("Max Messages: " + maxMessages);
+        Debug.Log("Antes: " + battleMessages.Count);
 
-        battleLogText.text = message;
+        string color =
+            useOrangeLine
+            ? "#E6B56A"
+            : "#FFFFFF";
+
+        useOrangeLine = !useOrangeLine;
+
+        string formattedMessage =
+            "<color=" + color + ">- "
+            + message
+            + "</color>";
+
+        battleMessages.Enqueue(formattedMessage);
+
+        Debug.Log("Despu√©s de agregar: " + battleMessages.Count);
+
+        while (battleMessages.Count > maxMessages)
+        {
+            Debug.Log(
+                "Eliminando: "
+                + battleMessages.Peek()
+            );
+
+            battleMessages.Dequeue();
+        }
+
+        Debug.Log("Final: " + battleMessages.Count);
+
+        battleLogText.text =
+            string.Join(
+                "\n",
+                battleMessages
+            );
+
+        Debug.Log("===============================");
     }
 
     // =========================
@@ -649,7 +919,7 @@ public class BattleManager : MonoBehaviour
         if (!hasShovel)
         {
             ShowBattleLog(
-                "TodavÌa no tenÈs un arma, busca una antes de enfrentarte a esta criatura.\n Us· Huir para regresar."
+                "Todav√≠a no ten√©s un arma, busca una antes de enfrentarte a esta criatura.\n Us√° Huir para regresar."
             );
 
             attackButton.interactable = false;
@@ -666,14 +936,14 @@ public class BattleManager : MonoBehaviour
         fleeButton.interactable = false;
 
         ShowBattleLog(
-            "Tutorial: seleccion· la pala desde la secciÛn Objetos para equiparla."
+            "Tutorial: seleccion√° la pala desde la secci√≥n Objetos para equiparla."
         );
     }
 
     IEnumerator FinishTutorialAfterDelay()
     {
         ShowBattleLog(
-            "Perfecto. Ya conocÈs las acciones b·sicas del combate."
+            "Perfecto. Ya conoc√©s las acciones b√°sicas del combate."
         );
 
         yield return new WaitForSeconds(2f);

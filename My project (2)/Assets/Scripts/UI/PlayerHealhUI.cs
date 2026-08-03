@@ -1,29 +1,30 @@
 ﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class PlayerHPUI : MonoBehaviour
 {
+    [Header("Texto")]
     public TMP_Text hpText;
 
     [Header("Barra de vida")]
     public int totalBars = 10;
-    public TMP_Text strengthText;
-    [Header("Icono de vida")]
+
+    [Header("Retrato")]
     public Image portraitImage;
 
     public Sprite greenPortrait;
     public Sprite orangePortrait;
     public Sprite redPortrait;
 
+    void Start()
+    {
+        UpdateHPUI();
+    }
+
     void Update()
     {
         UpdateHPUI();
-        strengthText.text =
-    "FUE "
-    + PlayerStats.Instance.strength
-    + " ("
-    + PlayerStats.Instance.fistHits
-    + "/5)";
     }
 
     void UpdateHPUI()
@@ -31,45 +32,46 @@ public class PlayerHPUI : MonoBehaviour
         if (PlayerStats.Instance == null)
             return;
 
-        int currentHP =
-            PlayerStats.Instance.currentHP;
+        int currentHP = PlayerStats.Instance.currentHP;
+        int maxHP = PlayerStats.Instance.maxHP;
+
+        //-------------------------
+        // Retrato
+        //-------------------------
+
         if (portraitImage != null)
         {
-            if (currentHP < 30)
+            float hpPercent =
+                (float)currentHP / maxHP;
+
+            if (hpPercent <= 0.3f)
             {
-                portraitImage.sprite =
-                    redPortrait;
+                portraitImage.sprite = redPortrait;
             }
-            else if (currentHP < 60)
+            else if (hpPercent <= 0.6f)
             {
-                portraitImage.sprite =
-                    orangePortrait;
+                portraitImage.sprite = orangePortrait;
             }
             else
             {
-                portraitImage.sprite =
-                    greenPortrait;
+                portraitImage.sprite = greenPortrait;
             }
         }
-        int maxHP =
-            PlayerStats.Instance.maxHP;
 
-        // calcular cantidad de barras
-        int barsToShow =
-            Mathf.CeilToInt(
-                ((float)currentHP / maxHP)
-                * totalBars
-            );
+        //-------------------------
+        // Barras
+        //-------------------------
 
-        // limitar
-        barsToShow =
-            Mathf.Clamp(
-                barsToShow,
-                0,
-                totalBars
-            );
+        int barsToShow = Mathf.CeilToInt(
+            ((float)currentHP / maxHP) * totalBars
+        );
 
-        // construir barra
+        barsToShow = Mathf.Clamp(
+            barsToShow,
+            0,
+            totalBars
+        );
+
         string hpBar = "";
 
         for (int i = 0; i < barsToShow; i++)
@@ -77,14 +79,19 @@ public class PlayerHPUI : MonoBehaviour
             hpBar += "█";
         }
 
-        // color dinámico
-        string hpColor = "#B00000";
+        //-------------------------
+        // Color
+        //-------------------------
 
-        if (currentHP < 30)
+        string hpColor;
+
+        float percent = (float)currentHP / maxHP;
+
+        if (percent <= 0.3f)
         {
             hpColor = "#FF0000";
         }
-        else if (currentHP < 60)
+        else if (percent <= 0.6f)
         {
             hpColor = "#FFA500";
         }
@@ -93,7 +100,10 @@ public class PlayerHPUI : MonoBehaviour
             hpColor = "#00FF66";
         }
 
-        // texto final
+        //-------------------------
+        // Texto
+        //-------------------------
+
         hpText.text =
             "HP "
             + currentHP

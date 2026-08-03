@@ -1,4 +1,4 @@
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
@@ -13,6 +13,7 @@ public class BattleInventoryUI : MonoBehaviour
     public Sprite knifeSprite;
     public Sprite pillsSprite;
     public Sprite medkitSprite;
+    public Sprite sedativeSprite;
 
     [Header("Inventory")]
     public Transform inventoryPanel;
@@ -48,7 +49,7 @@ public class BattleInventoryUI : MonoBehaviour
 
         foreach (string item in GameManager.Instance.collectedItems)
         {
-            // ignorar items vac�os
+            // ignorar items vacíos
             if (string.IsNullOrEmpty(item))
                 continue;
 
@@ -77,12 +78,17 @@ public class BattleInventoryUI : MonoBehaviour
                 case "Cuchillo":
                     icon.sprite = knifeSprite;
                     break;
+
                 case "Pastillas":
                     icon.sprite = pillsSprite;
                     break;
 
                 case "Botiquin":
                     icon.sprite = medkitSprite;
+                    break;
+
+                case "Sedante":
+                    icon.sprite = sedativeSprite;
                     break;
             }
 
@@ -108,23 +114,68 @@ public class BattleInventoryUI : MonoBehaviour
 
     void UpdateUI()
     {
-        string weapon =
-            PlayerStats.Instance.equippedWeapon;
-
-        int damage =
-            PlayerStats.Instance.GetWeaponDamage();
+        string weapon = PlayerStats.Instance.equippedWeapon;
 
         if (string.IsNullOrEmpty(weapon))
         {
             equippedWeaponText.text =
-                "Sin objeto equipado";
+                "Seleccioná un objeto para ver sus propiedades.";
+
+            return;
         }
-        else
+
+        switch (weapon)
         {
-            equippedWeaponText.text =
-                weapon
-                + "\nDa�o: "
-                + damage;
+            case "Pala":
+
+                equippedWeaponText.text =
+                    "• Daño: " + PlayerStats.Instance.shovelDamage +
+                    "\n• Impacto pesado." +
+                    "\n• 15% de probabilidad de aturdir." +
+                    "\n• Más difícil de esquivar.";
+
+                break;
+
+            case "Cuchillo":
+
+                equippedWeaponText.text =
+                    "• Daño: " + PlayerStats.Instance.knifeDamage +
+                    "\n• 30% de probabilidad de sangrado." +
+                    "\n• Más fácil de esquivar.";
+
+                break;
+
+            case "Pastillas":
+
+                equippedWeaponText.text =
+                    "• Recupera 20 HP." +
+                    "\n• Se consume al usar.";
+
+                break;
+
+            case "Botiquin":
+
+                equippedWeaponText.text =
+                    "• Recupera 40 HP." +
+                    "\n• Se consume al usar.";
+
+                break;
+
+            case "Sedante":
+
+                equippedWeaponText.text =
+                    "• No inflige daño." +
+                    "\n• Reduce un 50% el daño de los próximos 3 ataques." +
+                    "\n• Se consume al usar.";
+
+                break;
+    
+            default:
+
+                equippedWeaponText.text =
+                    "Sin información.";
+
+                break;
         }
     }
 }
