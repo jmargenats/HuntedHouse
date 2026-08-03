@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using System.Collections;
 
 public class doorcon : MonoBehaviour, IExaminable
@@ -10,8 +10,8 @@ public class doorcon : MonoBehaviour, IExaminable
     public DialogueManager dialogueManager;
     public bool consumeKey = false;
     [TextArea(2, 5)]
-    public string lockedText = "La puerta está cerrada.";
-    public string unlockedText = "La puerta está abierta.";
+    public string lockedText = "La puerta estï¿½ cerrada.";
+    public string unlockedText = "La puerta estï¿½ abierta.";
 
     [Header("Scene")]
     public bool changeScene = false;

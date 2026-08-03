@@ -24,6 +24,8 @@ public class EndingController : MonoBehaviour
 
     void Start()
     {
+        Debug.Log("playerDied: " + GameManager.Instance.playerDied);
+        Debug.Log("helpedTomasEscape: " + GameManager.Instance.helpedTomasEscape);
         badEnding.SetActive(false);
         neutralEnding.SetActive(false);
         goodEnding.SetActive(false);
@@ -32,22 +34,6 @@ public class EndingController : MonoBehaviour
         if (musicSource != null)
             musicSource.Play();
 
-        // ==========================
-        // FINAL BUENO
-        // ==========================
-
-        if (true)
-        {
-            goodEnding.SetActive(true);
-
-            if (goodAnimator != null)
-                goodAnimator.Play("GoodEnding");
-
-            if (voiceSource != null && goodVoice != null)
-                voiceSource.PlayOneShot(goodVoice);
-
-            return;
-        }
         // ==========================
         // FINAL MALO
         // ==========================
@@ -65,7 +51,22 @@ public class EndingController : MonoBehaviour
             return;
         }
 
-        
+        // ==========================
+        // FINAL BUENO
+        // ==========================
+
+        if (GameManager.Instance.helpedTomasEscape)
+        {
+            goodEnding.SetActive(true);
+
+            if (goodAnimator != null)
+                goodAnimator.Play("GoodEnding");
+
+            if (voiceSource != null && goodVoice != null)
+                voiceSource.PlayOneShot(goodVoice);
+
+            return;
+        }
 
         // ==========================
         // FINAL NEUTRO
