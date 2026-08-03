@@ -10,10 +10,16 @@ public class PlayerInteractions : MonoBehaviour
     private bool mapOpen = false;
     private float temporaryMessageTimer = 0f;
     private string temporaryMessage = "";
-
+    private Color originalTextColor;
+    public float pulseSpeed = 3f;
+    public float minAlpha = 0.45f;
+    void Start()
+    {
+        originalTextColor = interactionText.color;
+    }
     void Update()
     {
-
+        AnimateInteractionText();
         if (temporaryMessageTimer > 0)
         {
             temporaryMessageTimer -= Time.deltaTime;
@@ -197,6 +203,21 @@ public class PlayerInteractions : MonoBehaviour
                 item.Recolectar();
             }
         }
+    }
+    void AnimateInteractionText()
+    {
+        if (!interactionText.gameObject.activeSelf)
+            return;
+
+        Color c = originalTextColor;
+
+        c.a = Mathf.Lerp(
+            minAlpha,
+            1f,
+            (Mathf.Sin(Time.time * pulseSpeed) + 0.5f) * 0.5f
+        );
+
+        interactionText.color = c;
     }
     public void ShowTemporaryMessage(string message, float duration)
     {

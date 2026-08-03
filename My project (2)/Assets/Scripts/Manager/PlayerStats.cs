@@ -8,24 +8,25 @@ public class PlayerStats : MonoBehaviour
 
     [Header("Vida")]
     public int maxHP = 100;
-
     public int currentHP = 100;
-
-    [Header("Daño")]
-    public int baseFistDamage = 5;
-
-    public int shovelDamage = 20;
-
-    public int knifeDamage = 50;
-
-    [Header("Atributos")]
-    public int strength = 0;
-
-    public int fistHits = 0;
 
     [Header("Arma equipada")]
     public string equippedWeapon;
 
+    [Header("Daño")]
+    public int fistDamage = 10;
+    public int shovelDamage = 20;
+    public int knifeDamage = 35;
+
+    [Header("Defensa")]
+    public bool defending = false;
+
+    [Range(0f, 1f)]
+    public float defendMultiplier = 0.3f;
+
+    [Header("Sedante")]
+    public bool sedativeActive = false;
+    public int sedativeTurns = 0;
     private bool isDead = false;
 
     private void Awake()
@@ -40,26 +41,6 @@ public class PlayerStats : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }
-    public void RegisterFistHit()
-    {
-        fistHits++;
-
-        if (fistHits >= 5)
-        {
-            fistHits = 0;
-
-            strength++;
-
-            Debug.Log(
-                "Fuerza aumentó a "
-                + strength
-            );
-        }
-    }
-    public int GetFistDamage()
-    {
-        return baseFistDamage + strength;
     }
     // =========================
     // ARMAS
@@ -93,7 +74,36 @@ public class PlayerStats : MonoBehaviour
     {
         if (isDead)
             return;
+        if (defending)
+        {
+            damage = Mathf.CeilToInt(
+                damage * defendMultiplier
+            );
 
+            defending = false;
+
+            Debug.Log(
+                "Bloqueaste parte del daño."
+            );
+        }
+        if (sedativeActive)
+        {
+            damage = Mathf.CeilToInt(
+                damage * 0.5f
+            );
+
+            sedativeTurns--;
+
+            if (sedativeTurns <= 0)
+            {
+                sedativeTurns = 0;
+                sedativeActive = false;
+
+                Debug.Log(
+                    "El efecto del sedante terminó."
+                );
+            }
+        }
         currentHP -= damage;
 
         Debug.Log(
@@ -102,14 +112,31 @@ public class PlayerStats : MonoBehaviour
             + " de daño"
         );
 
+        if (currentHP < 0)
+            currentHP = 0;
         if (currentHP <= 0)
         {
-            currentHP = 0;
-
             Die();
         }
     }
+    public int CalculateDamageTaken(int damage)
+    {
+        if (defending)
+        {
+            damage = Mathf.CeilToInt(
+                damage * defendMultiplier
+            );
+        }
 
+        if (sedativeActive)
+        {
+            damage = Mathf.CeilToInt(
+                damage * 0.5f
+            );
+        }
+
+        return damage;
+    }
     // =========================
     // CURACIÓN
     // =========================
@@ -128,6 +155,19 @@ public class PlayerStats : MonoBehaviour
             + amount
             + " HP"
         );
+    }
+    // =========================
+    // DEFENSA Y SEDANTE
+    // =========================
+    public void ActivateDefense()
+    {
+        defending = true;
+    }
+
+    public void ActivateSedative()
+    {
+        sedativeActive = true;
+        sedativeTurns = 3;
     }
 
     // =========================

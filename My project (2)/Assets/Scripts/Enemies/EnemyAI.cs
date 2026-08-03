@@ -4,14 +4,42 @@ public class EnemyAI : MonoBehaviour
 {
     [Header("Esquive")]
     [Range(0, 100)]
-    public int dodgeChance = 25;
+    public int dodgeChance = 20;
 
     [Header("Frenesí")]
     public int aggressiveThreshold = 10;
 
-    public bool TryDodge()
+    public bool TryDodge(string weapon)
     {
-        return Random.Range(0, 100) < dodgeChance;
+        int chance = dodgeChance;
+
+        switch (weapon)
+        {
+            case "Puño":
+
+                chance += 0;
+
+                break;
+
+            case "Pala":
+
+                chance -= 8;
+
+                break;
+
+            case "Cuchillo":
+
+                chance += 8;
+
+                break;
+        }
+
+        chance = Mathf.Clamp(
+            chance,
+            0,
+            95);
+
+        return Random.Range(0, 100) < chance;
     }
 
     public int ChooseDamage(
