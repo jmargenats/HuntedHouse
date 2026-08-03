@@ -27042,11 +27042,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogueManager: {fileID: 1971795962}
-<<<<<<< HEAD
-  inventario: {fileID: 0}
-=======
   inventario: {fileID: 1127295801}
->>>>>>> origin/feature/puzzleoso
 --- !u!136 &1933806103
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -28449,11 +28445,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8997996947095583982, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: m_LocalPosition.x
-<<<<<<< HEAD
-      value: 630.49
-=======
       value: 629.3
->>>>>>> origin/feature/puzzleoso
       objectReference: {fileID: 0}
     - target: {fileID: 8997996947095583982, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: m_LocalPosition.y
@@ -28461,11 +28453,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8997996947095583982, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: m_LocalPosition.z
-<<<<<<< HEAD
-      value: 356.25
-=======
       value: 356.22
->>>>>>> origin/feature/puzzleoso
       objectReference: {fileID: 0}
     - target: {fileID: 8997996947095583982, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: m_LocalRotation.w
