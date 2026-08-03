@@ -271,12 +271,15 @@ MonoBehaviour:
   inventario: {fileID: 1127295801}
   requiredItem: Llave
   consumeKey: 0
+  requireSelectedItem: 1
   requiredEnemyID: 
   changeScene: 1
   sceneFader: {fileID: 0}
   sceneToLoad: MainScene
   dialogueManager: {fileID: 1971795962}
   lockedMessage: "Est\xE1 cerrada. Necesito una llave."
+  transitionMessages: []
+  sceneTransitionDelay: 1.5
 --- !u!1001 &24293667
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8403,6 +8406,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: casa_2
       objectReference: {fileID: 0}
+    - target: {fileID: 2537131227324460119, guid: cb1c3270ceaf696418da1fe3002fda73, type: 3}
+      propertyPath: m_Name
+      value: puertaSalida
+      objectReference: {fileID: 0}
     - target: {fileID: 6388328110505041586, guid: cb1c3270ceaf696418da1fe3002fda73, type: 3}
       propertyPath: m_Name
       value: "puerta_ba\xF1o"
@@ -8484,6 +8491,7 @@ PrefabInstance:
     - {fileID: 6453112138023252058, guid: cb1c3270ceaf696418da1fe3002fda73, type: 3}
     - {fileID: 4918273711368345591, guid: cb1c3270ceaf696418da1fe3002fda73, type: 3}
     - {fileID: 4511132978804152244, guid: cb1c3270ceaf696418da1fe3002fda73, type: 3}
+    - {fileID: -8113632205477748477, guid: cb1c3270ceaf696418da1fe3002fda73, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cb1c3270ceaf696418da1fe3002fda73, type: 3}
@@ -8495,6 +8503,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2537131227324460119, guid: cb1c3270ceaf696418da1fe3002fda73, type: 3}
       insertIndex: -1
       addedObject: {fileID: 824038340}
+    - targetCorrespondingSourceObject: {fileID: 2537131227324460119, guid: cb1c3270ceaf696418da1fe3002fda73, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 824038342}
     - targetCorrespondingSourceObject: {fileID: 7948094065477988384, guid: cb1c3270ceaf696418da1fe3002fda73, type: 3}
       insertIndex: -1
       addedObject: {fileID: 143824297}
@@ -9183,12 +9194,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHP: 100
   currentHP: 100
-  baseFistDamage: 5
+  equippedWeapon: 
+  fistDamage: 10
   shovelDamage: 20
   knifeDamage: 50
-  strength: 0
-  fistHits: 0
-  equippedWeapon: 
+  defending: 0
+  defendMultiplier: 0.3
+  sedativeActive: 0
+  sedativeTurns: 0
 --- !u!4 &703108954
 Transform:
   m_ObjectHideFlags: 0
@@ -10838,8 +10851,40 @@ BoxCollider:
   m_ProvidesContacts: 1
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.6694336, y: 200.6372, z: 80.27933}
-  m_Center: {x: -2700.5862, y: 100.31871, z: 434.46692}
+  m_Size: {x: 106.58393, y: 200.6372, z: 80.27931}
+  m_Center: {x: -2707.7263, y: 100.31871, z: 434.46692}
+--- !u!114 &824038342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 824038336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccdf773b0767cc645bf13b3aba2f78df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lockObject: {fileID: 0}
+  examineDoor: {fileID: 0}
+  isOpen: 0
+  openAngle: 90
+  openSpeed: 2
+  requirement: 1
+  inventario: {fileID: 1127295801}
+  requiredItem: Llave
+  consumeKey: 1
+  requireSelectedItem: 1
+  requiredEnemyID: 
+  changeScene: 1
+  sceneFader: {fileID: 372484035}
+  sceneToLoad: Ending
+  dialogueManager: {fileID: 1971795962}
+  lockedMessage: "Est\xE1 cerrada. Necesito una llave."
+  transitionMessages:
+  - La llave encaja en la cerradura.
+  - La puerta esta abierta. Es hora de volver.
+  sceneTransitionDelay: 1.5
 --- !u!1 &824308756
 GameObject:
   m_ObjectHideFlags: 0
@@ -14503,6 +14548,8 @@ MonoBehaviour:
     icon: {fileID: 21300000, guid: 653d94427364f5741ae8fba4b3676e6b, type: 3}
   - itemType: escalera
     icon: {fileID: 21300000, guid: df52a982d37cff84592d0144dec3b541, type: 3}
+  - itemType: Llave
+    icon: {fileID: 21300000, guid: ffaf8e2ecde05e74f87b90124104f41f, type: 3}
 --- !u!1 &1136016352
 GameObject:
   m_ObjectHideFlags: 0
@@ -14685,12 +14732,15 @@ MonoBehaviour:
   inventario: {fileID: 1127295801}
   requiredItem: Llave
   consumeKey: 0
+  requireSelectedItem: 1
   requiredEnemyID: 
   changeScene: 0
   sceneFader: {fileID: 0}
   sceneToLoad: 
   dialogueManager: {fileID: 1971795962}
   lockedMessage: 
+  transitionMessages: []
+  sceneTransitionDelay: 1.5
 --- !u!1 &1140603819
 GameObject:
   m_ObjectHideFlags: 0
@@ -16679,12 +16729,15 @@ MonoBehaviour:
   inventario: {fileID: 1127295801}
   requiredItem: Llave
   consumeKey: 0
+  requireSelectedItem: 1
   requiredEnemyID: 
   changeScene: 0
   sceneFader: {fileID: 0}
   sceneToLoad: 
   dialogueManager: {fileID: 1971795962}
   lockedMessage: 
+  transitionMessages: []
+  sceneTransitionDelay: 1.5
 --- !u!1 &1309110223 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2187306677779319894, guid: cb1c3270ceaf696418da1fe3002fda73, type: 3}
@@ -27673,6 +27726,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasMap: 0
+  helpedTomasEscape: 0
   returningFromBattle: 0
   ignoreRatTriggerOnce: 0
   playerPosition: {x: 0, y: 0, z: 0}
@@ -27909,12 +27963,15 @@ MonoBehaviour:
   inventario: {fileID: 1127295801}
   requiredItem: Llave
   consumeKey: 0
+  requireSelectedItem: 1
   requiredEnemyID: 
   changeScene: 1
   sceneFader: {fileID: 372484035}
   sceneToLoad: MainScene
   dialogueManager: {fileID: 1971795962}
   lockedMessage: 
+  transitionMessages: []
+  sceneTransitionDelay: 1.5
 --- !u!1 &2012159618
 GameObject:
   m_ObjectHideFlags: 0
@@ -28501,6 +28558,8 @@ MonoBehaviour:
   interactionDistance: 10
   interactionText: {fileID: 30008005}
   mapUI: {fileID: 114172455}
+  pulseSpeed: 3
+  minAlpha: 0.45
 --- !u!114 &2042790487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30018,6 +30077,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 2042790484}
+  navMeshSearchRadius: 1.5
+  maxVerticalCorrection: 0.75
   monsterAudio: {fileID: 1778542378}
   monsterGrowl: {fileID: 8300000, guid: a9b2a2ed887fbc84dace294f4b8bd9cf, type: 3}
 --- !u!114 &2119322123
@@ -30149,12 +30210,15 @@ MonoBehaviour:
   inventario: {fileID: 1127295801}
   requiredItem: Llave
   consumeKey: 0
+  requireSelectedItem: 1
   requiredEnemyID: 
   changeScene: 0
   sceneFader: {fileID: 0}
   sceneToLoad: 
   dialogueManager: {fileID: 1971795962}
   lockedMessage: 
+  transitionMessages: []
+  sceneTransitionDelay: 1.5
 --- !u!1001 &2130897544
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -14,13 +14,14 @@ public class EnemyStats : MonoBehaviour
     public int currentHP;
     public int attackDamage = 5;
 
-    [Header("Multiplicadores de daño")]
+    [Header("Multiplicadores de daÃ±o")]
     public float fistMultiplier = 1f;
     public float shovelMultiplier = 1f;
     public float knifeMultiplier = 1f;
 
     [Header("Estados")]
     public bool stunned;
+    public int stunnedTurns;
     public bool bleeding;
     public int bleedingTurns;
     void Start()
@@ -34,9 +35,9 @@ public class EnemyStats : MonoBehaviour
 
         Debug.Log(
             enemyName +
-            " recibió " +
+            " recibiÃ³ " +
             damage +
-            " de daño"
+            " de daÃ±o"
         );
 
         if (currentHP <= 0)
@@ -49,6 +50,6 @@ public class EnemyStats : MonoBehaviour
 
     void Die()
     {
-        Debug.Log(enemyName + " murió");
+        Debug.Log(enemyName + " muriÃ³");
     }
 }

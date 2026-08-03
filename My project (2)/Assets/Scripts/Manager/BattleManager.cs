@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -62,6 +62,16 @@ public class BattleManager : MonoBehaviour
     private bool tutorialActive = false;
     private bool octavioDeathSequenceStarted = false;
 
+    [Header("Ayuda de Tomas contra Octavio")]
+    [TextArea(2, 5)]
+    public string tomasOpeningText =
+        "Ves al niño del cuarto aparecer detras tuyo y abalanzarse sobre su padre.";
+    [Min(0)] public int tomasOpeningDamage = 50;
+    [Min(1)] public int tomasStunTurns = 3;
+    [Min(0f)] public float tomasOpeningMessageDelay = 3f;
+
+    private bool tomasOpeningPlayed = false;
+
     Queue<string> battleMessages =
     new Queue<string>();
 
@@ -89,6 +99,12 @@ public class BattleManager : MonoBehaviour
 
         bool shouldShowTutorial = showTutorial &&  !GameManager.Instance.battleTutorialCompleted && GameManager.Instance.previousScene == "Tutorial";
         LoadEnemyData();
+
+        if (ShouldPlayTomasOpening())
+        {
+            StartCoroutine(PlayTomasOpening());
+            return;
+        }
 
         if (shouldShowTutorial)
         {
@@ -220,7 +236,7 @@ public class BattleManager : MonoBehaviour
                 enemy.enemyID = "octavio";
                 enemy.enemyName = "Octavio";
 
-                enemy.maxHP = 300;
+                enemy.maxHP = 200;
                 enemy.attackDamage = 35;
                 enemy.currentHP = enemy.maxHP;
 
@@ -473,6 +489,10 @@ public class BattleManager : MonoBehaviour
                 if (Random.Range(0, 100) < 15)
                 {
                     enemy.stunned = true;
+                    enemy.stunnedTurns = Mathf.Max(
+                        enemy.stunnedTurns,
+                        1
+                    );
 
                     ShowBattleLog(
                         "El enemigo queda aturdido, es tu turno");
@@ -692,11 +712,21 @@ public class BattleManager : MonoBehaviour
     {
         if (enemy.stunned)
         {
-            enemy.stunned = false;
+            enemy.stunnedTurns = Mathf.Max(
+                enemy.stunnedTurns,
+                1
+            );
+
+            enemy.stunnedTurns--;
+
+            if (enemy.stunnedTurns <= 0)
+            {
+                enemy.stunned = false;
+            }
 
             ShowBattleLog(
                 enemy.enemyName +
-                " está aturdido, es tu turno");
+                " está inmovilizado, es tu turno");
             StartCoroutine(FlashEnemy(Color.yellow, 4));
             yield return new WaitForSeconds(2);
 
@@ -744,6 +774,74 @@ public class BattleManager : MonoBehaviour
         ShowBattleLog(
             "Es tu turno"
         );
+    }
+
+    bool ShouldPlayTomasOpening()
+    {
+        return
+            !tomasOpeningPlayed &&
+            enemy != null &&
+            enemy.enemyID == "octavio" &&
+            GameManager.Instance != null &&
+            GameManager.Instance.helpedTomasEscape;
+    }
+
+    IEnumerator PlayTomasOpening()
+    {
+        tomasOpeningPlayed = true;
+        playerTurn = false;
+        ToggleButtons(false);
+
+        int maximumOpeningDamage = Mathf.Max(
+            0,
+            enemy.currentHP - 1
+        );
+
+        int appliedDamage = Mathf.Clamp(
+            tomasOpeningDamage,
+            0,
+            maximumOpeningDamage
+        );
+
+        ShowBattleLog(tomasOpeningText);
+
+        yield return new WaitForSeconds(
+            tomasOpeningMessageDelay
+        );
+
+        enemy.TakeDamage(appliedDamage);
+        StartCoroutine(FlashEnemy(Color.yellow, 4));
+        StartCoroutine(ShakeEnemy());
+
+        ShowBattleLog(
+            "Tom\u00E1s golpea a Octavio.\n-" +
+            appliedDamage +
+            " HP"
+        );
+
+        yield return new WaitForSeconds(
+            tomasOpeningMessageDelay
+        );
+
+        enemy.stunned = true;
+        enemy.stunnedTurns = Mathf.Max(
+            1,
+            tomasStunTurns
+        );
+
+        ShowBattleLog(
+            "Octavio queda inmovilizado durante " +
+            enemy.stunnedTurns +
+            " turnos."
+        );
+
+        yield return new WaitForSeconds(
+            tomasOpeningMessageDelay
+        );
+
+        playerTurn = true;
+        ToggleButtons(true);
+        ShowBattleLog("Es tu turno");
     }
 
     // =========================

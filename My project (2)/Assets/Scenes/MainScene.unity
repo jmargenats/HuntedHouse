@@ -403,12 +403,15 @@ MonoBehaviour:
   inventario: {fileID: 1127295801}
   requiredItem: Llave
   consumeKey: 0
+  requireSelectedItem: 1
   requiredEnemyID: 
   changeScene: 1
   sceneFader: {fileID: 0}
   sceneToLoad: MainScene
   dialogueManager: {fileID: 1971795962}
   lockedMessage: "Est\xE1 cerrada. Necesito una llave."
+  transitionMessages: []
+  sceneTransitionDelay: 1.5
 --- !u!1001 &24293667
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9759,6 +9762,8 @@ MonoBehaviour:
     icon: {fileID: 21300000, guid: df52a982d37cff84592d0144dec3b541, type: 3}
   - itemType: Sedante
     icon: {fileID: 21300000, guid: d24045b429b530347a3de75580b3529c, type: 3}
+  - itemType: Llave
+    icon: {fileID: 21300000, guid: ffaf8e2ecde05e74f87b90124104f41f, type: 3}
 --- !u!1 &1136016352
 GameObject:
   m_ObjectHideFlags: 0
@@ -11134,12 +11139,15 @@ MonoBehaviour:
   inventario: {fileID: 1127295801}
   requiredItem: Llave
   consumeKey: 0
+  requireSelectedItem: 1
   requiredEnemyID: 
   changeScene: 0
   sceneFader: {fileID: 0}
   sceneToLoad: 
   dialogueManager: {fileID: 1971795962}
   lockedMessage: 
+  transitionMessages: []
+  sceneTransitionDelay: 1.5
 --- !u!1 &1309110223 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2187306677779319894, guid: cb1c3270ceaf696418da1fe3002fda73, type: 3}
@@ -13906,12 +13914,15 @@ MonoBehaviour:
   inventario: {fileID: 1127295801}
   requiredItem: screwdriver
   consumeKey: 1
+  requireSelectedItem: 1
   requiredEnemyID: 
   changeScene: 1
   sceneFader: {fileID: 372484035}
   sceneToLoad: pasillo_cuarto
   dialogueManager: {fileID: 1971795962}
   lockedMessage: tiene un pestillo pero esta oxidado, no lo puedo abrir
+  transitionMessages: []
+  sceneTransitionDelay: 1.5
 --- !u!1 &1544671537
 GameObject:
   m_ObjectHideFlags: 0
@@ -18304,6 +18315,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasMap: 0
+  helpedTomasEscape: 0
   returningFromBattle: 0
   ignoreRatTriggerOnce: 0
   playerPosition: {x: 0, y: 0, z: 0}
@@ -19973,6 +19985,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 2042790484}
+  navMeshSearchRadius: 1.5
+  maxVerticalCorrection: 0.75
   monsterAudio: {fileID: 1778542378}
   monsterGrowl: {fileID: 8300000, guid: a9b2a2ed887fbc84dace294f4b8bd9cf, type: 3}
 --- !u!114 &2119322123

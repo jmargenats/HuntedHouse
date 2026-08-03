@@ -9,6 +9,9 @@ public class GameManager : MonoBehaviour
     [Header("Map")]
     public bool hasMap = false;
 
+    [Header("Ending")]
+    public bool helpedTomasEscape = true;
+
     [Header("Battle")]
     public bool returningFromBattle = false;
     public bool ignoreRatTriggerOnce = false;
@@ -95,6 +98,11 @@ public class GameManager : MonoBehaviour
 
     public void SaveGame()
     {
+        PlayerPrefs.SetInt(
+            "HelpedTomasEscape",
+            helpedTomasEscape ? 1 : 0
+        );
+
         PlayerPrefs.SetString(
             "Scene",
             SceneManager.GetActiveScene().name
@@ -174,6 +182,8 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.GetInt("RatDefeated") == 1;
         hasMap =
             PlayerPrefs.GetInt("HasMap") == 1;
+        helpedTomasEscape =
+            PlayerPrefs.GetInt("HelpedTomasEscape", 0) == 1;
         // ITEMS
 
         collectedItems.Clear();
@@ -226,7 +236,7 @@ public class GameManager : MonoBehaviour
     public void ResetGame()
     {
         returningFromBattle = false;
-
+        helpedTomasEscape = false;
         ratDefeated = false;
 
         playerPosition =

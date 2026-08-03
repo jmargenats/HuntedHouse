@@ -30,6 +30,7 @@ public class Door : MonoBehaviour, IInteractable
     public Inventario inventario;
     public string requiredItem = "Llave";
     public bool consumeKey = false;
+    public bool requireSelectedItem = true;
 
     [Header("Enemy")]
     public string requiredEnemyID;
@@ -43,7 +44,15 @@ public class Door : MonoBehaviour, IInteractable
     public DialogueManager dialogueManager;
 
     public string lockedMessage =
-        "Está cerrada.";
+        "Est\u00E1 cerrada.";
+
+    [TextArea(2, 4)]
+    public string[] transitionMessages;
+
+    [Min(0f)]
+    public float sceneTransitionDelay = 1.5f;
+
+    private bool transitionInProgress;
 
     void Start()
     {
@@ -73,6 +82,9 @@ public class Door : MonoBehaviour, IInteractable
 
     public void Interact()
     {
+        if (transitionInProgress)
+            return;
+
         if (isOpen)
         {
             isOpen = false;
@@ -117,6 +129,8 @@ public class Door : MonoBehaviour, IInteractable
 
         if (changeScene)
         {
+            transitionInProgress = true;
+
             StartCoroutine(
                 EnterScene()
             );
@@ -125,23 +139,39 @@ public class Door : MonoBehaviour, IInteractable
 
     void TryOpenWithItem()
     {
-        if (inventario == null)
-            return;
+        string selectedItem = inventario != null
+            ? inventario.DevolverItem()
+            : string.Empty;
 
-        string selectedItem =
-            inventario.DevolverItem();
+        bool hasRequiredItem =
+            selectedItem == requiredItem;
 
-        if (selectedItem == requiredItem)
+        if (
+            !requireSelectedItem &&
+            GameManager.Instance != null
+        )
+        {
+            hasRequiredItem =
+                hasRequiredItem ||
+                GameManager.Instance.HasItem(requiredItem);
+        }
+
+        if (hasRequiredItem)
         {
             OpenDoor();
 
             if (consumeKey)
             {
-                inventario.UseSelectedItem();
-
-                GameManager.Instance
-                    .collectedItems
-                    .Remove(requiredItem);
+                if (inventario != null)
+                {
+                    inventario.RemoveItem(requiredItem);
+                }
+                else if (GameManager.Instance != null)
+                {
+                    GameManager.Instance
+                        .collectedItems
+                        .Remove(requiredItem);
+                }
             }
         }
         else
@@ -177,7 +207,47 @@ public class Door : MonoBehaviour, IInteractable
 
     IEnumerator EnterScene()
     {
-        yield return new WaitForSeconds(1.5f);
+        bool showedMessage = false;
+
+        if (
+            dialogueManager != null &&
+            transitionMessages != null
+        )
+        {
+            foreach (string message in transitionMessages)
+            {
+                if (string.IsNullOrWhiteSpace(message))
+                    continue;
+
+                showedMessage = true;
+                dialogueManager.ShowDialogue(message);
+
+                yield return new WaitForSeconds(
+                    dialogueManager.displayTime
+                );
+            }
+        }
+
+        if (!showedMessage && sceneTransitionDelay > 0f)
+        {
+            yield return new WaitForSeconds(
+                sceneTransitionDelay
+            );
+        }
+
+        if (
+            sceneFader == null ||
+            string.IsNullOrWhiteSpace(sceneToLoad)
+        )
+        {
+            Debug.LogWarning(
+                $"La puerta {name} no tiene configurado el SceneFader o la escena de destino.",
+                this
+            );
+
+            transitionInProgress = false;
+            yield break;
+        }
 
         sceneFader.FadeAndLoadScene(
             sceneToLoad
