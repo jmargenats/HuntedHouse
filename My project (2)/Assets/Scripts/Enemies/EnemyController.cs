@@ -5,6 +5,13 @@ public class EnemyController : MonoBehaviour
 {
     public Transform player;
 
+    [Header("NavMesh")]
+    [Tooltip("Distancia maxima para corregir un agente que quedo apenas fuera del NavMesh.")]
+    [Min(0.1f)] public float navMeshSearchRadius = 1.5f;
+
+    [Tooltip("Evita que el agente salte al NavMesh de otro piso o al de un mueble.")]
+    [Min(0.05f)] public float maxVerticalCorrection = 0.75f;
+
     private NavMeshAgent agent;
     private Animator animator;
 
@@ -12,6 +19,7 @@ public class EnemyController : MonoBehaviour
 
     private bool chasing = false;
     private bool returningHome = false;
+    private bool reportedMissingNavMesh = false;
 
     [Header("Audio")]
     public AudioSource monsterAudio;
@@ -24,6 +32,8 @@ public class EnemyController : MonoBehaviour
 
         animator =
             GetComponentInChildren<Animator>();
+
+        TryPlaceOnNavMesh();
 
         startPosition =
             transform.position;
@@ -51,16 +61,31 @@ public class EnemyController : MonoBehaviour
     void Update()
     {
         if (
+            agent == null ||
+            !agent.enabled
+        )
+        {
+            return;
+        }
+
+        if (!agent.isOnNavMesh)
+        {
+            TryPlaceOnNavMesh();
+
+            if (!agent.isOnNavMesh)
+            {
+                SetMovingAnimation(false);
+                return;
+            }
+        }
+
+        if (
             chasing &&
             player != null
         )
         {
             agent.SetDestination(
                 player.position
-            );
-
-            Debug.Log(
-                "Persiguiendo jugador"
             );
         }
         else if (returningHome)
@@ -76,7 +101,7 @@ public class EnemyController : MonoBehaviour
             )
             {
                 Debug.Log(
-                    "Volvió a casa"
+                    "Volvio a casa"
                 );
 
                 returningHome = false;
@@ -88,18 +113,7 @@ public class EnemyController : MonoBehaviour
         bool moving =
             agent.velocity.magnitude > 0.1f;
 
-        Debug.Log(
-            "Velocidad: " +
-            agent.velocity.magnitude
-        );
-
-        if (animator != null)
-        {
-            animator.SetBool(
-                "isMoving",
-                moving
-            );
-        }
+        SetMovingAnimation(moving);
 
         if (monsterAudio != null)
         {
@@ -143,5 +157,78 @@ public class EnemyController : MonoBehaviour
         chasing = false;
 
         returningHome = true;
+    }
+
+    private bool TryPlaceOnNavMesh()
+    {
+        if (
+            agent == null ||
+            !agent.enabled
+        )
+        {
+            return false;
+        }
+
+        if (agent.isOnNavMesh)
+        {
+            return true;
+        }
+
+        NavMeshHit hit;
+
+        if (
+            !NavMesh.SamplePosition(
+                transform.position,
+                out hit,
+                navMeshSearchRadius,
+                agent.areaMask
+            ) ||
+            Mathf.Abs(hit.position.y - transform.position.y) >
+                maxVerticalCorrection
+        )
+        {
+            if (!reportedMissingNavMesh)
+            {
+                Debug.LogError(
+                    gameObject.name +
+                    " no tiene un NavMesh valido en este mismo piso.",
+                    this
+                );
+
+                reportedMissingNavMesh = true;
+            }
+
+            return false;
+        }
+
+        bool placed = agent.Warp(hit.position);
+
+        if (placed)
+        {
+            reportedMissingNavMesh = false;
+        }
+
+        if (!placed)
+        {
+            Debug.LogError(
+                "No se pudo colocar " +
+                gameObject.name +
+                " sobre el NavMesh.",
+                this
+            );
+        }
+
+        return placed;
+    }
+
+    private void SetMovingAnimation(bool moving)
+    {
+        if (animator != null && animator.enabled)
+        {
+            animator.SetBool(
+                "isMoving",
+                moving
+            );
+        }
     }
 }

@@ -14,6 +14,8 @@ public class NewspaperInteractable : MonoBehaviour, IInteractable
     private bool isReading = false;
     private bool alreadyRead = false;
 
+    public bool HasBeenRead => alreadyRead;
+
     private PlayerInteractions playerInteractions;
 
     void Start()
