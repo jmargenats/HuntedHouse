@@ -10,8 +10,17 @@ public class AudioIntro : MonoBehaviour
     public float fadeSeconds = 2f;
     public float vientoTargetVolume = 0.7f;
 
+    private bool returnedFromBattleOnLoad;
+
+    void Awake()
+    {
+        returnedFromBattleOnLoad =
+            GameManager.Instance != null &&
+            GameManager.Instance.returningFromBattle;
+    }
     IEnumerator Start()
     {
+
         vientoSource.Stop();
         vientoSource.loop = true;
         vientoSource.playOnAwake = false;
@@ -20,10 +29,7 @@ public class AudioIntro : MonoBehaviour
         introSource.loop = false;
         introSource.playOnAwake = false;
 
-        if (
-            GameManager.Instance != null &&
-            GameManager.Instance.returningFromBattle
-        )
+        if (returnedFromBattleOnLoad)
         {
             
             introSource.Stop();
