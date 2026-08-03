@@ -27030,29 +27030,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogueManager: {fileID: 1971795962}
-  sofiaPuzzle: {fileID: 373587887}
-  dialogues:
-  - "No... no hagas ruido... est\xE1 durmiendo."
-  - "Promet\xED que nadie iba a entrar."
-  - "Todav\xEDa est\xE1 ah\xED... \xBFverdad?"
-  - No la despiertes... por favor.
-  - "No pod\xE9s pasar."
-  - "Pap\xE1 dijo que la cuidara."
-  - No... no abras esa puerta.
-  - "Tengo que quedarme ac\xE1."
-  - Ella tiene miedo cuando hay gente.
-  - No voy a dejar que la lastimen.
-  - "No entiendo por qu\xE9 no responde..."
-  - "Todav\xEDa respira... \xBFno?"
-  - "Si me quedo ac\xE1... todo va a estar bien."
-  - No puedo irme.
-  - ...ella me necesita.
-  solvedDialogues:
-  - ya lo recuerdo, mi hermana....
-  - ella ya no esta conmigo, ni con nadie
-  - "\xE9l le hizo esto, es un monstruo"
-  - 'lo tenes que destruir, esta en el atico '
-  - "la extra\xF1o... Sofia"
+  inventario: {fileID: 0}
 --- !u!136 &1933806103
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -27727,6 +27705,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hasMap: 0
   helpedTomasEscape: 0
+  tomasConversationStage: 0
+  bearUnlocked: 0
+  bearDelivered: 0
   returningFromBattle: 0
   ignoreRatTriggerOnce: 0
   playerPosition: {x: 0, y: 0, z: 0}
@@ -28449,7 +28430,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8997996947095583982, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 611.803
+      value: 630.49
       objectReference: {fileID: 0}
     - target: {fileID: 8997996947095583982, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: m_LocalPosition.y
@@ -28457,7 +28438,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8997996947095583982, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 356.538
+      value: 356.25
       objectReference: {fileID: 0}
     - target: {fileID: 8997996947095583982, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: m_LocalRotation.w
