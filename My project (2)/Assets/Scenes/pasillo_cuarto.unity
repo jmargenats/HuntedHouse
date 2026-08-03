@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -262,6 +262,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccdf773b0767cc645bf13b3aba2f78df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useDestinationSpawn: 0
+  destinationSpawnPosition: {x: 0, y: 0, z: 0}
+  destinationSpawnRotation: {x: 0, y: 0, z: 0}
   lockObject: {fileID: 0}
   examineDoor: {fileID: 0}
   isOpen: 0
@@ -10867,6 +10870,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccdf773b0767cc645bf13b3aba2f78df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useDestinationSpawn: 0
+  destinationSpawnPosition: {x: 0, y: 0, z: 0}
+  destinationSpawnRotation: {x: 0, y: 0, z: 0}
   lockObject: {fileID: 0}
   examineDoor: {fileID: 0}
   isOpen: 0
@@ -14730,6 +14736,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccdf773b0767cc645bf13b3aba2f78df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useDestinationSpawn: 0
+  destinationSpawnPosition: {x: 0, y: 0, z: 0}
+  destinationSpawnRotation: {x: 0, y: 0, z: 0}
   lockObject: {fileID: 0}
   examineDoor: {fileID: 0}
   isOpen: 0
@@ -16729,6 +16738,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccdf773b0767cc645bf13b3aba2f78df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useDestinationSpawn: 0
+  destinationSpawnPosition: {x: 0, y: 0, z: 0}
+  destinationSpawnRotation: {x: 0, y: 0, z: 0}
   lockObject: {fileID: 0}
   examineDoor: {fileID: 0}
   isOpen: 0
@@ -27717,6 +27729,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hasMap: 0
   helpedTomasEscape: 0
+  playerDied: 0
   tomasConversationStage: 0
   bearUnlocked: 0
   bearDelivered: 0
@@ -27738,6 +27751,9 @@ MonoBehaviour:
   cassetteNeedTool: 0
   cassetteDiscovered: 0
   battleTutorialCompleted: 0
+  hasPendingSceneSpawn: 0
+  pendingSpawnPosition: {x: 0, y: 0, z: 0}
+  pendingSpawnRotation: {x: 0, y: 0, z: 0}
 --- !u!4 &1985670262
 Transform:
   m_ObjectHideFlags: 0
@@ -27949,6 +27965,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccdf773b0767cc645bf13b3aba2f78df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useDestinationSpawn: 1
+  destinationSpawnPosition: {x: 635, y: 0, z: 356}
+  destinationSpawnRotation: {x: 0, y: 422, z: 0}
   lockObject: {fileID: 0}
   examineDoor: {fileID: 0}
   isOpen: 0
@@ -30197,6 +30216,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccdf773b0767cc645bf13b3aba2f78df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useDestinationSpawn: 0
+  destinationSpawnPosition: {x: 0, y: 0, z: 0}
+  destinationSpawnRotation: {x: 0, y: 0, z: 0}
   lockObject: {fileID: 0}
   examineDoor: {fileID: 0}
   isOpen: 0
