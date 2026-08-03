@@ -7385,12 +7385,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHP: 100
   currentHP: 100
-  baseFistDamage: 5
+  equippedWeapon: 
+  fistDamage: 10
   shovelDamage: 20
   knifeDamage: 50
-  strength: 0
-  fistHits: 0
-  equippedWeapon: 
+  defending: 0
+  defendMultiplier: 0.3
+  sedativeActive: 0
+  sedativeTurns: 0
 --- !u!4 &703108954
 Transform:
   m_ObjectHideFlags: 0
@@ -10926,6 +10928,8 @@ MonoBehaviour:
     icon: {fileID: 21300000, guid: 44d65a4581eda024ea01141cfc03a3a4, type: 3}
   - itemType: escalera
     icon: {fileID: 21300000, guid: df52a982d37cff84592d0144dec3b541, type: 3}
+  - itemType: Llave
+    icon: {fileID: 21300000, guid: ffaf8e2ecde05e74f87b90124104f41f, type: 3}
 --- !u!1 &1136016352
 GameObject:
   m_ObjectHideFlags: 0
@@ -17166,13 +17170,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   doorSound: {fileID: 1099675643}
   doorOpen: {fileID: 8300000, guid: 72fe64b1592d3ef46b5515f4afa22b19, type: 3}
-  doorstatus: locked
+  doorstatus: unlock
   dialogueManager: {fileID: 1971795962}
-  lockedText: que es esa puerta? pareced cerrada
-  unlockedText: 'ahora esta abierta, pero no llego a subirme '
-  changeScene: 0
-  sceneFader: {fileID: 0}
-  sceneToLoad: 
+  lockedText: 
+  unlockedText: 
+  changeScene: 1
+  sceneFader: {fileID: 372484035}
+  sceneToLoad: MainScene
   sceneDelay: 1.5
   inventario: {fileID: 0}
   requireSelectedItemToChangeScene: 0
@@ -20641,6 +20645,8 @@ MonoBehaviour:
   interactionDistance: 10
   interactionText: {fileID: 30008005}
   mapUI: {fileID: 114172455}
+  pulseSpeed: 3
+  minAlpha: 0.45
 --- !u!114 &2042790487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21829,6 +21835,8 @@ GameObject:
   - component: {fileID: 1014703658}
   - component: {fileID: 1014703657}
   - component: {fileID: 2140000003}
+  - component: {fileID: 2140000004}
+  - component: {fileID: 2140000005}
   m_Layer: 0
   m_Name: ScientistEnemy
   m_TagString: Untagged
@@ -21873,6 +21881,41 @@ MonoBehaviour:
   movingParameterName: isMoving
   movingVerticalOffset: -0.18
   movingOffsetSpeed: 1.5
+--- !u!114 &2140000004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2140000000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a23e4f84ff8e28449863ab6c3459973b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyID: octavio
+  fightSceneName: RatFight
+--- !u!65 &2140000005
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2140000000}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.8544922, y: 4.65567, z: 1.7228699}
+  m_Center: {x: -0.0053710938, y: 1.8278351, z: 0.36143494}
 --- !u!1001 &1717055335676237994
 PrefabInstance:
   m_ObjectHideFlags: 0

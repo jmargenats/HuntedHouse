@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Video;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class BattleManager : MonoBehaviour
 {
@@ -36,6 +37,7 @@ public class BattleManager : MonoBehaviour
     public Sprite nurseSprite;
     public Sprite childSprite;
     public Sprite ratPackSprite;
+    public Sprite octavioSprite;
     private bool playerTurn = true;
 
     [Header("Recompensa")]
@@ -47,10 +49,18 @@ public class BattleManager : MonoBehaviour
     public VideoPlayer glitchVideo;
     public RawImage glitchImage;
 
+    [Header("Final si Octavio derrota al jugador")]
+    public Image deathBlackFade;
+    public Image deathNewspaper;
+    [Min(0f)] public float deathBlackFadeDuration = 1.5f;
+    [Min(0f)] public float deathNewspaperFadeDuration = 1.5f;
+    [Min(0f)] public float deathNewspaperDisplayDuration = 4f;
+
     [Header("Tutorial")]
     public bool showTutorial = true;
     private int tutorialStep = 0;
     private bool tutorialActive = false;
+    private bool octavioDeathSequenceStarted = false;
 
     Queue<string> battleMessages =
     new Queue<string>();
@@ -61,6 +71,21 @@ public class BattleManager : MonoBehaviour
 
     void Start()
     {
+        if (deathBlackFade != null)
+        {
+            Color blackFadeColor = deathBlackFade.color;
+            blackFadeColor.a = 0f;
+            deathBlackFade.color = blackFadeColor;
+            deathBlackFade.raycastTarget = false;
+        }
+
+        if (deathNewspaper != null)
+        {
+            Color newspaperColor = deathNewspaper.color;
+            newspaperColor.a = 0f;
+            deathNewspaper.color = newspaperColor;
+            deathNewspaper.raycastTarget = false;
+        }
 
         bool shouldShowTutorial = showTutorial &&  !GameManager.Instance.battleTutorialCompleted && GameManager.Instance.previousScene == "Tutorial";
         LoadEnemyData();
@@ -190,6 +215,24 @@ public class BattleManager : MonoBehaviour
         enemyPortrait.preserveAspect = true;
         switch (enemyID)
         {
+            case "octavio":
+
+                enemy.enemyID = "octavio";
+                enemy.enemyName = "Octavio";
+
+                enemy.maxHP = 300;
+                enemy.attackDamage = 35;
+                enemy.currentHP = enemy.maxHP;
+
+                enemyAI.dodgeChance = 20;
+                enemyPortrait.sprite = octavioSprite;
+                enemyPortrait.rectTransform.localScale =
+                new Vector3(2f, 2f, 1f);
+                enemyPortrait.rectTransform.anchoredPosition =
+                new Vector2(0f, -50f);
+
+                break;
+
             case "rat_01":
 
                 enemy.enemyID = "rat_01";
@@ -623,7 +666,10 @@ public class BattleManager : MonoBehaviour
 
         GameManager.Instance.DefeatEnemy(enemy.enemyID);
 
-        if (enemy.enemyID == "rat_01")
+        if (
+            enemy.enemyID == "rat_01" ||
+            enemy.enemyID == "octavio"
+        )
         {
             GameManager.Instance.AddItem("Llave");
         }
@@ -679,6 +725,10 @@ public class BattleManager : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
 
         EnemyAttack();
+
+        if (octavioDeathSequenceStarted)
+            yield break;
+
         if (enemy.currentHP <= 0)
         {
             StartCoroutine(EnemyDefeated());
@@ -718,6 +768,19 @@ public class BattleManager : MonoBehaviour
             + displayedDamage
             + " HP"
         );
+
+        if (
+            PlayerStats.Instance.currentHP <= 0 &&
+            enemy.enemyID == "octavio" &&
+            deathNewspaper != null
+        )
+        {
+            octavioDeathSequenceStarted = true;
+            PlayerStats.Instance.StopAllCoroutines();
+            StartCoroutine(ShowOctavioDeathNewspaper());
+            return;
+        }
+
         StartCoroutine(GlitchScreen());
 
         if (defended)
@@ -725,6 +788,89 @@ public class BattleManager : MonoBehaviour
             StartCoroutine(CounterAttackRoutine());
         }
         Debug.Log("HP luego del ataque: " +PlayerStats.Instance.currentHP);
+    }
+
+    IEnumerator ShowOctavioDeathNewspaper()
+    {
+        playerTurn = false;
+        ToggleButtons(false);
+
+        if (deathBlackFade != null)
+        {
+            deathBlackFade.gameObject.SetActive(true);
+            deathBlackFade.transform.SetAsLastSibling();
+        }
+
+        deathNewspaper.gameObject.SetActive(true);
+        deathNewspaper.transform.SetAsLastSibling();
+
+        if (deathBlackFade != null)
+        {
+            yield return StartCoroutine(
+                FadeImage(
+                    deathBlackFade,
+                    0f,
+                    1f,
+                    deathBlackFadeDuration
+                )
+            );
+        }
+
+        yield return StartCoroutine(
+            FadeImage(
+                deathNewspaper,
+                0f,
+                1f,
+                deathNewspaperFadeDuration
+            )
+        );
+
+        yield return new WaitForSeconds(
+            deathNewspaperDisplayDuration
+        );
+
+        if (GameManager.Instance != null)
+            GameManager.Instance.ResetGame();
+
+        PlayerStats.Instance.ResetStats();
+
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    IEnumerator FadeImage(
+        Image image,
+        float startAlpha,
+        float endAlpha,
+        float duration
+    )
+    {
+        Color imageColor = image.color;
+        imageColor.a = startAlpha;
+        image.color = imageColor;
+
+        if (duration <= 0f)
+        {
+            imageColor.a = endAlpha;
+            image.color = imageColor;
+            yield break;
+        }
+
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            imageColor.a = Mathf.Lerp(
+                startAlpha,
+                endAlpha,
+                elapsedTime / duration
+            );
+            image.color = imageColor;
+            yield return null;
+        }
+
+        imageColor.a = endAlpha;
+        image.color = imageColor;
     }
     IEnumerator CounterAttackRoutine()
     {

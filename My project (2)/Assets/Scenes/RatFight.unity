@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -951,11 +951,17 @@ MonoBehaviour:
   nurseSprite: {fileID: 0}
   childSprite: {fileID: 0}
   ratPackSprite: {fileID: 21300000, guid: 833c16c0396a06443a6ecb3761ee092b, type: 3}
+  octavioSprite: {fileID: 21300000, guid: 8705a87a58808194790d204478ca5f2c, type: 3}
   inventario: {fileID: 0}
   rewardIcon: {fileID: 0}
   rewardItemType: 
   glitchVideo: {fileID: 830495381}
   glitchImage: {fileID: 830495380}
+  deathBlackFade: {fileID: 2065660315}
+  deathNewspaper: {fileID: 1076439637}
+  deathBlackFadeDuration: 1.5
+  deathNewspaperFadeDuration: 1.5
+  deathNewspaperDisplayDuration: 4
   showTutorial: 1
   maxMessages: 3
 --- !u!4 &382799948
@@ -2168,6 +2174,81 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1061851128}
   m_CullTransparentMesh: 1
+--- !u!1 &1076439635
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1076439636}
+  - component: {fileID: 1076439638}
+  - component: {fileID: 1076439637}
+  m_Layer: 5
+  m_Name: deathnewspaper
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1076439636
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1076439635}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1618035316}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 1.9082, y: 1.9082}
+  m_SizeDelta: {x: 583.5343, y: 583.53}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1076439637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1076439635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 8d15bce7e031d124999c20ad6cfd2e90, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1076439638
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1076439635}
+  m_CullTransparentMesh: 1
 --- !u!1 &1080189920
 GameObject:
   m_ObjectHideFlags: 0
@@ -2721,7 +2802,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1080189921}
-  - {fileID: 2065660314}
   - {fileID: 1381948332}
   - {fileID: 101033272}
   - {fileID: 1138665945}
@@ -2746,6 +2826,8 @@ RectTransform:
   - {fileID: 1848023759}
   - {fileID: 1913120027}
   - {fileID: 200793415}
+  - {fileID: 2065660314}
+  - {fileID: 1076439636}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
