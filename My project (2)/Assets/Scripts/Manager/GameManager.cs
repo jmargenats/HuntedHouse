@@ -10,7 +10,14 @@ public class GameManager : MonoBehaviour
     public bool hasMap = false;
 
     [Header("Ending")]
-    public bool helpedTomasEscape = true;
+    public bool helpedTomasEscape = false;
+
+    [Header("Tomas")]
+    public int tomasConversationStage = 0;
+
+    public bool bearUnlocked = false;
+
+    public bool bearDelivered = false;
 
     [Header("Battle")]
     public bool returningFromBattle = false;
@@ -102,7 +109,20 @@ public class GameManager : MonoBehaviour
             "HelpedTomasEscape",
             helpedTomasEscape ? 1 : 0
         );
+        PlayerPrefs.SetInt(
+            "TomasConversationStage",
+            tomasConversationStage
+        );
 
+        PlayerPrefs.SetInt(
+            "BearUnlocked",
+            bearUnlocked ? 1 : 0
+        );
+
+        PlayerPrefs.SetInt(
+            "BearDelivered",
+            bearDelivered ? 1 : 0
+        );
         PlayerPrefs.SetString(
             "Scene",
             SceneManager.GetActiveScene().name
@@ -184,6 +204,23 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.GetInt("HasMap") == 1;
         helpedTomasEscape =
             PlayerPrefs.GetInt("HelpedTomasEscape", 0) == 1;
+        tomasConversationStage =
+            PlayerPrefs.GetInt(
+        "TomasConversationStage",
+                0
+            );
+
+        bearUnlocked =
+            PlayerPrefs.GetInt(
+                "BearUnlocked",
+                0
+            ) == 1;
+
+        bearDelivered =
+            PlayerPrefs.GetInt(
+                "BearDelivered",
+                0
+            ) == 1;
         // ITEMS
 
         collectedItems.Clear();
@@ -237,6 +274,9 @@ public class GameManager : MonoBehaviour
     {
         returningFromBattle = false;
         helpedTomasEscape = false;
+        tomasConversationStage = 0;
+        bearUnlocked = false;
+        bearDelivered = false;
         ratDefeated = false;
 
         playerPosition =

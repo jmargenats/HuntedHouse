@@ -277,7 +277,7 @@ public class BattleManager : MonoBehaviour
                 enemy.currentHP =
                     enemy.maxHP;
 
-                enemyAI.dodgeChance = 30;
+                enemyAI.dodgeChance = 20;
                 enemyPortrait.sprite = subjectSprite;
 
                 break;
@@ -288,7 +288,7 @@ public class BattleManager : MonoBehaviour
                 enemy.enemyName = "Jauría de Ratas";
 
                 enemy.maxHP = 80;
-                enemy.attackDamage = 10;
+                enemy.attackDamage = 50;
 
                 enemy.currentHP = enemy.maxHP;
 

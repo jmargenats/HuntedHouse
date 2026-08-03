@@ -3,60 +3,151 @@ using UnityEngine;
 public class TomasDialogue : MonoBehaviour, IInteractable
 {
     public DialogueManager dialogueManager;
-    public SofiaPuzzle sofiaPuzzle;
-
-    [TextArea]
-    public string[] dialogues =
-    {
-        "No... no hagas ruido... está durmiendo.",
-
-        "Prometí que nadie iba a entrar.",
-
-        "Todavía está ahí... ¿verdad?",
-
-        "No la despiertes... por favor.",
-
-        "No podés pasar.",
-
-        "Papá dijo que la cuidara.",
-
-        "No... no abras esa puerta.",
-
-        "Tengo que quedarme acá.",
-
-        "Ella tiene miedo cuando hay gente.",
-
-        "No voy a dejar que la lastimen.",
-
-        "No entiendo por qué no responde...",
-
-        "Todavía respira... ¿no?",
-
-        "Si me quedo acá... todo va a estar bien.",
-
-        "No puedo irme.",
-
-        "...ella me necesita."
-    };
-
-    [TextArea]
-    public string[] solvedDialogues;
+    public Inventario inventario;
 
     public void Interact()
     {
         if (dialogueManager == null)
             return;
 
-        string[] currentDialogues = dialogues;
+        // ----------------------------
+        // DAR EL OSO
+        // ----------------------------
 
-        if (sofiaPuzzle != null && sofiaPuzzle.IsSolved && solvedDialogues.Length > 0)
-            currentDialogues = solvedDialogues;
+        if (
+            GameManager.Instance.bearUnlocked &&
+            !GameManager.Instance.bearDelivered &&
+            inventario.DevolverItem() == "Osito"
+        )
+        {
+            GameManager.Instance.bearDelivered = true;
 
-        if (currentDialogues.Length == 0)
+            inventario.RemoveItem("Osito");
+
+            GameManager.Instance.tomasConversationStage = 4;
+
+            dialogueManager.ShowDialogue(
+                "...\n\nLo encontraste...\n\nGracias..."
+            );
+
             return;
+        }
 
-        int random = Random.Range(0, currentDialogues.Length);
+        // ----------------------------
+        // SI YA ESTÁ BUSCANDO EL OSO
+        // ----------------------------
 
-        dialogueManager.ShowDialogue(currentDialogues[random]);
+        if (
+            GameManager.Instance.bearUnlocked &&
+            !GameManager.Instance.bearDelivered
+        )
+        {
+            dialogueManager.ShowDialogue(
+                "¿Encontraste su osito...?"
+            );
+
+            return;
+        }
+
+        // ----------------------------
+        // CONVERSACIONES
+        // ----------------------------
+
+        switch (GameManager.Instance.tomasConversationStage)
+        {
+            case 0:
+
+                dialogueManager.ShowDialogue(
+                    "No... no hagas ruido...\nEstá durmiendo."
+                );
+
+                GameManager.Instance.tomasConversationStage++;
+
+                break;
+
+            case 1:
+
+                dialogueManager.ShowDialogue(
+                    "Prometí que nadie iba a entrar."
+                );
+
+                GameManager.Instance.tomasConversationStage++;
+
+                break;
+
+            case 2:
+
+                dialogueManager.ShowDialogue(
+                    "Ella siempre dormía abrazando algo..."
+                );
+
+                GameManager.Instance.tomasConversationStage++;
+
+                break;
+
+            case 3:
+
+                dialogueManager.ShowDialogue(
+                    "No encuentro su osito...\nSin él no puede dormir..."
+                );
+
+                GameManager.Instance.bearUnlocked = true;
+
+                break;
+
+            // ----------------------------
+            // DESPUÉS DEL OSO
+            // ----------------------------
+
+            case 4:
+
+                dialogueManager.ShowDialogue(
+                    "A ella le gustaba abrazarlo cuando tenía miedo..."
+                );
+
+                GameManager.Instance.tomasConversationStage++;
+
+                break;
+
+            case 5:
+
+                dialogueManager.ShowDialogue(
+                    "Papá decía que iba a curarla..."
+                );
+
+                GameManager.Instance.tomasConversationStage++;
+
+                break;
+
+            case 6:
+
+                dialogueManager.ShowDialogue(
+                    "Ella lloraba...\nNo quería más inyecciones..."
+                );
+
+                GameManager.Instance.tomasConversationStage++;
+
+                break;
+
+            case 7:
+
+                dialogueManager.ShowDialogue(
+                    "Quiero que termine todo esto...\n\nNo puedo detenerlo...\n\nPero vos sí."
+                );
+
+                GameManager.Instance.helpedTomasEscape = true;
+
+                GameManager.Instance.tomasConversationStage++;
+
+                break;
+
+            default:
+
+                dialogueManager.ShowDialogue(
+                    "Por favor...\nDetenelo."
+                );
+
+                break;
+        }
     }
 }
