@@ -97,7 +97,7 @@ public class BattleManager : MonoBehaviour
             deathNewspaper.raycastTarget = false;
         }
 
-        bool shouldShowTutorial = showTutorial &&  !GameManager.Instance.battleTutorialCompleted && GameManager.Instance.previousScene == "Tutorial";
+        bool shouldShowTutorial = showTutorial && !GameManager.Instance.battleTutorialCompleted && GameManager.Instance.previousScene == "Tutorial";
         LoadEnemyData();
 
         if (ShouldPlayTomasOpening())
@@ -131,22 +131,6 @@ public class BattleManager : MonoBehaviour
             );
 
             attackObjectButton.interactable = true;
-        }
-        if (
-            tutorialStep == 5 &&
-            (
-                PlayerStats.Instance.equippedWeapon == "Pastillas" ||
-                PlayerStats.Instance.equippedWeapon == "Botiquin"
-            )
-        )
-        {
-            tutorialStep = 6;
-
-            ShowBattleLog(
-                "Ahora presioná Curarse para recuperar vida."
-            );
-
-            healButton.interactable = true;
         }
     }
     IEnumerator GlitchScreen(
@@ -226,14 +210,14 @@ public class BattleManager : MonoBehaviour
             tutorialStep = 3;
 
             ShowBattleLog(
-                "También podés defenderte. Reducirás el daño recibido y contraatacarás automáticamente."
+                "Atacar con puño hace menos daño, pero no necesita objeto equipado. También podés huir si necesitás salir del combate."
             );
 
             attackButton.interactable = false;
             attackObjectButton.interactable = false;
-            fleeButton.interactable = false;
-            healButton.interactable = false;
-            defendButton.interactable = true;
+            fleeButton.interactable = true;
+
+
 
             return;
         }
@@ -293,7 +277,7 @@ public class BattleManager : MonoBehaviour
                 enemy.currentHP =
                     enemy.maxHP;
 
-                enemyAI.dodgeChance = 30;
+                enemyAI.dodgeChance = 20;
                 enemyPortrait.sprite = subjectSprite;
 
                 break;
@@ -304,7 +288,7 @@ public class BattleManager : MonoBehaviour
                 enemy.enemyName = "Jauría de Ratas";
 
                 enemy.maxHP = 80;
-                enemy.attackDamage = 10;
+                enemy.attackDamage = 50;
 
                 enemy.currentHP = enemy.maxHP;
 
@@ -398,7 +382,7 @@ public class BattleManager : MonoBehaviour
             return;
         }
 
-        string equipped =PlayerStats.Instance.equippedWeapon;
+        string equipped = PlayerStats.Instance.equippedWeapon;
 
         if (equipped == "Sedante")
         {
@@ -444,14 +428,6 @@ public class BattleManager : MonoBehaviour
     {
         if (!playerTurn)
             return;
-
-        if (tutorialActive)
-        {
-            if (tutorialStep != 3)
-                return;
-
-            tutorialStep = 4;
-        }
 
         StartCoroutine(PlayerDefendTurn());
     }
@@ -605,11 +581,7 @@ public class BattleManager : MonoBehaviour
     public void Heal()
     {
         Debug.Log("Botón curar apretado");
-
         if (!playerTurn)
-            return;
-
-        if (tutorialActive && tutorialStep != 6)
             return;
 
         StartCoroutine(
@@ -666,21 +638,6 @@ public class BattleManager : MonoBehaviour
         );
         battleInventory.RefreshInventory();
         yield return new WaitForSeconds(2f);
-
-        if (tutorialActive && tutorialStep == 6)
-        {
-            tutorialStep = 7;
-            playerTurn = true;
-
-            ToggleButtons(false);
-            fleeButton.interactable = true;
-
-            ShowBattleLog(
-                "Los objetos curativos se consumen al usarlos. Finalmente, podés usar Huir para abandonar un combate."
-            );
-
-            yield break;
-        }
 
         EndPlayerTurn();
     }
@@ -798,20 +755,6 @@ public class BattleManager : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
 
         EnemyAttack();
-
-        if (tutorialActive && tutorialStep == 4)
-        {
-            tutorialStep = 5;
-            playerTurn = true;
-
-            ToggleButtons(false);
-
-            ShowBattleLog(
-                "Defenderte redujo el daño. Ahora seleccioná las Pastillas desde Objetos."
-            );
-
-            yield break;
-        }
 
         if (octavioDeathSequenceStarted)
             yield break;
@@ -942,7 +885,7 @@ public class BattleManager : MonoBehaviour
         {
             StartCoroutine(CounterAttackRoutine());
         }
-        Debug.Log("HP luego del ataque: " +PlayerStats.Instance.currentHP);
+        Debug.Log("HP luego del ataque: " + PlayerStats.Instance.currentHP);
     }
 
     IEnumerator ShowOctavioDeathNewspaper()
@@ -1074,7 +1017,7 @@ public class BattleManager : MonoBehaviour
         }
 
         enemy.TakeDamage(damage);
-        
+
         ShowBattleLog(
             "Bloqueás el golpe y contraatacás.\n-"
             + damage
@@ -1093,7 +1036,7 @@ public class BattleManager : MonoBehaviour
         attackObjectButton.interactable =
             enabledState;
 
-        fleeButton.interactable = 
+        fleeButton.interactable =
             enabledState;
 
         if (healButton != null)
@@ -1117,10 +1060,10 @@ public class BattleManager : MonoBehaviour
             return;
         }
 
-        if (tutorialActive && tutorialStep == 7)
+        if (tutorialActive && tutorialStep == 3)
         {
             tutorialActive = false;
-            tutorialStep = 8;
+            tutorialStep = 4;
 
             GameManager.Instance.battleTutorialCompleted = true;
 
@@ -1213,7 +1156,6 @@ public class BattleManager : MonoBehaviour
         tutorialActive = true;
         tutorialStep = 0;
         playerTurn = true;
-        ToggleButtons(false);
 
         bool hasShovel =
             GameManager.Instance.HasItem("Pala");
@@ -1231,14 +1173,6 @@ public class BattleManager : MonoBehaviour
             tutorialStep = -1;
 
             return;
-        }
-        if (
-            !GameManager.Instance.HasItem("Pastillas") &&
-            !GameManager.Instance.HasItem("Botiquin")
-        )
-        {
-            GameManager.Instance.AddItem("Pastillas");
-            battleInventory.RefreshInventory();
         }
 
         attackButton.interactable = false;

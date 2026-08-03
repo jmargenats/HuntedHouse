@@ -10,7 +10,12 @@ public class GameManager : MonoBehaviour
     public bool hasMap = false;
 
     [Header("Ending")]
-    public bool helpedTomasEscape = true;
+    public bool helpedTomasEscape = false;
+
+    [Header("Tomas")]
+    public int tomasConversationStage = 0;
+    public bool bearUnlocked = false;
+    public bool bearDelivered = false;
 
     [Header("Battle")]
     public bool returningFromBattle = false;
@@ -19,6 +24,9 @@ public class GameManager : MonoBehaviour
     [Header("Player Data")]
     public Vector3 playerPosition;
 
+    [Header("Doors")]
+    public bool screwdriverLockRemoved = false;
+    public bool screwdriverUsed = false;
     [Header("Scene Data")]
     public string previousScene;
 
@@ -99,10 +107,31 @@ public class GameManager : MonoBehaviour
     public void SaveGame()
     {
         PlayerPrefs.SetInt(
+            "ScrewdriverUsed",
+            screwdriverUsed ? 1 : 0
+        );
+        PlayerPrefs.SetInt(
+            "ScrewdriverLockRemoved",
+            screwdriverLockRemoved ? 1 : 0
+        );
+        PlayerPrefs.SetInt(
             "HelpedTomasEscape",
             helpedTomasEscape ? 1 : 0
         );
+        PlayerPrefs.SetInt(
+            "TomasConversationStage",
+            tomasConversationStage
+        );
 
+        PlayerPrefs.SetInt(
+            "BearUnlocked",
+            bearUnlocked ? 1 : 0
+        );
+
+        PlayerPrefs.SetInt(
+            "BearDelivered",
+            bearDelivered ? 1 : 0
+        );
         PlayerPrefs.SetString(
             "Scene",
             SceneManager.GetActiveScene().name
@@ -177,13 +206,38 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.GetFloat("PlayerY"),
             PlayerPrefs.GetFloat("PlayerZ")
         );
-
+        screwdriverLockRemoved =
+    PlayerPrefs.GetInt(
+        "ScrewdriverLockRemoved",
+        0
+    ) == 1;
         ratDefeated =
             PlayerPrefs.GetInt("RatDefeated") == 1;
         hasMap =
             PlayerPrefs.GetInt("HasMap") == 1;
         helpedTomasEscape =
             PlayerPrefs.GetInt("HelpedTomasEscape", 0) == 1;
+        tomasConversationStage =
+            PlayerPrefs.GetInt(
+        "TomasConversationStage",
+                0
+            );
+        screwdriverUsed =
+    PlayerPrefs.GetInt(
+        "ScrewdriverUsed",
+        0
+    ) == 1;
+        bearUnlocked =
+            PlayerPrefs.GetInt(
+                "BearUnlocked",
+                0
+            ) == 1;
+
+        bearDelivered =
+            PlayerPrefs.GetInt(
+                "BearDelivered",
+                0
+            ) == 1;
         // ITEMS
 
         collectedItems.Clear();
@@ -237,13 +291,16 @@ public class GameManager : MonoBehaviour
     {
         returningFromBattle = false;
         helpedTomasEscape = false;
+        tomasConversationStage = 0;
+        bearUnlocked = false;
+        bearDelivered = false;
         ratDefeated = false;
 
         playerPosition =
             Vector3.zero;
 
         previousScene = "";
-
+        screwdriverLockRemoved = false;
         currentEnemyID = "";
 
         collectedItems.Clear();
@@ -251,7 +308,7 @@ public class GameManager : MonoBehaviour
         defeatedEnemies.Clear();
 
         ignoreRatTriggerOnce = false;
-
+        screwdriverUsed = false;
         radioDiscovered = false;
         penCollected = false;
         cassetteUnlocked = false;

@@ -11,19 +11,45 @@ public class ItemRecolectable : MonoBehaviour
     public string itemType;
     [Header("Audio")]
     public AudioClip pickupSound;
-
+    [Header("Unlock")]
+    public bool requiresBearUnlock = false;
     public DialogueManager dialogueManager;
     [TextArea(2, 4)]
     public string[] pickupDialogues;
     void Start()
     {
-        if (GameManager.Instance != null && GameManager.Instance.HasItem(itemType))
+
+        if (GameManager.Instance.HasItem(itemType))
         {
             gameObject.SetActive(false);
+            return;
+        }
+
+        if (
+            itemType == "screwdriver" &&
+            GameManager.Instance.screwdriverUsed
+        )
+        {
+            gameObject.SetActive(false);
+            return;
         }
     }
     public void Recolectar()
     {
+        if (
+    requiresBearUnlock &&
+    !GameManager.Instance.bearUnlocked
+)
+        {
+            if (dialogueManager != null)
+            {
+                dialogueManager.ShowDialogue(
+                    "Un viejo oso de peluche... No parece tener utilidad."
+                );
+            }
+
+            return;
+        }
         inventario.AddItemToInventory(
             iconoInventario,
             itemType
