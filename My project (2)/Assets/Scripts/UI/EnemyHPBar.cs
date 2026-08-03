@@ -54,7 +54,8 @@ public class EnemyHPUI : MonoBehaviour
         }
 
         hpText.text =
-            "RATA\n"
+            enemy.enemyName.ToUpperInvariant()
+            + "\n"
             + "HP "
             + currentHP
             + "/"
