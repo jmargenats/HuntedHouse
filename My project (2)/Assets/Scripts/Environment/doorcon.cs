@@ -49,19 +49,7 @@ public class doorcon : MonoBehaviour, IExaminable
                 doorSound.clip = doorOpen;
                 doorSound.Play();
             }
-            if (consumeKey)
-            {
-                inventario.RemoveItem(requiredItem);
 
-                GameManager.Instance.collectedItems.Remove(requiredItem);
-
-                if (requiredItem == "screwdriver")
-                {
-                    GameManager.Instance.screwdriverUsed = true;
-
-                    GameManager.Instance.SaveGame();
-                }
-            }
             if (changeScene)
             {
                 TryChangeScene();
@@ -80,6 +68,21 @@ public class doorcon : MonoBehaviour, IExaminable
 
         if (!CanChangeScene())
             return;
+
+        if (
+            consumeKey &&
+            inventario != null &&
+            !string.IsNullOrWhiteSpace(requiredItem)
+        )
+        {
+            inventario.RemoveItem(requiredItem);
+
+            if (requiredItem == "screwdriver")
+            {
+                GameManager.Instance.screwdriverUsed = true;
+                GameManager.Instance.SaveGame();
+            }
+        }
 
         isChangingScene = true;
 
