@@ -949,43 +949,10 @@ public class BattleManager : MonoBehaviour
         playerTurn = false;
         ToggleButtons(false);
 
-        if (deathBlackFade != null)
-        {
-            deathBlackFade.gameObject.SetActive(true);
-            deathBlackFade.transform.SetAsLastSibling();
-        }
+        GameManager.Instance.playerDied = true;
 
-        deathNewspaper.gameObject.SetActive(true);
-        deathNewspaper.transform.SetAsLastSibling();
+        yield return new WaitForSeconds(1f);
 
-        if (deathBlackFade != null)
-        {
-            yield return StartCoroutine(
-                FadeImage(
-                    deathBlackFade,
-                    0f,
-                    1f,
-                    deathBlackFadeDuration
-                )
-            );
-        }
-
-        yield return StartCoroutine(
-            FadeImage(
-                deathNewspaper,
-                0f,
-                1f,
-                deathNewspaperFadeDuration
-            )
-        );
-
-        yield return new WaitForSeconds(
-            deathNewspaperDisplayDuration
-        );
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.playerDied = true;
-        }
         SceneManager.LoadScene("Ending");
     }
 
