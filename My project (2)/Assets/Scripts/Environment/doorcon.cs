@@ -8,7 +8,7 @@ public class doorcon : MonoBehaviour, IExaminable
     public string doorstatus;
 
     public DialogueManager dialogueManager;
-
+    public bool consumeKey = false;
     [TextArea(2, 5)]
     public string lockedText = "La puerta está cerrada.";
     public string unlockedText = "La puerta está abierta.";
@@ -49,7 +49,19 @@ public class doorcon : MonoBehaviour, IExaminable
                 doorSound.clip = doorOpen;
                 doorSound.Play();
             }
+            if (consumeKey)
+            {
+                inventario.RemoveItem(requiredItem);
 
+                GameManager.Instance.collectedItems.Remove(requiredItem);
+
+                if (requiredItem == "screwdriver")
+                {
+                    GameManager.Instance.screwdriverUsed = true;
+
+                    GameManager.Instance.SaveGame();
+                }
+            }
             if (changeScene)
             {
                 TryChangeScene();
