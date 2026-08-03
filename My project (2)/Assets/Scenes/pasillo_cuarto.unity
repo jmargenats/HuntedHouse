@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -265,6 +265,7 @@ MonoBehaviour:
   lockObject: {fileID: 0}
   examineDoor: {fileID: 0}
   isOpen: 0
+  saveLockState: 0
   openAngle: 90
   openSpeed: 2
   requirement: 1
@@ -2654,6 +2655,7 @@ MonoBehaviour:
   iconoInventario: {fileID: 21300000, guid: 27a759a949a16ad41b193689d9183a6b, type: 3}
   itemType: Cuchillo
   pickupSound: {fileID: 8300000, guid: a7329a89571bc6244ba1b80555cc772c, type: 3}
+  requiresBearUnlock: 0
   dialogueManager: {fileID: 1971795962}
   pickupDialogues: []
 --- !u!65 &257042442
@@ -10868,6 +10870,7 @@ MonoBehaviour:
   lockObject: {fileID: 0}
   examineDoor: {fileID: 0}
   isOpen: 0
+  saveLockState: 0
   openAngle: 90
   openSpeed: 2
   requirement: 1
@@ -14550,6 +14553,10 @@ MonoBehaviour:
     icon: {fileID: 21300000, guid: df52a982d37cff84592d0144dec3b541, type: 3}
   - itemType: Llave
     icon: {fileID: 21300000, guid: ffaf8e2ecde05e74f87b90124104f41f, type: 3}
+  - itemType: Sedante
+    icon: {fileID: 21300000, guid: d24045b429b530347a3de75580b3529c, type: 3}
+  - itemType: Osito
+    icon: {fileID: 21300000, guid: c86080b93a46698488a9113d89b7167a, type: 3}
 --- !u!1 &1136016352
 GameObject:
   m_ObjectHideFlags: 0
@@ -14726,6 +14733,7 @@ MonoBehaviour:
   lockObject: {fileID: 0}
   examineDoor: {fileID: 0}
   isOpen: 0
+  saveLockState: 0
   openAngle: 90
   openSpeed: 2
   requirement: 0
@@ -15610,6 +15618,7 @@ MonoBehaviour:
   iconoInventario: {fileID: 21300000, guid: df52a982d37cff84592d0144dec3b541, type: 3}
   itemType: escalera
   pickupSound: {fileID: 8300000, guid: a7329a89571bc6244ba1b80555cc772c, type: 3}
+  requiresBearUnlock: 0
   dialogueManager: {fileID: 1971795962}
   pickupDialogues:
   - ahora si puedo subir al atico
@@ -16723,6 +16732,7 @@ MonoBehaviour:
   lockObject: {fileID: 0}
   examineDoor: {fileID: 0}
   isOpen: 0
+  saveLockState: 0
   openAngle: 90
   openSpeed: 2
   requirement: 0
@@ -17364,6 +17374,7 @@ MonoBehaviour:
   iconoInventario: {fileID: 21300000, guid: 653d94427364f5741ae8fba4b3676e6b, type: 3}
   itemType: Pastillas
   pickupSound: {fileID: 8300000, guid: a7329a89571bc6244ba1b80555cc772c, type: 3}
+  requiresBearUnlock: 0
   dialogueManager: {fileID: 1971795962}
   pickupDialogues:
   - pastillas, parecen ser utiles
@@ -24332,6 +24343,7 @@ MonoBehaviour:
   iconoInventario: {fileID: 21300000, guid: 24033b3860fd2224ca96bd2ba36ac776, type: 3}
   itemType: Botiquin
   pickupSound: {fileID: 8300000, guid: a7329a89571bc6244ba1b80555cc772c, type: 3}
+  requiresBearUnlock: 0
   dialogueManager: {fileID: 1971795962}
   pickupDialogues:
   - Un botiquin? Me pregunto que tanto necesitaba curarse esta familia
@@ -27030,7 +27042,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogueManager: {fileID: 1971795962}
+<<<<<<< HEAD
   inventario: {fileID: 0}
+=======
+  inventario: {fileID: 1127295801}
+>>>>>>> origin/feature/puzzleoso
 --- !u!136 &1933806103
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -27711,6 +27727,8 @@ MonoBehaviour:
   returningFromBattle: 0
   ignoreRatTriggerOnce: 0
   playerPosition: {x: 0, y: 0, z: 0}
+  screwdriverLockRemoved: 0
+  screwdriverUsed: 0
   previousScene: 
   collectedItems: []
   currentEnemyID: 
@@ -27938,6 +27956,7 @@ MonoBehaviour:
   lockObject: {fileID: 0}
   examineDoor: {fileID: 0}
   isOpen: 0
+  saveLockState: 0
   openAngle: 90
   openSpeed: 2
   requirement: 0
@@ -28430,19 +28449,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8997996947095583982, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: m_LocalPosition.x
+<<<<<<< HEAD
       value: 630.49
+=======
+      value: 629.3
+>>>>>>> origin/feature/puzzleoso
       objectReference: {fileID: 0}
     - target: {fileID: 8997996947095583982, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.09
       objectReference: {fileID: 0}
     - target: {fileID: 8997996947095583982, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: m_LocalPosition.z
+<<<<<<< HEAD
       value: 356.25
+=======
+      value: 356.22
+>>>>>>> origin/feature/puzzleoso
       objectReference: {fileID: 0}
     - target: {fileID: 8997996947095583982, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.6350249
+      value: -0.6663492
       objectReference: {fileID: 0}
     - target: {fileID: 8997996947095583982, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: m_LocalRotation.x
@@ -28450,7 +28477,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8997996947095583982, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.77249163
+      value: 0.7456399
       objectReference: {fileID: 0}
     - target: {fileID: 8997996947095583982, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: m_LocalRotation.z
@@ -28462,7 +28489,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8997996947095583982, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 258.844
+      value: 263.572
       objectReference: {fileID: 0}
     - target: {fileID: 8997996947095583982, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -30185,6 +30212,7 @@ MonoBehaviour:
   lockObject: {fileID: 0}
   examineDoor: {fileID: 0}
   isOpen: 0
+  saveLockState: 0
   openAngle: -90
   openSpeed: 2
   requirement: 0

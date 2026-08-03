@@ -14,9 +14,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Tomas")]
     public int tomasConversationStage = 0;
-
     public bool bearUnlocked = false;
-
     public bool bearDelivered = false;
 
     [Header("Battle")]
@@ -26,6 +24,9 @@ public class GameManager : MonoBehaviour
     [Header("Player Data")]
     public Vector3 playerPosition;
 
+    [Header("Doors")]
+    public bool screwdriverLockRemoved = false;
+    public bool screwdriverUsed = false;
     [Header("Scene Data")]
     public string previousScene;
 
@@ -105,6 +106,14 @@ public class GameManager : MonoBehaviour
 
     public void SaveGame()
     {
+        PlayerPrefs.SetInt(
+            "ScrewdriverUsed",
+            screwdriverUsed ? 1 : 0
+        );
+        PlayerPrefs.SetInt(
+            "ScrewdriverLockRemoved",
+            screwdriverLockRemoved ? 1 : 0
+        );
         PlayerPrefs.SetInt(
             "HelpedTomasEscape",
             helpedTomasEscape ? 1 : 0
@@ -197,7 +206,11 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.GetFloat("PlayerY"),
             PlayerPrefs.GetFloat("PlayerZ")
         );
-
+        screwdriverLockRemoved =
+    PlayerPrefs.GetInt(
+        "ScrewdriverLockRemoved",
+        0
+    ) == 1;
         ratDefeated =
             PlayerPrefs.GetInt("RatDefeated") == 1;
         hasMap =
@@ -209,7 +222,11 @@ public class GameManager : MonoBehaviour
         "TomasConversationStage",
                 0
             );
-
+        screwdriverUsed =
+    PlayerPrefs.GetInt(
+        "ScrewdriverUsed",
+        0
+    ) == 1;
         bearUnlocked =
             PlayerPrefs.GetInt(
                 "BearUnlocked",
@@ -283,7 +300,7 @@ public class GameManager : MonoBehaviour
             Vector3.zero;
 
         previousScene = "";
-
+        screwdriverLockRemoved = false;
         currentEnemyID = "";
 
         collectedItems.Clear();
@@ -291,7 +308,7 @@ public class GameManager : MonoBehaviour
         defeatedEnemies.Clear();
 
         ignoreRatTriggerOnce = false;
-
+        screwdriverUsed = false;
         radioDiscovered = false;
         penCollected = false;
         cassetteUnlocked = false;

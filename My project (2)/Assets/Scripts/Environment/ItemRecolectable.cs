@@ -18,29 +18,28 @@ public class ItemRecolectable : MonoBehaviour
     public string[] pickupDialogues;
     void Start()
     {
-        if (GameManager.Instance != null)
-        {
-            if (GameManager.Instance.HasItem(itemType))
-            {
-                gameObject.SetActive(false);
-                return;
-            }
 
-            if (
-                requiresBearUnlock &&
-                !GameManager.Instance.bearUnlocked
-            )
-            {
-                gameObject.SetActive(false);
-            }
+        if (GameManager.Instance.HasItem(itemType))
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+
+        if (
+            itemType == "screwdriver" &&
+            GameManager.Instance.screwdriverUsed
+        )
+        {
+            gameObject.SetActive(false);
+            return;
         }
     }
     public void Recolectar()
     {
         if (
-        requiresBearUnlock &&
-        !GameManager.Instance.bearUnlocked
-        )
+    requiresBearUnlock &&
+    !GameManager.Instance.bearUnlocked
+)
         {
             if (dialogueManager != null)
             {

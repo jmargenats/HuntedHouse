@@ -397,6 +397,7 @@ MonoBehaviour:
   lockObject: {fileID: 0}
   examineDoor: {fileID: 0}
   isOpen: 0
+  saveLockState: 0
   openAngle: 90
   openSpeed: 2
   requirement: 1
@@ -5111,13 +5112,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventario: {fileID: 1127295801}
+<<<<<<< HEAD
   iconoInventario: {fileID: 21300000, guid: 44d65a4581eda024ea01141cfc03a3a4, type: 3}
+=======
+  iconoInventario: {fileID: 21300000, guid: c86080b93a46698488a9113d89b7167a, type: 3}
+>>>>>>> origin/feature/puzzleoso
   itemType: Osito
   pickupSound: {fileID: 8300000, guid: a7329a89571bc6244ba1b80555cc772c, type: 3}
   requiresBearUnlock: 1
   dialogueManager: {fileID: 1971795962}
   pickupDialogues:
+<<<<<<< HEAD
   - Debe ser el oso del que hablaba Tomas
+=======
+  - El osito del que hablaba Tomas, sera mejor que se lo lleve
+>>>>>>> origin/feature/puzzleoso
 --- !u!1 &573307053
 GameObject:
   m_ObjectHideFlags: 0
@@ -9771,6 +9780,8 @@ MonoBehaviour:
     icon: {fileID: 21300000, guid: d24045b429b530347a3de75580b3529c, type: 3}
   - itemType: Llave
     icon: {fileID: 21300000, guid: ffaf8e2ecde05e74f87b90124104f41f, type: 3}
+  - itemType: Osito
+    icon: {fileID: 21300000, guid: c86080b93a46698488a9113d89b7167a, type: 3}
 --- !u!1 &1136016352
 GameObject:
   m_ObjectHideFlags: 0
@@ -11140,6 +11151,7 @@ MonoBehaviour:
   lockObject: {fileID: 0}
   examineDoor: {fileID: 0}
   isOpen: 0
+  saveLockState: 0
   openAngle: 90
   openSpeed: 2
   requirement: 0
@@ -13916,6 +13928,7 @@ MonoBehaviour:
   lockObject: {fileID: 826883388}
   examineDoor: {fileID: 0}
   isOpen: 0
+  saveLockState: 1
   openAngle: 90
   openSpeed: 2
   requirement: 1
@@ -16801,19 +16814,31 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6207194393822706796, guid: 537ab85af9f24fe42aeca34f12e70e40, type: 3}
       propertyPath: m_LocalPosition.x
+<<<<<<< HEAD
       value: 634.56
+=======
+      value: 633.2886
+>>>>>>> origin/feature/puzzleoso
       objectReference: {fileID: 0}
     - target: {fileID: 6207194393822706796, guid: 537ab85af9f24fe42aeca34f12e70e40, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.34
+      value: 0.135
       objectReference: {fileID: 0}
     - target: {fileID: 6207194393822706796, guid: 537ab85af9f24fe42aeca34f12e70e40, type: 3}
       propertyPath: m_LocalPosition.z
+<<<<<<< HEAD
       value: 357.37
       objectReference: {fileID: 0}
     - target: {fileID: 6207194393822706796, guid: 537ab85af9f24fe42aeca34f12e70e40, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.9462126
+=======
+      value: 358.11356
+      objectReference: {fileID: 0}
+    - target: {fileID: 6207194393822706796, guid: 537ab85af9f24fe42aeca34f12e70e40, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.94197863
+>>>>>>> origin/feature/puzzleoso
       objectReference: {fileID: 0}
     - target: {fileID: 6207194393822706796, guid: 537ab85af9f24fe42aeca34f12e70e40, type: 3}
       propertyPath: m_LocalRotation.x
@@ -16821,7 +16846,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6207194393822706796, guid: 537ab85af9f24fe42aeca34f12e70e40, type: 3}
       propertyPath: m_LocalRotation.y
+<<<<<<< HEAD
       value: -0.32354572
+=======
+      value: -0.33567297
+>>>>>>> origin/feature/puzzleoso
       objectReference: {fileID: 0}
     - target: {fileID: 6207194393822706796, guid: 537ab85af9f24fe42aeca34f12e70e40, type: 3}
       propertyPath: m_LocalRotation.z
@@ -16833,7 +16862,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6207194393822706796, guid: 537ab85af9f24fe42aeca34f12e70e40, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
+<<<<<<< HEAD
       value: -37.755
+=======
+      value: -39.227
+>>>>>>> origin/feature/puzzleoso
       objectReference: {fileID: 0}
     - target: {fileID: 6207194393822706796, guid: 537ab85af9f24fe42aeca34f12e70e40, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -18332,6 +18365,8 @@ MonoBehaviour:
   returningFromBattle: 0
   ignoreRatTriggerOnce: 0
   playerPosition: {x: 0, y: 0, z: 0}
+  screwdriverLockRemoved: 0
+  screwdriverUsed: 0
   previousScene: 
   collectedItems: []
   currentEnemyID: 
@@ -19998,7 +20033,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 2042790484}
-  navMeshSearchRadius: 1.5
+  navMeshSearchRadius: 2
   maxVerticalCorrection: 0.75
   monsterAudio: {fileID: 1778542378}
   monsterGrowl: {fileID: 8300000, guid: a9b2a2ed887fbc84dace294f4b8bd9cf, type: 3}
@@ -20046,14 +20081,23 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2119322119}
   serializedVersion: 2
+<<<<<<< HEAD
   m_LocalRotation: {x: -0, y: -0.94867164, z: -0, w: 0.3162627}
   m_LocalPosition: {x: 637.082, y: 6.03, z: 359.56842}
+=======
+  m_LocalRotation: {x: -0, y: -0.92120296, z: -0, w: 0.3890824}
+  m_LocalPosition: {x: 637.20215, y: 6.03, z: 359.4282}
+>>>>>>> origin/feature/puzzleoso
   m_LocalScale: {x: 1.2600176, y: 1.2600176, z: 1.2600176}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1784786119}
   m_Father: {fileID: 0}
+<<<<<<< HEAD
   m_LocalEulerAnglesHint: {x: 0, y: -143.126, z: 0}
+=======
+  m_LocalEulerAnglesHint: {x: 0, y: -134.205, z: 0}
+>>>>>>> origin/feature/puzzleoso
 --- !u!1001 &1717055335676237994
 PrefabInstance:
   m_ObjectHideFlags: 0

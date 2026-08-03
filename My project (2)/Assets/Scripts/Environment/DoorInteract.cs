@@ -16,6 +16,8 @@ public class Door : MonoBehaviour, IInteractable
     public doorcon examineDoor;
     [Header("Door")]
     public bool isOpen = false;
+    [Header("Save")]
+    public bool saveLockState = false;
 
     public float openAngle = 90f;
     public float openSpeed = 2f;
@@ -63,6 +65,20 @@ public class Door : MonoBehaviour, IInteractable
                 transform.eulerAngles +
                 new Vector3(0, openAngle, 0)
             );
+        if (
+            saveLockState &&
+            GameManager.Instance != null &&
+            GameManager.Instance.screwdriverLockRemoved
+        )
+        {
+            if (lockObject != null)
+                Destroy(lockObject);
+
+            if (examineDoor != null)
+                examineDoor.doorstatus = "unlock";
+
+            requirement = DoorRequirement.None;
+        }
     }
 
     void Update()
@@ -117,6 +133,16 @@ public class Door : MonoBehaviour, IInteractable
     {
         isOpen = true;
 
+        if (
+            saveLockState &&
+            GameManager.Instance != null
+        )
+        {
+            GameManager.Instance.screwdriverLockRemoved = true;
+            requirement = DoorRequirement.None;
+            GameManager.Instance.SaveGame();
+        }
+
         if (lockObject != null)
         {
             Destroy(lockObject);
@@ -162,15 +188,15 @@ public class Door : MonoBehaviour, IInteractable
 
             if (consumeKey)
             {
-                if (inventario != null)
+                inventario.RemoveItem(requiredItem);
+
+                GameManager.Instance.collectedItems.Remove(requiredItem);
+
+                if (requiredItem == "screwdriver")
                 {
-                    inventario.RemoveItem(requiredItem);
-                }
-                else if (GameManager.Instance != null)
-                {
-                    GameManager.Instance
-                        .collectedItems
-                        .Remove(requiredItem);
+                    GameManager.Instance.screwdriverUsed = true;
+
+                    GameManager.Instance.SaveGame();
                 }
             }
         }
