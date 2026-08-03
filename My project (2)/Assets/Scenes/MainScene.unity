@@ -15780,8 +15780,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afd77ec0fabc4434ebaadccc144f4ac9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  doorSound: {fileID: 1099675643}
-  doorOpen: {fileID: 8300000, guid: 72fe64b1592d3ef46b5515f4afa22b19, type: 3}
+  doorSound: {fileID: 0}
+  doorOpen: {fileID: 0}
   doorstatus: locked
   dialogueManager: {fileID: 1971795962}
   lockedText: que es esa puerta? pareced cerrada

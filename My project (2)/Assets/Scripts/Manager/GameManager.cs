@@ -53,6 +53,10 @@ public class GameManager : MonoBehaviour
 
     [Header("Tutorials")]
     public bool battleTutorialCompleted = false;
+
+    public bool hasPendingSceneSpawn;
+    public Vector3 pendingSpawnPosition;
+    public Vector3 pendingSpawnRotation;
     private void Awake()
     {
         if (Instance == null)

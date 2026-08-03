@@ -10,6 +10,11 @@ public class Door : MonoBehaviour, IInteractable
         EnemyDefeated
     }
 
+    [Header("Destination Spawn")]
+    public bool useDestinationSpawn;
+    public Vector3 destinationSpawnPosition;
+    public Vector3 destinationSpawnRotation;
+
     [Header("Lock")]
     public GameObject lockObject;
     [Header("Examine")]
@@ -274,7 +279,14 @@ public class Door : MonoBehaviour, IInteractable
             transitionInProgress = false;
             yield break;
         }
-
+        if (useDestinationSpawn && GameManager.Instance != null)
+        {
+            GameManager.Instance.hasPendingSceneSpawn = true;
+            GameManager.Instance.pendingSpawnPosition =
+                destinationSpawnPosition;
+            GameManager.Instance.pendingSpawnRotation =
+                destinationSpawnRotation;
+        }
         sceneFader.FadeAndLoadScene(
             sceneToLoad
         );
